@@ -24,7 +24,7 @@ In deze module worden 4 zaken gedaan:
   
   Instellen hostname:
     
-    - Verander de hostname naar 'master1' met het volgende commando: sudo hostnamectl set-hostname master1 en voer het wachtwoord voor sudo in.
+    - Verander de hostname naar 'master1' of 'master2' met het volgende commando: sudo hostnamectl set-hostname master1 en voer het wachtwoord voor sudo in.
     - Verander de hostfile met het volgende commando: sudo nano /etc/hosts. Verander hier de hostname als de oude naam hier nog staat.
     - Herstart de server met het commando: sudo reboot
     
@@ -74,6 +74,9 @@ In deze module worden 4 zaken gedaan:
   ## Open ssh ionstallenen
           sudo apt install openssh-server
           
+  Herstart de server met het commando: 
+          sudo reboot
+  
   Er kan nu SSH worden gebruikt om een verbinding te maken met de webserver doormiddel van OpenVPN
   
   # 2 Installeren van MariaDB Server
