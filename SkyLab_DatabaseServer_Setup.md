@@ -7,9 +7,9 @@ In deze module worden 4 zaken gedaan:
   
 # 1 Aanvragen Ubuntu servers:
 
-  - Navigeer naar skylab.windesheim.nl & log in
-  - Onder het tabje 'Catalog' request 2 keer de 'Ubuntu Server 18.04'
-  - Wacht tot de aanvrag is voltooid
+- Navigeer naar skylab.windesheim.nl & log in
+- Onder het tabje 'Catalog' request 2 keer de 'Ubuntu Server 18.04'
+- Wacht tot de aanvrag is voltooid
   
 # 2 Instellen Ubuntu server op netwerk:
 
@@ -22,14 +22,22 @@ In deze module worden 4 zaken gedaan:
     - Selecteer de 'Connect to Remote Console'.
     - Vul de volgende inlog gegevens in: username: student, password: Welkom01!
   
-  Instellen hostname:
+## Instellen hostname:
+
+voordat de hostname veranderd kan worden moet er eerst een configuratie bestand worden aangepast van cloud-init, anders        wordt de hostname overschreven bij een herstart van het systeem. 
+Dit kan door /etc/cloud/cloud.cfg aan te passen met: 
+`sudo nano /etc/cloud/cloud.cfg.`
+
+Hier moet preserve_hostname op true worden gezet i.p.v. false.
+Verander de hostname naar master1' of 'master2' met het volgende commando: 
+`sudo hostnamectl set-hostname master1` 
+
+voer het wachtwoord voor sudo in.
+Verander de hostfile met het volgende commando: 
+  `sudo nano /etc/hosts.`
+  Verander hier de hostname als de oude naam hier nog staat.
+Herstart de server met het commando: sudo reboot
     
-    - voordat de hostname veranderd kan worden moet er eerst een configuratie bestand worden aangepast van cloud-init, anders wordt de hostname overschreven bij een herstart van het systeem. dat kan door /etc/cloud/cloud.cfg aan te passen met: sudo nano /etc/cloud/cloud.cfg. Hier moet preserve_hostname op true worden gezet i.p.v. false.
-    - Verander de hostname naar 'master1' of 'master2' met het volgende commando: sudo hostnamectl set-hostname master1 en voer het wachtwoord voor sudo in.
-    - Verander de hostfile met het volgende commando: sudo nano /etc/hosts. Verander hier de hostname als de oude naam hier nog staat.
-    - Herstart de server met het commando: sudo reboot
-    
-    Instellen statisch ip
     
     ## Statisch ip toewijzen
     Om een statisch ip toe te wijzen in Ubuntu 18.04 moet je de configuratie van netplan bijwerken.  
