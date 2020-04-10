@@ -137,26 +137,75 @@ quit;
 ```
 Nu kan je inloggen op de mariadb servers vanaf de mysql client op je computer.
 
- # 4 Instellen Master-Master structuur tussen de Database servers
+# 4 Instellen Master-Master structuur tussen de Database servers
  
- Voor het configureren van de Master:
- ``` bash
- sudo nano /etc/mysql/my.cnf
- ```
- Hierin zoek je het ```server-id``` op.
+Voor het configureren van de Master:
+``` bash
+sudo nano /etc/mysql/my.cnf
+```
+Hierin zoek je het ```server-id``` op.
+Vanuit hier verander je de configuratie naar het volgende:
+
+``` bash
+server-id = 1
+report_host = master1
  
- Vanuit hier verander je de configuratie naar het volgende:
+log_bin = /var/log/mysql/mariadb-bin
+log_bin_index = /var/log/mysql/mariadb-bin.index
  
- ``` bash
- server-id    = 1
- report_host  = master1
+relay_log = /var/log/mysql/relay-bin
+relay_log_index = /var/log/mysql/relay-bin.index
  
- log_bin = /var/log/mysql/mariadb-bin
- log_bin_index = /var/log/mysql/mariadb-bin.index
+replicate-do-db = wideworldimporters
  
- relay_log = /var/log/mysql/relay-bin
- relay_log_index = /var/log/mysql/relay-bin.index
+Wanneer je klaar ben met bewerken druk je op CTRL+X, Y, Enter.
+Om de configuratie toe te passen voer je het volgende in:
+sudo systemctl restart mariadb
  
- Wanneer je klaar ben met bewerken druk je op CTRL+X, Y, Enter.
- ```
+```
+Voor de configuratie van de tweede master doe je hetzelfde. 
+Alleen verandert het server- id en de report_host naar:
+
+```bash
+server-id = 2
+report_host = master2
+```
+Nu start je bij beide masters MariaDB op en login met root.
  
+``` bash
+sudo service mysql start
+sudo mariadb -uroot -p
+```
+ 
+Maak nu op beide een gebruiker aan met de benodigde privileges.  
+Deze gebruiker zal gebruikt worden voor het repliceren van de databaseservers.
+ 
+``` bash
+MariaDB [(none)]> create user 'replusr'@'%' identified by 'replusr';
+MariaDB [(none)]> grant replication slave on *.* to 'replusr'@'%';
+```
+  
+Om de status van de master te bekijken voer je het volgende in:
+``` bash
+MariaDB [(none)]> show master status;
+```
+Hieruit moet je de de ```File``` en de ```Position``` van de Masters onthouden voor de volgende stap.
+
+Voor het starten van de replicatie voer je het volgende in op de tweede Master:
+``` bash
+MariaDB [(none)]> CHANGE MASTER TO MASTER_HOST='master1', MASTER_USER='replusr',
+-> MASTER_PASSWORD='replusr', MASTER_LOG_FILE='file', MASTER_LOG_POS=Position;
+ 
+MariaDB [(none)]> START SLAVE;
+```
+Je vult dan de ```File``` en ```Position``` in van de eerste Master.
+
+Nu ga je de status van de tweede Master bekijken.
+``` bash
+MariaDB [(none)]> SHOW SLAVE STATUS\G
+```
+Als Read_Master_Log_Pos en Exec_Master_Log_Pos dezelfde waarde hebben, betekent dit dat de masters sychroon lopen.
+
+Nu werkt de replicatie van de eerste Master naar de tweede Master.
+Voor de replicatie van de tweede naar de eerste Master doe je hetzelfde. 
+Je werkt nu alleen vanuit de eerste Master en je verandert de MASTER_HOST, MASTER_LOG_FILE en MASTER_LOG_POS naar die van de tweede Master.
