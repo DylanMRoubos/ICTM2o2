@@ -24,6 +24,7 @@ In deze module worden 4 zaken gedaan:
   
   Instellen hostname:
     
+    - voordat de hostname veranderd kan worden moet er eerst een configuratie bestand worden aangepast van cloud-init, anders wordt de hostname overschreven bij een herstart van het systeem. dat kan door /etc/cloud/cloud.cfg aan te passen met: sudo nano /etc/cloud/cloud.cfg. Hier moet preserve_hostname op true worden gezet i.p.v. false.
     - Verander de hostname naar 'master1' of 'master2' met het volgende commando: sudo hostnamectl set-hostname master1 en voer het wachtwoord voor sudo in.
     - Verander de hostfile met het volgende commando: sudo nano /etc/hosts. Verander hier de hostname als de oude naam hier nog staat.
     - Herstart de server met het commando: sudo reboot
