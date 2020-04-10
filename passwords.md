@@ -11,3 +11,7 @@
 **Database servers ubuntu login:**<br/>
  - username: student<br/>
  - password: wd9AdEuN<br/>
+
+**MariaDB root login remote:**<br/>
+ - username: root<br/>
+ - password: ArshhU8K<br/>
