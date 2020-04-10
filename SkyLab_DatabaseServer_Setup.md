@@ -37,9 +37,9 @@ Verander de hostfile met het volgende commando:
   `sudo nano /etc/hosts.`
   Verander hier de hostname als de oude naam hier nog staat.
 Herstart de server met het commando: sudo reboot
+
+## Instellen statisch ip
     
-    
-    ## Statisch ip toewijzen
     Om een statisch ip toe te wijzen in Ubuntu 18.04 moet je de configuratie van netplan bijwerken.  
     Gebruik het ip en gateway uit het TO
     Het DNS-Server adres haal je op met `systemd-resolve --status`  
