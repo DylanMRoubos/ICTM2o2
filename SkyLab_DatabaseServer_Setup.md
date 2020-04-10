@@ -137,3 +137,26 @@ quit;
 ```
 Nu kan je inloggen op de mariadb servers vanaf de mysql client op je computer.
 
+ # 4 Instellen Master-Master structuur tussen de Database servers
+ 
+ Voor het configureren van de Master:
+ ``` bash
+ sudo nano /etc/mysql/my.cnf
+ ```
+ Hierin zoek je het ```server-id``` op.
+ 
+ Vanuit hier verander je de configuratie naar het volgende:
+ 
+ ``` bash
+ server-id    = 1
+ report_host  = master1
+ 
+ log_bin = /var/log/mysql/mariadb-bin
+ log_bin_index = /var/log/mysql/mariadb-bin.index
+ 
+ relay_log = /var/log/mysql/relay-bin
+ relay_log_index = /var/log/mysql/relay-bin.index
+ 
+ Wanneer je klaar ben met bewerken druk je op CTRL+X, Y, Enter.
+ ```
+ 
