@@ -64,8 +64,7 @@ In deze module worden 4 zaken gedaan:
 
   Wachtwoord veranderen
   
-  passwd [Gekozen wachtwoord] - voeg dit toe aan de github page!
-  voer het huidige wachtwoord in
+  voer het commando: passwd. voer het huidige wachtwoord in. Bevestig met twee keer het nieuwe gekozen wachtwoord in te vullen - voeg dit toe aan het wachtwoorden bestand!
   
   ## Updaten
         sudo apt update
