@@ -70,7 +70,7 @@ In deze module worden 4 zaken gedaan:
         sudo apt update
         sudo apt full-upgrade -y
   
-  ## Open ssh ionstallenen
+  ## Open ssh installeren
           sudo apt install openssh-server
           
   Herstart de server met het commando: 
@@ -78,7 +78,7 @@ In deze module worden 4 zaken gedaan:
   
   Er kan nu SSH worden gebruikt om een verbinding te maken met de webserver doormiddel van OpenVPN
   
-  # 2 Installeren van MariaDB Server
+  # 3 Installeren van MariaDB Server
   
   Dit zijn de commando's om de software repo van MariaDB toe te voegen:
 
@@ -92,4 +92,48 @@ In deze module worden 4 zaken gedaan:
       sudo apt install mariadb-server -y
 
   Om te controleren of mariadb nu geïnstalleerd is en ook is opgestart kan je `systemctl status mariadb.service` doen. (`q` voor exit)
+  
+  ## Shell toegang
+Toegang to de sql shell van mariadb kan op 2 manieren:
+``` bash
+mysql -u root -p
+```
+of
+``` bash
+sudo mysql -u root
+```
+Je komt de shell uit door ``` quit; ``` te gebruiken.
+
+***
+
+## Externe toegang
+MariaDB staat standaard geconfigureerd op alleen luisteren op localhost. Je kan dan geen verbinding leggen vanaf een andere computer.
+Om MariaDB te laten luisteren moet er een setting veranderd worden in ``` /etc/mysql/my.cnf ```
+
+Bewerk de configuratie file van mariadb:
+``` bash
+sudo nano /etc/mysql/my.cnf
+```
+Vind de line die aangeeft: ``` bind-address            = 127.0.0.1 ```  
+Comment die line door er ``` # ``` voor te zetten: ``` #bind-address            = 127.0.0.1 ```  
+Save met CTRL+X, Y, Enter  
+Herstart mariadb om de nieuwe configuratie te laden
+``` bash
+sudo systemctl restart mariadb
+```
+
+## Gebruiker voor externe toegang
+De server luistert nu overal, maar er is nog geen root gebruiker die ook vanaf buiten mag inloggen. Die gaan we nu aanmaken.
+
+``` bash
+sudo mysql -u root
+```
+Nu in de SQL-shell:
+``` sql
+create user 'root'@'%' identified by 'insert_password_here';
+grant all on *.* to 'root'@'%';
+flush privileges;
+quit;
+```
+Nu kan je inloggen op de mariadb servers vanaf de mysql client op je computer.
 
