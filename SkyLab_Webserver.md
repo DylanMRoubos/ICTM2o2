@@ -102,21 +102,22 @@ PHP installeer je met het volgende commando
       
 Normaal kijkt Apache eerst naar een file genaamd index.html. Wij willen dat Apache eerst kijkt naar php files. Dus we moeten ervoor zorgen dat Apache kijkt naar index.php. 
 
-Typ eerst het volgende commando om de dir.conf te openen
+Typ het volgende commando
 
-      sudo nano /etc/apache2/mods-enabled/dir.conf
+      cd /var/www
+      cd html
+      ls
+
+Verwijder vervolgens index.html
+
+      sudo remove index.html
+
+Voeg daarna index.php toe
+
+      sudo nano index.php
       
-Vervolgens moet je index.php verplaatsten naar de eerste plek. Dat is direct achter DirectoryIndex. Als je klaar bent sla hem op met `CTRl+X`. Bevestig het daarna met `Y` en daarna `ENTER`
-
-Herstart hem hierna met het volgende commando
-
-      sudo systemctl restart apache2
       
-je kan de status zien met:
 
-      sudo systemctl status apache2
-      
-Druk op Q om het te sluiten
 
 
 
