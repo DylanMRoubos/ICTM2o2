@@ -22,3 +22,13 @@ Ga naar PfSense toe en login in. Vervolgens naar services / loadbalancer / Pools
  - Fall Back Pool: None
  
  Klik daarna op submit en Apple Changes
+
+User toevoegen aan de Databaseservers
+
+            CREATE USER 'haproxy_check'@'%';
+            flush privileges;
+            
+Daarna de mysql-client installeren
+
+            sudo apt install mysql-client haproxy
+            
