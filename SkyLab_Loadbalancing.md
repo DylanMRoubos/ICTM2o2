@@ -32,3 +32,42 @@ Daarna de mysql-client installeren
 
             sudo apt install mysql-client haproxy
             
+De naam van de originele configuration file veranderen met het volgende commando            
+            
+            mv /etc/haproxy/haproxy.cfg{,.org}
+            
+Maak daarna een nieuwe aan 
+
+            nano /etc/haproxy/haproxy.cfg
+            
+Vul de volgende gegevens in
+
+            global
+                        log 127.0.0.1 local0 notice
+                        user haproxy
+                        group haproxy
+                        
+            defaults 
+                        log global
+                        retries 2
+                        timeout connect 3000
+                        timeout server 5000
+                        timeout client 5000
+                        
+            listen mysql-cluster
+                        bind 127.0.0.1:3306
+                        mode tcp
+                        option mysql-check user haproxy_check
+                        balance roundrobin
+                        server master1 172.16.0.158:3306 check
+                        server master2 172.16.0.158:3306 check
+                        
+            listen stats
+                        bind 0.0.0.0:8080
+                        mode http
+                        stats enable
+                        stats uri /
+                        stats realm Strictly\ private
+                        stats auth admin:password
+                        
+                        
