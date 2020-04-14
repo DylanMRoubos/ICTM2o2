@@ -98,7 +98,7 @@ Installeren van Apache met behulp van de Ubuntu package manager, `apt`:
 
 PHP installeer je met het volgende commando
 
-      sudo apt install php libapache2-mod-php7.2 php7.2-mysql
+      sudo apt install php7.2 libapache2-mod-php7.2 php7.2-mysql
       
 Normaal kijkt Apache eerst naar een file genaamd index.html. Wij willen dat Apache eerst kijkt naar php files. Dus we moeten ervoor zorgen dat Apache kijkt naar index.php. 
 
