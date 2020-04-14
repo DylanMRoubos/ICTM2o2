@@ -115,6 +115,12 @@ Voeg daarna index.php toe
 
       sudo nano index.php
       
+Typ vervolgens in index.php het volgende
+
+      <? php
+      phpinfo();
+      ?>
+      
       
 
 
