@@ -104,8 +104,7 @@ Normaal kijkt Apache eerst naar een file genaamd index.html. Wij willen dat Apac
 
 Typ het volgende commando
 
-      cd /var/www
-      cd html
+      cd /var/www\html
       ls
 
 Verwijder vervolgens index.html
