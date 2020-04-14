@@ -21,4 +21,4 @@ Ga naar PfSense toe en login in. Vervolgens naar services / loadbalancer / Pools
  - Virtual Server Pool: Webserver-http
  - Fall Back Pool: None
  
- 
+ Klik daarna op submit en Apple Changes
