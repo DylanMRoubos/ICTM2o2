@@ -15,3 +15,7 @@
 **MariaDB root login remote:**<br/>
  - username: root<br/>
  - password: ArshhU8K<br/>
+ 
+ **Wbservers ubuntu login:**<br/>
+ - username: student
+ - password: KHxd4gu7
