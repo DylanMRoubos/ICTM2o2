@@ -19,3 +19,7 @@
  **Wbservers ubuntu login:**<br/>
  - username: student
  - password: KHxd4gu7
+
+ **Haproxy:**<br/>
+ - username: admin
+ - password: Zh4wLX2y
