@@ -124,6 +124,8 @@ Typ vervolgens in index.php het volgende
 Om ervoor te zorgen dat je geen sudo meer hoeft te gebruiken doe je het volgende
 
     sudo usermod -a -G www-data student
+    
+Voeg ook de bestanden van de webshop wwi toe aan beide webservers
 
 Vervolgens moet je eerst naar
 
