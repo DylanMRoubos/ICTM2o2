@@ -70,4 +70,9 @@ Vul de volgende gegevens in
                         stats realm Strictly\ private
                         stats auth admin:password
                         
+Restart daarna haproxy met dit commando
+ 
+            sudo systemctl restart haproxy.service
+            
+
                         
