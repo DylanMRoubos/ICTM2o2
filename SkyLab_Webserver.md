@@ -121,9 +121,19 @@ Typ vervolgens in index.php het volgende
       phpinfo();
       ?>
       
-      
+Om ervoor te zorgen dat je geen sudo meer hoeft te gebruiken doe je het volgende
 
+    sudo usermod -a -G www-data student
 
+Vervolgens moet je eerst naar
+
+    cd/var/www
+    
+Dan de volgende commandos
+
+    sudo chown www-data:www-data -R html
+    sudo chmod 775 html 
+    cd html
 
 
 
