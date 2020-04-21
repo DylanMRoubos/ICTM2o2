@@ -3,6 +3,9 @@
 **PFsense:**<br/>
  -	username: admin<br/>
  -	password: pr7cmHKNX6VhPaHc<br/>
+ 
+ - internal ip: 72.16.0.1
+ - external ip: 145.44.234.79
 
 **OpenVPN:**<br/>
  - username: o2vpn<br/>
