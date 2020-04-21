@@ -11,14 +11,20 @@
 **Database servers ubuntu login:**<br/>
  - username: student<br/>
  - password: wd9AdEuN<br/>
+ 
+ - ip: 172.16.0.158 (datanode 1 master)
+ - ip: 172.16.0.159 (datanode 2 master)
 
 **MariaDB root login remote:**<br/>
  - username: root<br/>
  - password: ArshhU8K<br/>
  
- **Wbservers ubuntu login:**<br/>
+ **Webservers ubuntu login:**<br/>
  - username: student
  - password: KHxd4gu7
+ 
+ - ip: 172.16.0.190 (web 1)
+ - ip: 172.16.0.191 (web 2)
 
  **Haproxy:**<br/>
  - username: admin
