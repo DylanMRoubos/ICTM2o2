@@ -1,12 +1,15 @@
 package site.nerdygadgets.views;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
 
 public class MainFrameView extends JFrame {
     private final HeaderPanel headerPanel;
     private final HomePanel homePanel;
     private final CurrentInfrastructurePanel currentInfrastructurePanel;
+    private final DesignPanel designPanel;
+    private final ComponentManagementPanel componentManagementPanel;
     private JPanel content;
 
     public MainFrameView() throws HeadlessException {
@@ -29,8 +32,16 @@ public class MainFrameView extends JFrame {
         currentInfrastructurePanel = new CurrentInfrastructurePanel();
         content.add(currentInfrastructurePanel, Views.CURRENTINFRA.name());
 
+        // design panel
+        designPanel = new DesignPanel();
+        content.add(designPanel, Views.DESIGN.name());
+
+        // component management panel
+        componentManagementPanel = new ComponentManagementPanel();
+        content.add(componentManagementPanel, Views.COMPONENTS.name());
+
         CardLayout cl = (CardLayout) content.getLayout();
-        cl.show(content, "HOME");
+        cl.show(content, Views.HOME.name());
 
         setVisible(true);
     }
@@ -47,20 +58,15 @@ public class MainFrameView extends JFrame {
         return currentInfrastructurePanel;
     }
 
-    public JPanel getContent() {
-        return content;
+    public DesignPanel getDesignPanel() {
+        return designPanel;
     }
 
-    public void switchPanel(Views view) {
-        switch (view) {
-            case HOME:
-                // code
-            case CURRENTINFRA:
-                // code
-            case DESIGN:
-                // code
-            case COMPONENTS:
-                // code
-        }
+    public ComponentManagementPanel getComponentManagementPanel() {
+        return componentManagementPanel;
+    }
+
+    public JPanel getContent() {
+        return content;
     }
 }

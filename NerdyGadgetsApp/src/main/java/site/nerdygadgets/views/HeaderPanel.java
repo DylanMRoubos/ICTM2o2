@@ -6,6 +6,8 @@ public class HeaderPanel extends JPanel {
     private JLabel headerText;
     private JButton jbHome;         // temp
     private JButton jbCurrentInfra; // temp
+    private JButton jbDesign;       // temp
+    private JButton jbComponents;   // temp
 
     public HeaderPanel() {
         headerText = new JLabel("NerdyGadgets");
@@ -14,8 +16,12 @@ public class HeaderPanel extends JPanel {
         // temp
         jbHome = new JButton("home");
         jbCurrentInfra = new JButton("current infra");
+        jbDesign = new JButton("design panel");
+        jbComponents = new JButton("componenten");
         add(jbHome);
         add(jbCurrentInfra);
+        add(jbDesign);
+        add(jbComponents);
     }
 
     public JLabel getHeaderText() {
@@ -28,5 +34,11 @@ public class HeaderPanel extends JPanel {
     }
     public JButton getJbCurrentInfra() {
         return jbCurrentInfra;
+    }
+    public JButton getJbDesign() {
+        return jbDesign;
+    }
+    public JButton getJbComponents() {
+        return jbComponents;
     }
 }

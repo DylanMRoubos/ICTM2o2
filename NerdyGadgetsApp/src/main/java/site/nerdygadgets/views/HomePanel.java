@@ -10,10 +10,8 @@ public class HomePanel extends JPanel {
     private JPanel jpCreate;
     private JPanel jpComponent;
 
-    //
-
     public HomePanel() {
-        setLayout(new GridLayout(2, 2));
+        setLayout(new GridLayout(2, 2, 10, 10));
         jpCurrentInfra = new HomePanelComponent("Huidige infrastructuur");
         jpOpen = new HomePanelComponent("Open");
         jpCreate = new HomePanelComponent("Nieuw");
