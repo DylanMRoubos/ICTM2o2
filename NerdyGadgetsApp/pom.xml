@@ -11,6 +11,43 @@
   <name>NerdyGadgetsApp</name>
   <url>http://www.nerdy-gadgets.site</url>
 
+  <organization>
+    <name>ICTM2o2</name>
+  </organization>
+
+  <developers>
+    <developer>
+      <id>MikeThomas2402</id>
+      <name>Mike Thomas</name>
+      <email>mike.thomas2402@gmail.com</email>
+    </developer>
+    <developer>
+      <id><!-- zelf vullen --></id>
+      <name>Dylan Roubos</name>
+      <email><!-- zelf vullen -->></email>
+    </developer>
+    <developer>
+      <id><!-- zelf vullen --></id>
+      <name>Ruben Oosting</name>
+      <email><!-- zelf vullen -->></email>
+    </developer>
+    <developer>
+      <id><!-- zelf vullen --></id>
+      <name>Jordy Wielaard</name>
+      <email><!-- zelf vullen -->></email>
+    </developer>
+    <developer>
+      <id><!-- zelf vullen --></id>
+      <name>Ade Wattimena</name>
+      <email><!-- zelf vullen -->></email>
+    </developer>
+    <developer>
+      <id><!-- zelf vullen --></id>
+      <name>Tristan Scholten</name>
+      <email><!-- zelf vullen -->></email>
+    </developer>
+  </developers>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>11</maven.compiler.release>
@@ -22,6 +59,18 @@
       <artifactId>junit</artifactId>
       <version>4.11</version>
       <scope>test</scope>
+    </dependency>
+    <!-- Radiance Substance for GUI look and feel -->
+    <dependency>
+      <groupId>org.pushing-pixels</groupId>
+      <artifactId>radiance-substance</artifactId>
+      <version>2.5.1</version>
+    </dependency>
+    <!-- mongodb driver -->
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongodb-driver-sync</artifactId>
+      <version>4.0.2</version>
     </dependency>
   </dependencies>
 
@@ -49,6 +98,13 @@
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <mainClass>site.nerdygadgets.App</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
