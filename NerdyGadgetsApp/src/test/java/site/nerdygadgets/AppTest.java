@@ -1,4 +1,4 @@
-package site.nerdy-gadgets;
+package site.nerdygadgets;
 
 import static org.junit.Assert.assertTrue;
 
