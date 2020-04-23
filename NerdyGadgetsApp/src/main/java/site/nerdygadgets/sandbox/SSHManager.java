@@ -8,7 +8,7 @@ import java.io.InputStream;
 //Simple SSH POC class to demonstrate usage of JSch
 public class SSHManager {
     String user = "student";
-    String password = "KHxd4gu7";
+    String password = "password";
     String host = "172.16.0.190";
     int port = 22;
     String command1 = "ls -ltr";
