@@ -2,17 +2,20 @@ package site.nerdygadgets;
 
 import org.pushingpixels.substance.api.skin.SubstanceBusinessBlackSteelLookAndFeel;
 import site.nerdygadgets.controllers.RoutePanelController;
+import site.nerdygadgets.sandbox.SSHManager;
 import site.nerdygadgets.views.MainFrameView;
 
 import javax.swing.*;
 
-public class App 
-{
+public class App {
     static MainFrameView mainFrameView;
 
-    public static void main( String[] args )
-    {
-        System.out.println( "joe simpels joe!" );
+    public static void main(String[] args) {
+
+        SSHManager ssh = new SSHManager();
+
+        System.out.println("joe simpels joe!");
+
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(() -> {
