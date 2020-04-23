@@ -16,11 +16,6 @@ public class RoutePanelController {
     }
 
     private void initController() {
-        // temporary button
-        mainFrameView.getHeaderPanel().getJbHome().addActionListener(e -> switchPanel(Views.HOME));
-        mainFrameView.getHeaderPanel().getJbCurrentInfra().addActionListener(e -> switchPanel(Views.CURRENTINFRA));
-        mainFrameView.getHeaderPanel().getJbDesign().addActionListener(e -> switchPanel(Views.DESIGN));
-        mainFrameView.getHeaderPanel().getJbComponents().addActionListener(e -> switchPanel(Views.COMPONENTS));
 
         // header panel home button
         mainFrameView.getHeaderPanel().addMouseListener(new MouseAdapter() {
