@@ -12,7 +12,7 @@ public class App {
 
     public static void main(String[] args) {
 
-        SSHManager ssh = new SSHManager();
+//        SSHManager ssh = new SSHManager();
 
         System.out.println("joe simpels joe!");
 
