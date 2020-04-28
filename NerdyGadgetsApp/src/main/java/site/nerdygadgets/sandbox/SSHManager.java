@@ -13,6 +13,7 @@ public class SSHManager {
     int port = 22;
     String command1 = "ls -ltr";
 
+
     public SSHManager() {
         try {
             JSch jsch = new JSch();
