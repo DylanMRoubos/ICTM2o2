@@ -7,13 +7,15 @@ public class Server {
     private String user;
     private String password;
     private SSHManager sshManager;
+    private Database database;
     private boolean online;
     private String cpu;
     private String memory;
     private String disk;
     private String uptime;
 
-    public Server(int id, ServerType type, String ip, String user, String password) {
+    public Server(Database database, int id, ServerType type, String ip, String user, String password) {
+        this.database = database;
         this.id = id;
         this.type = type;
         this.ip = ip;
@@ -34,13 +36,13 @@ public class Server {
             disk = "-";
             uptime = "-";
         } else {
-            if (type == ServerType.UBUNTU) {
+            if (type == ServerType.WEB || type == ServerType.DATABASE) {
                 online = true;
                 cpu = sshManager.runCommand("top -bn2 | grep \"Cpu(s)\" | tail -n1 | sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | awk '{print 100 - $1}'");
                 memory = sshManager.runCommand("free --mega | grep 'Mem:' | awk '{print $3 \"M / \" $2 \"M\"}'");
                 disk = sshManager.runCommand("df -h --total | grep 'total' | awk '{print $3 \" / \" $2}'");
                 uptime = sshManager.runCommand("uptime -p");
-            } else if (type == ServerType.FREEBSD) {
+            } else if (type == ServerType.PFSENSE) {
                 online = true;
                 cpu = sshManager.runCommand("top -nd2 | grep \"CPU\" | tail -n1 | sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | awk '{print 100 - $1}'");
                 memory = sshManager.runCommand("sh freebsd-memory.sh | egrep 'mem_total|mem_used' | paste -d \" \" - - | awk '{print int($2/1024/1024) \"M/\" int($12/1024/1024) \"M\"}'");
@@ -49,6 +51,10 @@ public class Server {
             }
         }
 
+    }
+
+    public void writeToDatabase() {
+        database.createDocument(id, type, ip, online, cpu, memory, disk, uptime);
     }
 
     @Override
