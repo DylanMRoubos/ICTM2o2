@@ -18,20 +18,26 @@ public class App {
 
 //        SSHManager ssh = new SSHManager();
 
-        ArrayList<ComponentModel> m = new ArrayList<ComponentModel>();
+        /*
+        ArrayList<Object> m = new ArrayList<Object>();
         m.add(new ComponentModel("MijnComponent1", 1000));
         m.add(new ComponentModel("MijnComponent2", 4000));
+
         try {
-            Serialization.serializeComponents(m);
+            Serialization.serialize(m, "mepm.json");
             System.out.println(m);
             System.out.println("COMPONENTS SERIALIZED");
-            m = Serialization.deserializeComponents();
+            m = Serialization.deserialize("mepm.json");
+            for (Object o : m) {
+                ComponentModel cm = (ComponentModel) o;
+                System.out.println(cm);
+            }
             System.out.println("COMPONENTS DESERIALIZED");
             System.out.println(m);
         }
         catch (IOException e) {
 
-        }
+        }*/
 
         System.out.println("joe simpels joe!");
 
