@@ -1,0 +1,70 @@
+package site.nerdygadgets.scraper;
+
+public class Server {
+    private int id;
+    private ServerType type;
+    private String ip;
+    private String user;
+    private String password;
+    private SSHManager sshManager;
+    private Database database;
+    private boolean online;
+    private String cpu;
+    private String memory;
+    private String disk;
+    private String uptime;
+
+    public Server(Database database, int id, ServerType type, String ip, String user, String password) {
+        this.database = database;
+        this.id = id;
+        this.type = type;
+        this.ip = ip;
+        this.user = user;
+        this.password = password;
+        sshManager = new SSHManager(this.user, this.password, this.ip);
+    }
+
+    public void grabData() {
+        // controleren verbinding
+        if (!sshManager.isConnected()) {
+            sshManager.startSession();
+        }
+        if (!sshManager.isConnected()) {
+            online = false;
+            cpu = "-";
+            memory = "-";
+            disk = "-";
+            uptime = "-";
+        } else {
+            if (type == ServerType.WEB || type == ServerType.DATABASE) {
+                online = true;
+                cpu = sshManager.runCommand("top -bn2 | grep \"Cpu(s)\" | tail -n1 | sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | awk '{print 100 - $1 \"%\"}'");
+                memory = sshManager.runCommand("free --mega | grep 'Mem:' | awk '{print $3 \"M/\" $2 \"M\"}'");
+                disk = sshManager.runCommand("df -h --total | grep 'total' | awk '{print $3 \"/\" $2}'");
+                uptime = sshManager.runCommand("uptime -p");
+            } else if (type == ServerType.PFSENSE) {
+                online = true;
+                cpu = sshManager.runCommand("top -nd2 | grep \"CPU:\" | tail -n1 | sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | awk '{print 100 - $1 \"%\"}'");
+                memory = sshManager.runCommand("sh freebsd-memory.sh | egrep 'mem_total|mem_used' | paste -d \" \" - - | awk '{print int($2/1024/1024) \"M/\" int($12/1024/1024) \"M\"}'");
+                disk = sshManager.runCommand("df -h / | grep / | awk '{print $3 \"/\" $2}'");
+                uptime = sshManager.runCommand("uptime | awk '{print $3 \" \" $4 \" \" $5}'");
+            }
+        }
+
+    }
+
+    public void writeToDatabase() {
+        database.createDocument(id, type, ip, online, cpu, memory, disk, uptime);
+    }
+
+    @Override
+    public String toString() {
+        return "Server{" +
+                "online=" + online +
+                ", cpu='" + cpu + '\'' +
+                ", memory='" + memory + '\'' +
+                ", disk='" + disk + '\'' +
+                ", uptime='" + uptime + '\'' +
+                '}';
+    }
+}
