@@ -12,20 +12,7 @@ public class App {
 
     public static void main(String[] args) throws InterruptedException {
 
-//        SSHManager ssh = new SSHManager("student", "wd9AdEuN", "172.16.0.158");
-//
-//        String cpu = ssh.runCommand("top -bn2 | grep \"Cpu(s)\" | tail -n1 | sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | awk '{print 100 - $1}'");
-//        String memory = ssh.runCommand("free --mega | grep 'Mem:' | awk '{print $3 \"M / \" $2 \"M\"}'");
-//        String diskSpace = ssh.runCommand("df -h --total | grep 'total' | awk '{print $3 \" / \" $2}'");
-//        String upTime = ssh.runCommand("uptime -p");
-//
-//        System.out.print("cpu: " + cpu);
-//        System.out.print("memory: " + memory);
-//        System.out.print("Disk space: " + diskSpace);
-//        System.out.print("Uptime: " + upTime);
-        new ServerManager();
-
-
+        new ServerManager(); // start data scraper.
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(() -> {

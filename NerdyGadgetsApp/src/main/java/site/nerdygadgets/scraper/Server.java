@@ -1,5 +1,13 @@
 package site.nerdygadgets.scraper;
-
+/**
+ * Server class
+ * Contains all the information of single server.
+ * Has the functionality to grab data from ssh and send data to the database class.
+ *
+ * @author Mike Thomas & Dylan Roubos
+ * @version 1.0
+ * @since 30-04-2020
+ */
 public class Server {
     private int id;
     private ServerType type;
@@ -25,25 +33,26 @@ public class Server {
     }
 
     public void grabData() {
-        // controleren verbinding
+        // check if the ssh client is still connected. if not, try once to connect. if it can't reconnect the server will be marked offline.
         if (!sshManager.isConnected()) {
             sshManager.startSession();
         }
         if (!sshManager.isConnected()) {
+            // sercer offline
             online = false;
             cpu = "-";
             memory = "-";
             disk = "-";
             uptime = "-";
         } else {
+            // server online
+            online = true;
             if (type == ServerType.WEB || type == ServerType.DATABASE) {
-                online = true;
                 cpu = sshManager.runCommand("top -bn2 | grep \"Cpu(s)\" | tail -n1 | sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | awk '{print 100 - $1 \"%\"}'");
                 memory = sshManager.runCommand("free --mega | grep 'Mem:' | awk '{print $3 \"M/\" $2 \"M\"}'");
                 disk = sshManager.runCommand("df -h --total | grep 'total' | awk '{print $3 \"/\" $2}'");
                 uptime = sshManager.runCommand("uptime -p");
             } else if (type == ServerType.PFSENSE) {
-                online = true;
                 cpu = sshManager.runCommand("top -nd2 | grep \"CPU:\" | tail -n1 | sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | awk '{print 100 - $1 \"%\"}'");
                 memory = sshManager.runCommand("sh freebsd-memory.sh | egrep 'mem_total|mem_used' | paste -d \" \" - - | awk '{print int($2/1024/1024) \"M/\" int($12/1024/1024) \"M\"}'");
                 disk = sshManager.runCommand("df -h / | grep / | awk '{print $3 \"/\" $2}'");
@@ -54,6 +63,7 @@ public class Server {
     }
 
     public void writeToDatabase() {
+        // write current metrics to MongoDB.
         database.createDocument(id, type, ip, online, cpu, memory, disk, uptime);
     }
 

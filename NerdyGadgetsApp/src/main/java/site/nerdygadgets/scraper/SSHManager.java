@@ -5,7 +5,16 @@ import com.jcraft.jsch.*;
 import java.io.IOException;
 import java.io.InputStream;
 
-//Simple SSH POC class to demonstrate usage of JSch
+/**
+ * SSHManager class
+ * connects to a server with SSH.
+ * provides simple method that returns a string output from a command.
+ *
+ * @author Mike Thomas & Dylan Roubos
+ * @version 1.0
+ * @since 30-04-2020
+ */
+
 public class SSHManager {
     private String user;
     private String password;
@@ -17,8 +26,6 @@ public class SSHManager {
         this.user = user;
         this.password = password;
         this.host = host;
-
-//        startSession();
     }
 
     public void startSession() {
