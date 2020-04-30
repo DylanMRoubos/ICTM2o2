@@ -18,7 +18,7 @@ public class SSHManager {
         this.password = password;
         this.host = host;
 
-        startSession();
+//        startSession();
     }
 
     public void startSession() {
@@ -35,7 +35,6 @@ public class SSHManager {
     }
 
     public String runCommand(String command) {
-
         try {
             Channel channel = session.openChannel("exec");
             ((ChannelExec) channel).setCommand(command);
@@ -62,12 +61,19 @@ public class SSHManager {
             return result;
 
         } catch (Exception e) {
-            System.out.println("Something went wrong with creating a channel or running the command");
+            System.err.println("Something went wrong with creating a channel or running the command");
             return null;
         }
     }
 
     public void endSession(Session session) {
         session.disconnect();
+    }
+
+    public boolean isConnected() {
+        if (session == null) {
+            return false;
+        }
+        return session.isConnected();
     }
 }

@@ -35,7 +35,9 @@ public class SSHManager {
     }
 
     public String runCommand(String command) {
-
+        if (!session.isConnected()) {
+            startSession();
+        }
         try {
             Channel channel = session.openChannel("exec");
             ((ChannelExec) channel).setCommand(command);
