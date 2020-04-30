@@ -2,8 +2,7 @@ package site.nerdygadgets;
 
 import org.pushingpixels.substance.api.skin.SubstanceBusinessBlackSteelLookAndFeel;
 import site.nerdygadgets.controllers.RoutePanelController;
-import site.nerdygadgets.sandbox.SSHManager;
-import site.nerdygadgets.scraper.Runner;
+import site.nerdygadgets.scraper.ServerManager;
 import site.nerdygadgets.views.MainFrameView;
 
 import javax.swing.*;
@@ -24,7 +23,7 @@ public class App {
 //        System.out.print("memory: " + memory);
 //        System.out.print("Disk space: " + diskSpace);
 //        System.out.print("Uptime: " + upTime);
-        new Runner();
+        new ServerManager();
 
 
 

@@ -1,11 +1,13 @@
 package site.nerdygadgets.scraper;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class Runner {
+public class ServerManager extends TimerTask {
     private ArrayList<Server> servers;
 
-    public Runner() {
+    public ServerManager() {
         Database database = new Database("mongodb+srv://admin:admin@cluster0-gzerr.mongodb.net/test?retryWrites=true&w=majority");
 
         Server web1 = new Server(database,1, ServerType.WEB, "172.16.0.190", "student", "KHxd4gu7");
@@ -21,10 +23,11 @@ public class Runner {
         servers.add(database2);
         servers.add(pfsense);
 
-        updateAllServers();
+        Timer timer = new Timer();
+        timer.schedule(this, 0,30000);
     }
 
-    public void updateAllServers() {
+    public void run() {
         for (Server server : servers) {
             server.grabData();
             System.out.println(server);
