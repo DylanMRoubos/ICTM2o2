@@ -38,13 +38,13 @@ public class Server {
         } else {
             if (type == ServerType.WEB || type == ServerType.DATABASE) {
                 online = true;
-                cpu = sshManager.runCommand("top -bn2 | grep \"Cpu(s)\" | tail -n1 | sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | awk '{print 100 - $1}'");
-                memory = sshManager.runCommand("free --mega | grep 'Mem:' | awk '{print $3 \"M / \" $2 \"M\"}'");
-                disk = sshManager.runCommand("df -h --total | grep 'total' | awk '{print $3 \" / \" $2}'");
+                cpu = sshManager.runCommand("top -bn2 | grep \"Cpu(s)\" | tail -n1 | sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | awk '{print 100 - $1 \"%\"}'");
+                memory = sshManager.runCommand("free --mega | grep 'Mem:' | awk '{print $3 \"M/\" $2 \"M\"}'");
+                disk = sshManager.runCommand("df -h --total | grep 'total' | awk '{print $3 \"/\" $2}'");
                 uptime = sshManager.runCommand("uptime -p");
             } else if (type == ServerType.PFSENSE) {
                 online = true;
-                cpu = sshManager.runCommand("top -nd2 | grep \"CPU\" | tail -n1 | sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | awk '{print 100 - $1}'");
+                cpu = sshManager.runCommand("top -nd2 | grep \"CPU:\" | tail -n1 | sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | awk '{print 100 - $1 \"%\"}'");
                 memory = sshManager.runCommand("sh freebsd-memory.sh | egrep 'mem_total|mem_used' | paste -d \" \" - - | awk '{print int($2/1024/1024) \"M/\" int($12/1024/1024) \"M\"}'");
                 disk = sshManager.runCommand("df -h / | grep / | awk '{print $3 \"/\" $2}'");
                 uptime = sshManager.runCommand("uptime | awk '{print $3 \" \" $4 \" \" $5}'");
