@@ -1,11 +1,17 @@
 package site.nerdygadgets.views;
 
+import site.nerdygadgets.functions.ComponentType;
+import site.nerdygadgets.models.ComponentModel;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class ComponentManagementPanel extends JPanel {
+public class ComponentManagementPanel extends JPanel implements ActionListener {
     private JLabel jlHuidigeComponenten;
     private JPanel jpHuidigeComponenten;
     private JLabel jlComponentToevoegen;
@@ -22,11 +28,14 @@ public class ComponentManagementPanel extends JPanel {
     private JComboBox jcComponenten;
     private JButton jbVoegToe;
 
-
+    private ArrayList<ComponentModel> currentComponents;
 
     public ComponentManagementPanel() {
 //        add(new JLabel("Dit moet het componenten paneel voorstellen."))
         setLayout(new GridLayout(0,2));
+
+        currentComponents = new ArrayList<ComponentModel>();
+
         jlHuidigeComponenten = new JLabel("Huidige componenten:");
         jlHuidigeComponenten.setFont(new Font("Test", Font.BOLD, 15));
         jlHuidigeComponenten.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -62,6 +71,7 @@ public class ComponentManagementPanel extends JPanel {
         jtBeschikbaarheid = new JTextField(5);
         jcComponenten = new JComboBox(componenten);
         jbVoegToe = new JButton("Voeg Toe");
+        jbVoegToe.addActionListener(this);
 
         jpComponentAanmaken.setLayout(new FlowLayout());
         jpComponentAanmaken.add(jlNaam);
@@ -74,6 +84,49 @@ public class ComponentManagementPanel extends JPanel {
         jpComponentAanmaken.add(jbVoegToe);
     }
 
+    public String getName() {
+        return jtNaam.getText();
+    }
+    public double getPrice() {
+        try {
+            double price = Double.parseDouble(jtPrijs.getText());
+            if (price < 0) {
+                return -1; //invalid price
+            } else {
+                return price;
+            }
+        }
+        catch (NumberFormatException e) { System.out.println("Invalid input"); }
+        return -2;
+    }
+    public double getAvailability() {
+        try {
+            double availability = Double.parseDouble(jtBeschikbaarheid.getText());
+            if (availability < 0) {
+                return -1; //invalid availability
+            } else {
+                return availability/100;
+            }
+        }
+        catch (NumberFormatException e) { System.out.println("Invalid input"); }
+        return -2;
+    }
+
+    public ComponentType getType() {
+        switch (String.valueOf(jcComponenten.getSelectedItem())) {
+            case "Webserver":
+                return ComponentType.Webserver;
+            case "Database":
+                return ComponentType.Database;
+            case "PFSense":
+                return  ComponentType.Firewall;
+            default:
+                System.out.println("Type Unavailable");
+        }
+        return null;
+    }
+
+    /*
     public JTextField getJtNaam(){
         return jtNaam;
     }
@@ -92,5 +145,33 @@ public class ComponentManagementPanel extends JPanel {
 
     public JButton getJbVoegToe() {
         return jbVoegToe;
+    }
+    */
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == jbVoegToe) {
+            //Voeg toe gedrukt
+            double availability = this.getAvailability();
+            if (availability == -1) {
+                //invalid availability (0>)
+            } else if (availability == -2) {
+                //invalid input (text etc..)
+            }
+
+            double price = this.getPrice();
+            if (price == -1) {
+                //invalid price (0>)
+                //Error afhandelen?
+            } else if (price == -2) {
+                //invalid input (text etc..)
+                //Error afhandelen?
+            }
+
+            currentComponents.add(new ComponentModel(this.getName(), this.getAvailability(), this.getPrice(), this.getType()));
+            System.out.println("Component added! <3");
+            for (ComponentModel x : currentComponents)
+                System.out.println(x.toString());
+        }
     }
 }
