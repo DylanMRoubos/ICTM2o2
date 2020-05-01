@@ -1,9 +1,11 @@
 package site.nerdygadgets.views;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class CurrentInfrastructurePanel extends JPanel {
+
     public CurrentInfrastructurePanel() {
-        add(new JLabel("Dit moet het huidige infra paneel voorstellen."));
+        setLayout(new GridLayout(0, 3));
     }
 }

@@ -1,6 +1,9 @@
 package site.nerdygadgets.scraper;
 
 import com.mongodb.client.*;
+
+import static com.mongodb.client.model.Filters.*;
+
 import org.bson.Document;
 
 import java.time.Instant;
@@ -41,15 +44,19 @@ public class Database {
                 .append("ip", ip)
                 .append("timestamp", String.valueOf(Instant.now().getEpochSecond()))
                 .append("status", new Document("online", online)
-                    .append("cpu", cpu)
-                    .append("memory", memory)
-                    .append("disk", disk)
-                    .append("uptime", uptime));
+                        .append("cpu", cpu)
+                        .append("memory", memory)
+                        .append("disk", disk)
+                        .append("uptime", uptime));
         collection.insertOne(doc);
     }
 
     public Document getLastDocument() {
         // get latest document
         return collection.find().sort(new Document("_id", -1)).first();
+    }
+
+    public Document getDocumentByServerId(int id) {
+        return collection.find(eq("serverId", id)).sort(new Document("_id", -1)).first();
     }
 }
