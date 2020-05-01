@@ -37,6 +37,7 @@ public class SSHManager {
             session.connect();
             this.session = session;
         } catch (Exception e) {
+            // TODO output zoeken die minder de console volpleurt
             e.printStackTrace();
         }
     }
@@ -60,6 +61,7 @@ public class SSHManager {
                     result += (new String(tmp, 0, i));
                 }
                 if (channel.isClosed()) {
+                    // TODO exit status weghalen
                     System.out.println("exit-status: " + channel.getExitStatus());
                     break;
                 }

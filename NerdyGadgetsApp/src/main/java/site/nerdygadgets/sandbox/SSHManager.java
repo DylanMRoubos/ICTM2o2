@@ -5,6 +5,7 @@ import com.jcraft.jsch.*;
 import java.io.IOException;
 import java.io.InputStream;
 
+// TODO remove sandbox class
 //Simple SSH POC class to demonstrate usage of JSch
 public class SSHManager {
     private String user;
