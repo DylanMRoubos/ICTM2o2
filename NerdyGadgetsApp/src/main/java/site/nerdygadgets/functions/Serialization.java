@@ -56,10 +56,13 @@ public class Serialization {
         String path = "tmp.json";
 
         File f = new File(path);
-        if (f.exists())
-            throw new FileAlreadyExistsException(path); //Anders afhandelen? (Met een prompt?)
-        f.createNewFile();
-        FileWriter fw = new FileWriter(path);
+//        if (f.exists())
+//            throw new FileAlreadyExistsException(path); //Anders afhandelen? (Met een prompt?)
+        if(!f.exists()){
+            f.createNewFile();
+        }
+        new PrintWriter(path).close();
+        FileWriter fw = new FileWriter(path, false);
         fw.write(s);
         fw.flush();
         fw.close();

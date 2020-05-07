@@ -16,7 +16,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ComponentManagementPanel extends JPanel implements ActionListener {
+public class ComponentManagementPanel extends JPanel {
     private JLabel jlHuidigeComponenten;
     private JPanel jpHuidigeComponenten;
     private JPanel jpHuidigeComponentenContent;
@@ -30,8 +30,8 @@ public class ComponentManagementPanel extends JPanel implements ActionListener {
     private DefaultTableModel tableModel;
     private JScrollPane tableScrollPane;
 
-    private JList jListHuidigeComponenten;
-    private DefaultListModel listModel;
+//    private JList jListHuidigeComponenten;
+//    private DefaultListModel listModel;
 
     //ComponentToevoegen content
     private JLabel jlNaam;
@@ -44,13 +44,13 @@ public class ComponentManagementPanel extends JPanel implements ActionListener {
     private JComboBox jcComponenten;
     private JButton jbVoegToe;
 
-    private ArrayList<ComponentModel> currentComponents;
+//    private ArrayList<ComponentModel> currentComponents;
 
     public ComponentManagementPanel() {
 //        add(new JLabel("Dit moet het componenten paneel voorstellen."))
         setLayout(new GridLayout(0,2));
 
-        currentComponents = new ArrayList<ComponentModel>();
+//        currentComponents = new ArrayList<ComponentModel>();
 
         //maak de label
         jlHuidigeComponenten = new JLabel("Huidige componenten:");
@@ -94,36 +94,8 @@ public class ComponentManagementPanel extends JPanel implements ActionListener {
         //tableModel.addRow(new Object[]{"mep", "mep", "mep", "mep"});
 
         //Voeg content toe aan linker panel
-        jTable.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) { }
-            @Override
-            public void mousePressed(MouseEvent e) { }
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                int row = jTable.rowAtPoint(e.getPoint());
-                if (row >= 0 && row < jTable.getRowCount()) {
-                    jTable.setRowSelectionInterval(row, row);
-                } else {
-                    jTable.clearSelection();
-                }
 
-                //Row index is found
-                int rowIndex = jTable.getSelectedRow();
-                if (rowIndex < 0)
-                    return;
-                if (e.isPopupTrigger() && e.getComponent() instanceof JTable ) {
-                    JPopupMenu popup = createYourPopUp(rowIndex);
-                    popup.show(e.getComponent(), e.getX(), e.getY());
-                }
-            }
-            @Override
-            public void mouseEntered(MouseEvent e) { }
-            @Override
-            public void mouseExited(MouseEvent e) { }
-        });
         jpHuidigeComponentenContent.add(tableScrollPane);
-        loadComponents();
 
         //Maak het panel waar alle content in staat
         jpComponentToevoegenContent = new JPanel();
@@ -142,12 +114,12 @@ public class ComponentManagementPanel extends JPanel implements ActionListener {
         jlNaam = new JLabel("Naam: ");
         jlPrijs = new JLabel("Prijs: ");
         jlBeschikbaarheid = new JLabel("Beschikbaarheid:");
-        jtNaam = new JTextField(5);
-        jtPrijs = new JTextField(5);
-        jtBeschikbaarheid = new JTextField(5);
+        jtNaam = new JTextField(15);
+        jtPrijs = new JTextField(15);
+        jtBeschikbaarheid = new JTextField(10);
         jcComponenten = new JComboBox(componenten);
         jbVoegToe = new JButton("Voeg Toe");
-        jbVoegToe.addActionListener(this);
+
 
         //Voeg alle content toe
         jpComponentToevoegenContent.setLayout(new FlowLayout());
@@ -162,106 +134,33 @@ public class ComponentManagementPanel extends JPanel implements ActionListener {
 
     }
 
-    private JPopupMenu createYourPopUp(int rowindex)
-    {
-        JPopupMenu popup = new JPopupMenu();
-        JMenuItem delete = new JMenuItem("Delete Component");
-        delete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == delete) {
-                    tableModel.removeRow(rowindex);
-                }
-            }
-        });
-        popup.add(delete);
-        return popup;
+    public JTextField getJtNaam(){
+        return jtNaam;
     }
 
-    private void loadComponents() {
-        try {
-            ArrayList<ComponentModel> componenten = Serialization.deserializeComponents();
-            if (componenten.size() > 0) {
-                for (ComponentModel model : componenten) {
-                    tableModel.addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice())});
-                }
-            }
-        }
-        catch (IOException e) {
-            System.out.println("Unable to load components");
-        }
+    public JTextField getJtPrijs() {
+        return jtPrijs;
     }
 
-    public String getName() {
-        return jtNaam.getText();
+    public JTextField getJtBeschikbaarheid() {
+        return jtBeschikbaarheid;
     }
 
-    public double getPrice() {
-        try {
-            double price = Double.parseDouble(jtPrijs.getText());
-            if (price < 0) {
-                return -1; //invalid price
-            } else {
-                return price;
-            }
-        }
-        catch (NumberFormatException e) { System.out.println("Invalid input"); }
-        return -2;
+    public JComboBox getJcComponenten() {
+        return jcComponenten;
     }
 
-    public double getAvailability() {
-        try {
-            double availability = Double.parseDouble(jtBeschikbaarheid.getText());
-            if (availability < 0) {
-                return -1; //invalid availability
-            } else {
-                return availability;
-            }
-        }
-        catch (NumberFormatException e) { System.out.println("Invalid input"); }
-        return -2;
+    public JButton getJbVoegToe() {
+        return jbVoegToe;
     }
 
-    public ComponentType getType() {
-        switch (String.valueOf(jcComponenten.getSelectedItem())) {
-            case "Webserver":
-                return ComponentType.Webserver;
-            case "Database":
-                return ComponentType.Database;
-            case "PFSense":
-                return ComponentType.Firewall;
-            default:
-                System.out.println("Type Unavailable");
-        }
-        System.out.println("String.valueOf(jcComponenten.getSelectedItem())");
-        return null;
+    public JTable getjTable() {
+        return jTable;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == jbVoegToe) {
-            //Voeg toe gedrukt
-            double availability = this.getAvailability();
-            if (availability == -1) {
-                //invalid availability (0>)
-            } else if (availability == -2) {
-                //invalid input (text etc..)
-            }
-
-            double price = this.getPrice();
-            if (price == -1) {
-                //invalid price (0>)
-                //Error afhandelen?
-            } else if (price == -2) {
-                //invalid input (text etc..)
-                //Error afhandelen?
-            }
-
-            currentComponents.add(new ComponentModel(this.getName(), this.getAvailability(), this.getPrice(), this.getType()));
-            tableModel.addRow(new Object[]{this.getType().name(), this.getName(), String.valueOf(this.getAvailability()), String.valueOf(this.getPrice())});
-            System.out.println("Component added! <3");
-            for (ComponentModel x : currentComponents)
-                System.out.println(x.toString());
-        }
+    public DefaultTableModel getTableModel() {
+        return tableModel;
     }
+
+
 }

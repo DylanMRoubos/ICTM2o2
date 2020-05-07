@@ -1,13 +1,16 @@
 package site.nerdygadgets;
 
 import org.pushingpixels.substance.api.skin.SubstanceBusinessBlackSteelLookAndFeel;
+import site.nerdygadgets.controllers.ComponentenController;
 import site.nerdygadgets.controllers.RoutePanelController;
 //import site.nerdygadgets.functions.Serialization;
 import site.nerdygadgets.functions.CalculateComponent;
 import site.nerdygadgets.functions.ComponentType;
 import site.nerdygadgets.functions.Serialization;
 import site.nerdygadgets.models.ComponentModel;
+import site.nerdygadgets.models.ComponentenModel;
 import site.nerdygadgets.sandbox.SSHManager;
+import site.nerdygadgets.views.ComponentManagementPanel;
 import site.nerdygadgets.views.MainFrameView;
 
 import javax.swing.*;
@@ -16,6 +19,8 @@ import java.util.ArrayList;
 
 public class App {
     static MainFrameView mainFrameView;
+    static ComponentManagementPanel componentManagementPanel;
+
 
     public static void main(String[] args) {
 
@@ -29,6 +34,8 @@ public class App {
         } catch (IOException e) {System.out.println("Unable to serialize components");}
 
 
+
+
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(() -> {
             try {
@@ -39,6 +46,10 @@ public class App {
             // invoke frame here
             mainFrameView = new MainFrameView();
             RoutePanelController rpc = new RoutePanelController(mainFrameView);
+            ComponentenController cc = new ComponentenController(mainFrameView.getComponentManagementPanel(), new ComponentenModel());
+
         });
+
+
     }
 }
