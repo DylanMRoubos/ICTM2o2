@@ -16,7 +16,6 @@ public class RoutePanelController {
     }
 
     private void initController() {
-
         // header panel home button
         mainFrameView.getHeaderPanel().addMouseListener(new MouseAdapter() {
             @Override
