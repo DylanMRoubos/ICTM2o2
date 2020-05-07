@@ -24,11 +24,14 @@ public class CurrentInfrastructureComponentModel {
     private String disk;
     private String uptime;
     private Database db;
+    private String type;
 
     public CurrentInfrastructureComponentModel(int serverId, Database db, String name) {
         this.name = name;
         this.serverId = serverId;
         this.db = db;
+
+        getData(); // fill values from database at least once.
     }
 
     //Get the data from mongodb and save it to the object
@@ -41,6 +44,7 @@ public class CurrentInfrastructureComponentModel {
         memory = (String) ((Document)document.get("status")).get("memory");
         disk = (String) ((Document)document.get("status")).get("disk");
         uptime = (String) ((Document)document.get("status")).get("uptime");
+        type = document.getString("serverType");
     }
 
     public String getName() {
@@ -73,5 +77,9 @@ public class CurrentInfrastructureComponentModel {
 
     public String getUptime() {
         return uptime;
+    }
+
+    public String getType() {
+        return type;
     }
 }

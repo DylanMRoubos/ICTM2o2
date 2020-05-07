@@ -13,7 +13,7 @@ public class MainFrameView extends JFrame {
     private JPanel content;
 
     public MainFrameView() throws HeadlessException {
-        setSize(600,600);
+        setSize(1200,800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
