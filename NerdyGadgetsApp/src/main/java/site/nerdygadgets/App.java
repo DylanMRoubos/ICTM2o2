@@ -5,6 +5,7 @@ import site.nerdygadgets.controllers.RoutePanelController;
 //import site.nerdygadgets.functions.Serialization;
 import site.nerdygadgets.functions.CalculateComponent;
 import site.nerdygadgets.functions.ComponentType;
+import site.nerdygadgets.functions.Serialization;
 import site.nerdygadgets.models.ComponentModel;
 import site.nerdygadgets.sandbox.SSHManager;
 import site.nerdygadgets.views.MainFrameView;
@@ -19,42 +20,13 @@ public class App {
     public static void main(String[] args) {
 
 //        SSHManager ssh = new SSHManager();
-
-        /*
-        ArrayList<Object> m = new ArrayList<Object>();
-        m.add(new ComponentModel("MijnComponent1", 1000));
-        m.add(new ComponentModel("MijnComponent2", 4000));
-
+        ArrayList<ComponentModel> list = new ArrayList<ComponentModel>();
+        list.add(new ComponentModel("MijnVuurmuur", 99.9, 5000.0, ComponentType.Firewall));
+        list.add(new ComponentModel("MijnWebservor", 80.5, 1200.0, ComponentType.Webserver));
+        list.add(new ComponentModel("MijnDaatbees", 94.0, 1500.0, ComponentType.Database));
         try {
-            Serialization.serialize(m, "mepm.json");
-            System.out.println(m);
-            System.out.println("COMPONENTS SERIALIZED");
-            m = Serialization.deserialize("mepm.json");
-            for (Object o : m) {
-                ComponentModel cm = (ComponentModel) o;
-                System.out.println(cm);
-            }
-            System.out.println("COMPONENTS DESERIALIZED");
-            System.out.println(m);
-        }
-        catch (IOException e) {
-
-        }*/
-
-        /*
-        ArrayList<ComponentModel> models = new ArrayList<ComponentModel>();
-        models.add(new ComponentModel("Webservernaampje", 0.95, 1950.8, ComponentType.Webserver));
-        models.add(new ComponentModel("Webservernaampje2", 0.90, 999.99, ComponentType.Webserver));
-
-        models.add(new ComponentModel("firewallnaampje", 0.9998, 4999.99, ComponentType.Firewall));
-
-        models.add(new ComponentModel("DBnaampje", 0.98, 2000.0, ComponentType.Database));
-        models.add(new ComponentModel("DBnaampje2", 0.85, 500.0, ComponentType.Database));
-
-        System.out.println("Availability: " + CalculateComponent.calculateAvailability(models) * 100);
-        System.out.println("Price: " + CalculateComponent.calculatePrice(models));
-
-        System.out.println("joe simpels joe!");*/
+            Serialization.serializeComponents(list);
+        } catch (IOException e) {System.out.println("Unable to serialize components");}
 
 
         JFrame.setDefaultLookAndFeelDecorated(true);
