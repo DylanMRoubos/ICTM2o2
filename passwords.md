@@ -1,7 +1,7 @@
 # Passwords:
 
 **PFsense:**<br/>
- -	username: admin<br/>
+ -	username: console<br/>
  -	password: pr7cmHKNX6VhPaHc<br/>
  
  - internal ip: 72.16.0.1
