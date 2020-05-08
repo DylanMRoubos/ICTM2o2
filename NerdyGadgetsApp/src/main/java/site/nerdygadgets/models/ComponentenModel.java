@@ -27,7 +27,23 @@ public class ComponentenModel {
         }catch (IOException e){
             System.out.println("Error ding");
         }
+    }
 
+    public void reloadComponentModel() {
+        try {
+            this.componentModels = Serialization.deserializeComponents();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeAt(int index) {
+        componentModels.remove(index);
+        try {
+            Serialization.serializeComponents(componentModels);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void printComponenten(){

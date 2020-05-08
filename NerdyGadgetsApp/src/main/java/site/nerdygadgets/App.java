@@ -25,13 +25,14 @@ public class App {
     public static void main(String[] args) {
 
 //        SSHManager ssh = new SSHManager();
+        /*
         ArrayList<ComponentModel> list = new ArrayList<ComponentModel>();
         list.add(new ComponentModel("MijnVuurmuur", 99.9, 5000.0, ComponentType.Firewall));
         list.add(new ComponentModel("MijnWebservor", 80.5, 1200.0, ComponentType.Webserver));
         list.add(new ComponentModel("MijnDaatbees", 94.0, 1500.0, ComponentType.Database));
         try {
             Serialization.serializeComponents(list);
-        } catch (IOException e) {System.out.println("Unable to serialize components");}
+        } catch (IOException e) {System.out.println("Unable to serialize components");}*/
 
 
 

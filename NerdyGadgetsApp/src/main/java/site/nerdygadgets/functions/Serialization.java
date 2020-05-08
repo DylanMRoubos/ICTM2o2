@@ -53,16 +53,14 @@ public class Serialization {
     public static void serializeComponents(ArrayList<ComponentModel> components) throws IOException {
         Gson g = new Gson();
         String s = g.toJson(components);
-        String path = "tmp.json";
+        String path = System.getProperty("user.dir") + "\\tmp.json";
+        System.out.println(path);
 
         File f = new File(path);
-//        if (f.exists())
-//            throw new FileAlreadyExistsException(path); //Anders afhandelen? (Met een prompt?)
         if(!f.exists()){
             f.createNewFile();
         }
-        new PrintWriter(path).close();
-        FileWriter fw = new FileWriter(path, false);
+        FileWriter fw = new FileWriter(f, false);
         fw.write(s);
         fw.flush();
         fw.close();
@@ -84,7 +82,7 @@ public class Serialization {
 
     public static ArrayList<ComponentModel> deserializeComponents() throws IOException {
         Gson g = new Gson();
-        String path = "tmp.json";
+        String path = System.getProperty("user.dir") + "\\tmp.json";
         File f = new File(path);
         if (!f.exists())
             throw new FileNotFoundException();

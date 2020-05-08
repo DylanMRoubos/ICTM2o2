@@ -21,13 +21,8 @@ public class ComponentenController implements ActionListener{
     public ComponentenController(ComponentManagementPanel view, ComponentenModel model){
         this.model = model;
         this.view = view;
-        setData();
         initController();
 
-    }
-
-    public void setData(){
-        view.getJtNaam().setText("hallo");
     }
 
     public void initController(){
@@ -72,6 +67,8 @@ public class ComponentenController implements ActionListener{
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == delete) {
                     view.getTableModel().removeRow(rowindex);
+                    model.removeAt(rowindex);
+                    loadComponents();
                 }
             }
         });
@@ -80,17 +77,14 @@ public class ComponentenController implements ActionListener{
     }
 
     private void loadComponents() {
-        try {
-            ArrayList<ComponentModel> componenten = Serialization.deserializeComponents();
-            this.model.setComponentModels(componenten);
-            if (componenten.size() > 0) {
-                for (ComponentModel model : componenten) {
-                    view.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice())});
-                }
+        model.reloadComponentModel();
+        ArrayList<ComponentModel> componenten = model.getComponentModels();
+        this.model.setComponentModels(componenten);
+        if (componenten.size() > 0) {
+            view.getTableModel().setRowCount(0);
+            for (ComponentModel model : componenten) {
+                view.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice())});
             }
-        }
-        catch (IOException e) {
-            System.out.println("Unable to load components");
         }
     }
     public void actionPerformed(ActionEvent e) {

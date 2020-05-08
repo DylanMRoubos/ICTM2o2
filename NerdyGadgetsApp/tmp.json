@@ -1,1 +1,1 @@
-[{"name":"MijnVuurmuur","availability":99.9,"price":5000.0,"type":"Firewall"},{"name":"MijnWebservor","availability":80.5,"price":1200.0,"type":"Webserver"},{"name":"MijnDaatbees","availability":94.0,"price":1500.0,"type":"Database"}]
+[{"name":"MijnWebservor","availability":80.5,"price":1200.0,"type":"Webserver"},{"name":"MijnDaatbees","availability":94.0,"price":1500.0,"type":"Database"},{"name":"mep","availability":22.0,"price":22.0,"type":"Database"},{"name":"Big fix","availability":100.0,"price":122.0,"type":"Firewall"}]
