@@ -83,21 +83,6 @@ public class Server {
             System.out.println("Sorry ! We can't reach to this host");
             return false;
         }
-
-//        try {
-//            InetAddress geek = InetAddress.getByName(ip);
-//            System.out.println("Sending Ping Request to " + ip);
-//            if (geek.isReachable(2000)) {
-//                System.out.println("Host is reachable");
-//                return true;
-//            } else {
-//                System.out.println("Sorry ! We can't reach to this host");
-//                return false;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return false;
-//        }
     }
 
     public void writeToDatabase() {
