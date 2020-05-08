@@ -7,104 +7,93 @@ import java.awt.*;
 
 public class DesignPanel extends JPanel {
 
-    private JLabel jlHuidigeComponenten;
-    private JPanel jpHuidigeComponenten;
-    private JPanel jpHuidigeComponentenContent;
 
-    private JLabel jlComponentToevoegen;
-    private JPanel jpComponentToevoegen;
-    private JPanel jpComponentToevoegenContent;
-
-    //HuidigeComponenten content
-    private JTable jTable;
-    private DefaultTableModel tableModel;
-    private JScrollPane tableScrollPane;
-
-//    private JList jListHuidigeComponenten;
-//    private DefaultListModel listModel;
-
-    //ComponentToevoegen content
-    private JLabel jlNaam;
-    private JTextField jtNaam;
-    private JLabel jlPrijs;
-    private JTextField jtPrijs;
-    private JLabel jlBeschikbaarheid;
-    private JTextField jtBeschikbaarheid;
-    private JComboBox jcComponenten;
-    private JButton jbVoegToe;
+    private JPanel jpOntwerp;
+    private JPanel jpOntwerpMaken;
+    private JPanel jpWeergave;
+    private JPanel jpWeergavePanel;
+    private JList jList;
+    private JComboBox jcDatabase;
+    private JComboBox jcWeb;
+    private JComboBox jcPfsense;
+    private JButton jbOpt;
+    private JButton opslaanButton;
 
     public DesignPanel() {
-
-        //        add(new JLabel("Dit moet het componenten paneel voorstellen."))
         setLayout(new GridLayout(0,2));
 
-//        currentComponents = new ArrayList<ComponentModel>();
-
-        //maak de label
-        jlHuidigeComponenten = new JLabel("Huidige componenten:");
-        jlHuidigeComponenten.setFont(new Font("Test", Font.BOLD, 15));
-        jlHuidigeComponenten.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jlHuidigeComponenten.setBorder(new EmptyBorder(5, 20, 20,20));
-
-        //Maak de label
-        jlComponentToevoegen = new JLabel("Component toevoegen:");
-        jlComponentToevoegen.setFont(new Font("Test", Font.BOLD, 15));
-        jlComponentToevoegen.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jlComponentToevoegen.setBorder(new EmptyBorder(5,20,20,20));
-
         //Maak het panel waar alle content in staat
-        jpHuidigeComponentenContent = new JPanel();
-        jpHuidigeComponentenContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpHuidigeComponentenContent.setMaximumSize(new Dimension(250, 450));
+        jpOntwerpMaken = new JPanel();
+        jpOntwerpMaken.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        jpOntwerpMaken.setMaximumSize(new Dimension(400, 650));
+
+
 
         //maak het hele linker kant panel aan
-        jpHuidigeComponenten = new JPanel();
-        add(jpHuidigeComponenten);
-        jpHuidigeComponenten.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        //jpHuidigeComponenten.setLayout(new BorderLayout());
-        jpHuidigeComponenten.setLayout(new BoxLayout(jpHuidigeComponenten, BoxLayout.PAGE_AXIS));
-        //jpHuidigeComponenten.add(jlHuidigeComponenten);
-        jpHuidigeComponenten.add(jpHuidigeComponentenContent);
-        //jpHuidigeComponentenContent.setLayout(new BorderLayout());
+        jpOntwerp = new JPanel();
+        add(jpOntwerp);
+        jpOntwerp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        jpOntwerp.setLayout(new BoxLayout(jpOntwerp, BoxLayout.PAGE_AXIS));
+        jpOntwerp.add(jpOntwerpMaken);
 
         //init Content linker panel
-        JComboBox combo1 = new JComboBox(new String[] {"Databaseservers"});
-        JComboBox combo2 = new JComboBox(new String[] {"Webservers"});
-        JComboBox combo3 = new JComboBox(new String[] {"Pfsense"});
+        jcDatabase = new JComboBox(new String[] {"Databaseservers"});
+        jcWeb = new JComboBox(new String[] {"Webservers"});
+        jcPfsense = new JComboBox(new String[] {"Pfsense"});
 
-        JList list = new JList();
-        list.setPreferredSize(new Dimension(200,200));
-
-        JButton opslaanButton = new JButton("Opslaan Als");
-
-        //tableModel.addRow(new Object[]{"mep", "mep", "mep", "mep"});
+         jList = new JList();
+        JScrollPane sp = new JScrollPane(jList);
+        sp.setPreferredSize(new Dimension(350,500));
+        sp.setBorder(BorderFactory.createLineBorder(Color.black));
+        opslaanButton = new JButton("Opslaan Als");
 
         //Voeg content toe aan linker panel
 
-        jpHuidigeComponentenContent.add(combo1);
-        jpHuidigeComponentenContent.add(combo2);
-        jpHuidigeComponentenContent.add(combo3);
-        jpHuidigeComponentenContent.add(list);
-        jpHuidigeComponentenContent.add(opslaanButton);
+        jpOntwerpMaken.add(jcDatabase);
+        jpOntwerpMaken.add(jcWeb);
+        jpOntwerpMaken.add(jcPfsense);
+        jpOntwerpMaken.add(sp);
+        jpOntwerpMaken.add(opslaanButton);
 
         //Maak het panel waar alle content in staat
-        jpComponentToevoegenContent = new JPanel();
+        jpWeergavePanel = new JPanel();
         //jpComponentToevoegenContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpComponentToevoegenContent.setMaximumSize(new Dimension(250,450));
+        jpWeergavePanel.setMaximumSize(new Dimension(250,450));
 
         //Maak het hele rechter kant panel aan
-        jpComponentToevoegen = new JPanel();
-        add(jpComponentToevoegen);
+        jpWeergave = new JPanel();
+        add(jpWeergave);
 //        jpComponentToevegoen.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpComponentToevoegen.setLayout(new BoxLayout(jpComponentToevoegen, BoxLayout.PAGE_AXIS));
-        jpComponentToevoegen.add(jlComponentToevoegen);
-        jpComponentToevoegen.add(jpComponentToevoegenContent);
+        jpWeergave.setLayout(new BoxLayout(jpWeergave, BoxLayout.PAGE_AXIS));
+        jpWeergave.add( jpWeergavePanel);
 
         //init Content rechter panel
-        JButton jbOpt = new JButton("Optimaliseer");
+        jbOpt = new JButton("Optimaliseer");
 
         //Voeg alle content toe
-        jpComponentToevoegenContent.setLayout(new FlowLayout());
-        jpComponentToevoegenContent.add(jbOpt);
+        jpWeergavePanel.setLayout(new FlowLayout());
+        jpWeergavePanel.add(jbOpt);
+    }
+
+    public JComboBox getJcDatabase() {
+        return jcDatabase;
+    }
+
+
+    public JComboBox getJcPfsense() {
+        return jcPfsense;
+    }
+
+
+    public JComboBox getJcWeb() {
+        return jcWeb;
+    }
+
+    public JButton getJbOpt() {
+        return jbOpt;
+    }
+
+    public JButton getOpslaanButton() {
+        return opslaanButton;
     }
 }
