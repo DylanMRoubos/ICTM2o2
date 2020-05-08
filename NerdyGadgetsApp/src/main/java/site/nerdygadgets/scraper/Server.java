@@ -2,6 +2,8 @@ package site.nerdygadgets.scraper;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
@@ -40,7 +42,7 @@ public class Server {
     public void grabData() {
         // check if the ssh client is still connected. if not, try once to connect. if it can't reconnect the server will be marked offline.
         if (!sshManager.isConnected()) {
-            if(pingServer()) {
+            if (pingServer()) {
                 sshManager.startSession();
             }
         }
@@ -70,20 +72,32 @@ public class Server {
     }
 
     private boolean pingServer() {
+
         try {
-            InetAddress geek = InetAddress.getByName(ip);
-            System.out.println("Sending Ping Request to " + ip);
-            if (geek.isReachable(2000)) {
-                System.out.println("Host is reachable");
-                return true;
-            } else {
-                System.out.println("Sorry ! We can't reach to this host");
-                return false;
+            try (Socket soc = new Socket()) {
+                soc.connect(new InetSocketAddress(ip, 22), 2000);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Host is reachable");
+            return true;
+        } catch (IOException ex) {
+            System.out.println("Sorry ! We can't reach to this host");
             return false;
         }
+
+//        try {
+//            InetAddress geek = InetAddress.getByName(ip);
+//            System.out.println("Sending Ping Request to " + ip);
+//            if (geek.isReachable(2000)) {
+//                System.out.println("Host is reachable");
+//                return true;
+//            } else {
+//                System.out.println("Sorry ! We can't reach to this host");
+//                return false;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
     }
 
     public void writeToDatabase() {
