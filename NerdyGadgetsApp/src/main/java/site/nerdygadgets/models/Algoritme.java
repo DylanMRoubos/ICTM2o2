@@ -6,10 +6,8 @@ import java.util.List;
 
 public class Algoritme {
 
+    // tijdelijke beschikbaarheid
     private double bescikbaarheid = 99.99;
-
-    private double pfSensebeschikbaarheid = 99.998;
-    private int pfSenseprijs = 4000;
 
     public static void main(String[] args) {
         List<String[]> componenten = new ArrayList<String[]>();
@@ -20,9 +18,9 @@ public class Algoritme {
         String[] array3 = {"HAL90001W", "80", "2200", "1"};
         String[] array4 = {"HAL9002DW", "90", "3200", "1"};
         String[] array5 = {"HAL9003DW", "95", "5100", "1"};
-        String[] array6 = {"firewall pfSens", "99.998", "4000", "2"};
+        String[] array6 = {"firewall pfSense", "99.998", "4000", "2"};
 
-
+        // toevoegen van de componenten aan de array
         componenten.add(array);
         componenten.add(array1);
         componenten.add(array2);
@@ -30,7 +28,6 @@ public class Algoritme {
         componenten.add(array4);
         componenten.add(array5);
         componenten.add(array6);
-
 
         for (String[] strArr : componenten) {
             if (strArr[3].equals("0")) {
