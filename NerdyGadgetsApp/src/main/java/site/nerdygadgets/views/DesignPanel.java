@@ -10,14 +10,22 @@ public class DesignPanel extends JPanel {
 
     private JPanel jpOntwerp;
     private JPanel jpOntwerpMaken;
+
     private JPanel jpWeergave;
     private JPanel jpWeergavePanel;
-    private JList jList;
+    //private JList jList;
+    //private DefaultListModel jListModel;
     private JComboBox jcDatabase;
     private JComboBox jcWeb;
     private JComboBox jcPfsense;
     private JButton jbOpt;
     private JButton opslaanButton;
+
+    private JLabel jlPrijs;
+    private JLabel jlBeschikbaarheid;
+
+    private JTable jTable;
+    private DefaultTableModel tableModel;
 
     public DesignPanel() {
         setLayout(new GridLayout(0,2));
@@ -27,8 +35,6 @@ public class DesignPanel extends JPanel {
         jpOntwerpMaken.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         jpOntwerpMaken.setMaximumSize(new Dimension(400, 650));
 
-
-
         //maak het hele linker kant panel aan
         jpOntwerp = new JPanel();
         add(jpOntwerp);
@@ -37,27 +43,39 @@ public class DesignPanel extends JPanel {
         jpOntwerp.add(jpOntwerpMaken);
 
         //init Content linker panel
-        jcDatabase = new JComboBox(new String[] {"Databaseservers"});
-        jcWeb = new JComboBox(new String[] {"Webservers"});
-        jcPfsense = new JComboBox(new String[] {"Pfsense"});
+        jcDatabase = new JComboBox(new String[]{""});
+        jcWeb = new JComboBox(new String[]{""});
+        jcPfsense = new JComboBox(new String[]{""});
 
-         jList = new JList();
-        JScrollPane sp = new JScrollPane(jList);
+        jcDatabase.setRenderer(new MyComboBoxRenderer("Databaseservers"));
+        jcDatabase.setSelectedIndex(-1);
+        jcWeb.setRenderer(new MyComboBoxRenderer("Webservers"));
+        jcWeb.setSelectedIndex(-1);
+        jcPfsense.setRenderer(new MyComboBoxRenderer("Firewall"));
+        jcPfsense.setSelectedIndex(-1);
+
+        tableModel = new DefaultTableModel();
+        jTable = new JTable(tableModel);
+        JScrollPane sp = new JScrollPane(jTable);
+
         sp.setPreferredSize(new Dimension(350,500));
         sp.setBorder(BorderFactory.createLineBorder(Color.black));
         opslaanButton = new JButton("Opslaan Als");
 
         //Voeg content toe aan linker panel
-
         jpOntwerpMaken.add(jcDatabase);
         jpOntwerpMaken.add(jcWeb);
         jpOntwerpMaken.add(jcPfsense);
         jpOntwerpMaken.add(sp);
         jpOntwerpMaken.add(opslaanButton);
 
-        //Maak het panel waar alle content in staat
+
+        //Content rechter kant
+        jlPrijs = new JLabel("$0.0");
+        jlBeschikbaarheid = new JLabel("0.0%");
+
+        //Maak het panel waar alle content in staat rechts
         jpWeergavePanel = new JPanel();
-        //jpComponentToevoegenContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         jpWeergavePanel.setMaximumSize(new Dimension(250,450));
 
         //Maak het hele rechter kant panel aan
@@ -73,17 +91,20 @@ public class DesignPanel extends JPanel {
         //Voeg alle content toe
         jpWeergavePanel.setLayout(new FlowLayout());
         jpWeergavePanel.add(jbOpt);
+        jpWeergavePanel.add(new JLabel("Prijs"));
+        jpWeergavePanel.add(jlPrijs);
+        jpWeergavePanel.add(new JLabel("Beschikbaarheid"));
+        jpWeergavePanel.add(jlBeschikbaarheid);
+
     }
 
     public JComboBox getJcDatabase() {
         return jcDatabase;
     }
 
-
     public JComboBox getJcPfsense() {
         return jcPfsense;
     }
-
 
     public JComboBox getJcWeb() {
         return jcWeb;
@@ -95,5 +116,36 @@ public class DesignPanel extends JPanel {
 
     public JButton getOpslaanButton() {
         return opslaanButton;
+    }
+
+    public JLabel getJlPrijs() {
+        return jlPrijs;
+    }
+
+    public JLabel getJlBeschikbaarheid() {
+        return jlBeschikbaarheid;
+    }
+
+    public JTable getjTable() {
+        return jTable;
+    }
+
+    public DefaultTableModel getTableModel() {
+        return tableModel;
+    }
+
+    class MyComboBoxRenderer extends JLabel implements ListCellRenderer {
+        private String _title;
+        public MyComboBoxRenderer(String title) {
+            _title = title;
+        }
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
+            if (index == -1 && value == null)
+                setText(_title);
+            else
+                setText(value.toString());
+            return this;
+        }
     }
 }

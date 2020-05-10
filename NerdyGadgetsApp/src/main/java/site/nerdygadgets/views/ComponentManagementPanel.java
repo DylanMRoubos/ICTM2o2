@@ -91,8 +91,6 @@ public class ComponentManagementPanel extends JPanel {
         tableScrollPane = new JScrollPane(jTable);
         tableScrollPane.setSize(new Dimension(250, 450));
 
-        //tableModel.addRow(new Object[]{"mep", "mep", "mep", "mep"});
-
         //Voeg content toe aan linker panel
 
         jpHuidigeComponentenContent.add(tableScrollPane);
@@ -119,7 +117,6 @@ public class ComponentManagementPanel extends JPanel {
         jtBeschikbaarheid = new JTextField(10);
         jcComponenten = new JComboBox(componenten);
         jbVoegToe = new JButton("Voeg Toe");
-
 
         //Voeg alle content toe
         jpComponentToevoegenContent.setLayout(new FlowLayout());

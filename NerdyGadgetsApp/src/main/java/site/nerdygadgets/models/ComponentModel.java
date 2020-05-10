@@ -1,6 +1,10 @@
 package site.nerdygadgets.models;
 
 import site.nerdygadgets.functions.ComponentType;
+import site.nerdygadgets.functions.Serialization;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class ComponentModel {
     private String name;
@@ -39,5 +43,18 @@ public class ComponentModel {
                 ", price=" + price +
                 ", type=" + type +
                 '}';
+    }
+
+    public static ComponentModel getModel(String name, ComponentType type) {
+        try {
+            ArrayList<ComponentModel> l = Serialization.deserializeComponents();
+            for (ComponentModel m : l) {
+                if (m.getType() == type && m.getName() == name) {
+                    return m;
+                }
+            }
+        }
+        catch (IOException e) { }
+        return null;
     }
 }

@@ -3,9 +3,11 @@ package site.nerdygadgets;
 import org.pushingpixels.substance.api.skin.SubstanceBusinessBlackSteelLookAndFeel;
 import site.nerdygadgets.controllers.ComponentenController;
 import site.nerdygadgets.controllers.CurrentInfrastructureController;
+import site.nerdygadgets.controllers.DesignController;
 import site.nerdygadgets.controllers.RoutePanelController;
 import site.nerdygadgets.models.ComponentenModel;
 import site.nerdygadgets.models.CurrentInfrastructureComponentModel;
+import site.nerdygadgets.models.DesignModel;
 import site.nerdygadgets.scraper.Database;
 import site.nerdygadgets.scraper.ServerManager;
 import site.nerdygadgets.views.CurrentInfrastructureComponentPanel;
@@ -42,6 +44,7 @@ public class App {
             mainFrameView = new MainFrameView();
             RoutePanelController rpc = new RoutePanelController(mainFrameView);
             ComponentenController cc = new ComponentenController(mainFrameView.getComponentManagementPanel(), new ComponentenModel());
+            DesignController dc = new DesignController(mainFrameView.getDesignPanel(), new DesignModel());
 
             /*
             //Create current infrastructure controllers to add the panels to the JFrame filled with data from the model.
@@ -50,8 +53,7 @@ public class App {
             CurrentInfrastructureController db1Controller = new CurrentInfrastructureController(db1Model, mainFrameView.getCurrentInfrastructurePanel());
             CurrentInfrastructureController db2Controller = new CurrentInfrastructureController(db2Model, mainFrameView.getCurrentInfrastructurePanel());
             CurrentInfrastructureController pfSenseController = new CurrentInfrastructureController(pfSenseModel, mainFrameView.getCurrentInfrastructurePanel());
-
-             */
+            */
         });
     }
 }

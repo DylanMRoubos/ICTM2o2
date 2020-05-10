@@ -116,10 +116,13 @@ public class ComponentenController implements ActionListener{
 //                ex.printStackTrace();
 //            }
             System.out.println("Component added! <3");
+
 //            for (ComponentModel x : currentComponents)
 //                System.out.println(x.toString());
         }
     }
+
+
 
 
     public double getPrice() {

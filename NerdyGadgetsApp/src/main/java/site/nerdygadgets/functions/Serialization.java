@@ -60,6 +60,7 @@ public class Serialization {
         if(!f.exists()){
             f.createNewFile();
         }
+
         FileWriter fw = new FileWriter(f, false);
         fw.write(s);
         fw.flush();
