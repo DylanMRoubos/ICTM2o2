@@ -27,7 +27,6 @@ public class DesignController implements ActionListener {
         this.panel = panel;
         this.model = model;
         lijst = new ArrayList<ComponentModel>();
-
         initController();
 
         panel.getjTable().getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
@@ -44,6 +43,18 @@ public class DesignController implements ActionListener {
         panel.getJcPfsense().addActionListener(this);
 
         panel.getOpslaanButton().addActionListener(this);
+    }
+
+    public void openFile(File f) {
+        try {
+            this.panel.getTableModel().setRowCount(0);
+
+            ArrayList<InfrastructuurComponentModel> l = Serialization.deserializeInfrastructuur(f.getAbsolutePath());
+            for (InfrastructuurComponentModel m : l)
+                this.addModelToTable(m);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void fillArraylist() {
@@ -84,6 +95,10 @@ public class DesignController implements ActionListener {
         ArrayList<InfrastructuurComponentModel> l = getCurrentModels();
         double beschikbaarheid = CalculateComponent.calculateAvailability(l);
         panel.getJlBeschikbaarheid().setText(String.valueOf(beschikbaarheid) + "%");
+    }
+
+    private void addModelToTable(InfrastructuurComponentModel model) {
+        panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAantal()), " + ", " - ", "Delete"});
     }
 
     @Override

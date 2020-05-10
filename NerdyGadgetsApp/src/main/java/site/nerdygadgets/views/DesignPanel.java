@@ -9,10 +9,10 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.EventObject;
 
 public class DesignPanel extends JPanel {
-
 
     private JPanel jpOntwerp;
     private JPanel jpOntwerpMaken;

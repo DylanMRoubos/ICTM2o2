@@ -93,17 +93,25 @@ public class ComponentenController implements ActionListener{
             double availability = this.getAvailability();
             if (availability == -1) {
                 //invalid availability (0>)
+                JOptionPane.showMessageDialog(null, "Invalid availability input", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
+                return;
             } else if (availability == -2) {
                 //invalid input (text etc..)
+                JOptionPane.showMessageDialog(null, "Invalid availability input", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
             double price = this.getPrice();
             if (price == -1) {
                 //invalid price (0>)
                 //Error afhandelen?
+                JOptionPane.showMessageDialog(null, "Invalid price input", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
+                return;
             } else if (price == -2) {
                 //invalid input (text etc..)
                 //Error afhandelen?
+                JOptionPane.showMessageDialog(null, "Invalid price input", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
             ComponentModel m = new ComponentModel(view.getJtNaam().getText(), this.getAvailability(), this.getPrice(),this.getType());

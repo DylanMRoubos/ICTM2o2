@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import site.nerdygadgets.models.ComponentModel;
 import site.nerdygadgets.models.InfrastructuurComponentModel;
 
+import javax.swing.*;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.FileAlreadyExistsException;
@@ -105,8 +106,13 @@ public class Serialization {
         String s = g.toJson(components);
 
         File f = new File(path);
-        if (f.exists())
-            throw new FileAlreadyExistsException(path); //Anders afhandelen? (Met een prompt?)
+        if (f.exists()) {
+            int result = JOptionPane.showConfirmDialog(null, "File already exists. Would you like to overwrite it?", "WARNING", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.NO_OPTION) {
+                return;
+            }
+            //throw new FileAlreadyExistsException(path); //Anders afhandelen? (Met een prompt?)
+        }
         f.createNewFile();
         FileWriter fw = new FileWriter(path);
         fw.write(s);
