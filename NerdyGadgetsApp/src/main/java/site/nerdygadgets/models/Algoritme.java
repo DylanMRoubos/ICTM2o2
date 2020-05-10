@@ -1,6 +1,7 @@
 package site.nerdygadgets.models;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +79,6 @@ public class Algoritme {
         int test3;
         int prijs = 0;
         double percentage = 1;
-        double tijdelijke2;
 
         for (String test : dboplossingen) {
 
@@ -90,18 +90,19 @@ public class Algoritme {
 
                     if (test2 == test3) {
                         prijs += Integer.parseInt(strInt[2]);
-                        //System.out.println(1 - (Double.parseDouble(strInt[1]) / 100));
-                        percentage = percentage * (1 - (Double.parseDouble(strInt[1]) / 100));
+                        percentage *= (1 - (Double.parseDouble(strInt[1]) / 100));
+
                     }
                 }
 
             }
 
+            percentage = (1 - percentage) * 100;
             System.out.println(percentage);
             System.out.println(test);
             System.out.println(prijs);
 
-            percentage = 0;
+            percentage = 1;
             prijs = 0;
 
             System.out.println();
