@@ -1,5 +1,6 @@
 package site.nerdygadgets.controllers;
 
+import site.nerdygadgets.functions.CalculateComponent;
 import site.nerdygadgets.functions.ComponentType;
 import site.nerdygadgets.functions.Serialization;
 import site.nerdygadgets.models.ComponentModel;
@@ -9,6 +10,7 @@ import site.nerdygadgets.views.DesignPanel;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.table.TableCellRenderer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -27,6 +29,15 @@ public class DesignController implements ActionListener {
         lijst = new ArrayList<ComponentModel>();
 
         initController();
+
+        panel.getjTable().getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
+        panel.getjTable().getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
+        panel.getjTable().getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
+
+        //SET CUSTOM EDITOR TO TEAMS COLUMN
+        panel.getjTable().getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
+        panel.getjTable().getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
+        panel.getjTable().getColumnModel().getColumn(7).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
 
         panel.getJcDatabase().addActionListener(this);
         panel.getJcWeb().addActionListener(this);
@@ -58,20 +69,21 @@ public class DesignController implements ActionListener {
         //panel.getJcPfsense().removeAllItems();
         for (ComponentModel m : l)
             panel.getJcPfsense().addItem(m.getName());
+    }
 
-        //Update prijs & beschikbaarheid
+    public void update() {
         updatePrijs();
         updateBeschikbaarheid();
     }
-
     public void updatePrijs() {
-        for (int i = 0; i < panel.getjTable().getModel().getRowCount(); i++) {
-
-        }
+        ArrayList<InfrastructuurComponentModel> l = getCurrentModels();
+        double price = CalculateComponent.calculatePrice(l);
+        panel.getJlPrijs().setText("€" + String.valueOf(price));
     }
-
     public void updateBeschikbaarheid() {
-
+        ArrayList<InfrastructuurComponentModel> l = getCurrentModels();
+        double beschikbaarheid = CalculateComponent.calculateAvailability(l);
+        panel.getJlBeschikbaarheid().setText(String.valueOf(beschikbaarheid) + "%");
     }
 
     @Override
@@ -152,26 +164,7 @@ public class DesignController implements ActionListener {
             }
 
 
-            ArrayList<InfrastructuurComponentModel> l = new ArrayList<InfrastructuurComponentModel>();
-            int count = panel.getTableModel().getRowCount();
-            for (int i = 0; i < count; i++) {
-                ComponentType type = null;
-                switch (panel.getTableModel().getValueAt(i, 0).toString().toLowerCase()) {
-                    case "database":
-                        type = ComponentType.Database;
-                    case "firewall":
-                        type = ComponentType.Firewall;
-                    case "webserver":
-                        type = ComponentType.Webserver;
-                }
-
-                l.add(new InfrastructuurComponentModel(panel.getTableModel().getValueAt(i, 1).toString(),
-                        Double.parseDouble(panel.getTableModel().getValueAt(i, 2).toString()),
-                        Double.parseDouble(panel.getTableModel().getValueAt(i, 3).toString()),
-                        type,
-                        Integer.parseInt(panel.getTableModel().getValueAt(i, 4).toString())));
-            }
-
+            ArrayList<InfrastructuurComponentModel> l = getCurrentModels();
             try {
                 Serialization.serializeInfrastructuur(l, filePath);
                 System.out.println(l);
@@ -180,6 +173,131 @@ public class DesignController implements ActionListener {
                 ex.printStackTrace();
             }
         }
+    }
+
+    public ArrayList<InfrastructuurComponentModel> getCurrentModels() {
+        ArrayList<InfrastructuurComponentModel> l = new ArrayList<InfrastructuurComponentModel>();
+        int count = panel.getTableModel().getRowCount();
+        for (int i = 0; i < count; i++) {
+            ComponentType type = null;
+
+            switch (panel.getTableModel().getValueAt(i, 0).toString().toLowerCase()) {
+                case "database":
+                    type = ComponentType.Database;
+                    break;
+                case "firewall":
+                    type = ComponentType.Firewall;
+                    break;
+                case "webserver":
+                    type = ComponentType.Webserver;
+                    break;
+            }
+
+            l.add(new InfrastructuurComponentModel(panel.getTableModel().getValueAt(i, 1).toString(),
+                    Double.parseDouble(panel.getTableModel().getValueAt(i, 2).toString()),
+                    Double.parseDouble(panel.getTableModel().getValueAt(i, 3).toString()),
+                    type,
+                    Integer.parseInt(panel.getTableModel().getValueAt(i, 4).toString())));
+        }
+        return l;
+    }
+}
+
+//BUTTON RENDERER CLASS
+class ButtonRenderer extends JButton implements TableCellRenderer
+{
+
+    //CONSTRUCTOR
+    public ButtonRenderer() {
+        //SET BUTTON PROPERTIES
+        setOpaque(true);
+    }
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object obj,
+                                                   boolean selected, boolean focused, int row, int col) {
+
+        //SET PASSED OBJECT AS BUTTON TEXT
+        setText((obj==null) ? "":obj.toString());
+
+        return this;
+    }
+
+}
+
+//BUTTON EDITOR CLASS
+class ButtonEditor extends DefaultCellEditor
+{
+    protected JButton btn;
+    private String lbl;
+    private Boolean clicked;
+
+    public ButtonEditor(JTextField txt, DesignPanel panel, DesignController controller) {
+        super(txt);
+
+        btn=new JButton();
+        btn.setOpaque(true);
+
+        //WHEN BUTTON IS CLICKED
+        btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fireEditingStopped();
+                if (lbl.equals(" + ")) {
+                    panel.getTableModel().setValueAt(
+                            String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getjTable().getSelectedRow(), 4).toString())+1),
+                            panel.getjTable().getSelectedRow(), 4);
+                }
+
+                if (lbl.equals(" - ")) {
+                    if (Integer.parseInt(panel.getTableModel().getValueAt(panel.getjTable().getSelectedRow(), 4).toString()) > 1)
+                        panel.getTableModel().setValueAt(String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getjTable().getSelectedRow(), 4).toString())-1), panel.getjTable().getSelectedRow(), 4);
+                    else {
+                        //Misschien verwijderen als hij minder dan 1 word?
+                        //tableModel.removeRow(jTable.getSelectedRow());
+                    }
+
+                }
+
+                if (lbl.equals("Delete")) {
+                    panel.getTableModel().removeRow(panel.getjTable().getSelectedRow());
+                }
+                //Update prijs & beschikbaarheid
+                controller.update();
+            }
+        });
+    }
+
+    //OVERRIDE A COUPLE OF METHODS
+    @Override
+    public Component getTableCellEditorComponent(JTable table, Object obj,
+                                                 boolean selected, int row, int col) {
+
+        //SET TEXT TO BUTTON,SET CLICKED TO TRUE,THEN RETURN THE BTN OBJECT
+        lbl=(obj==null) ? "":obj.toString();
+        btn.setText(lbl);
+        clicked=true;
+        return btn;
+    }
+
+    //IF BUTTON CELL VALUE CHNAGES,IF CLICKED THAT IS
+    @Override
+    public Object getCellEditorValue() {
+        //SET IT TO FALSE NOW THAT ITS CLICKED
+        clicked=false;
+        return new String(lbl);
+    }
+
+    @Override
+    public boolean stopCellEditing() {
+        //SET CLICKED TO FALSE FIRST
+        clicked=false;
+        return super.stopCellEditing();
+    }
+
+    @Override
+    protected void fireEditingStopped() {
+        // TODO Auto-generated method stub
+        super.fireEditingStopped();
     }
 }
 
