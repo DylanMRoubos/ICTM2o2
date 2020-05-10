@@ -106,16 +106,15 @@ public class ComponentenController implements ActionListener{
                 //Error afhandelen?
             }
 
-//            currentComponents.add(new ComponentModel(this.getName(), this.getAvailability(), this.getPrice(), this.getType()));
-            view.getTableModel().addRow(new Object[]{getType().name(), view.getJtNaam().getText(), String.valueOf(this.getAvailability()), String.valueOf(this.getPrice())});
-//            try {
-                ComponentModel m = new ComponentModel(view.getJtNaam().getText(), this.getAvailability(), this.getPrice(),this.getType());
-                this.model.addComponentModel(m);
+            ComponentModel m = new ComponentModel(view.getJtNaam().getText(), this.getAvailability(), this.getPrice(),this.getType());
+            if (this.model.addComponentModel(m)) {
+                view.getTableModel().addRow(new Object[]{getType().name(), view.getJtNaam().getText(), String.valueOf(this.getAvailability()), String.valueOf(this.getPrice())});
                 this.model.printComponenten();
-//            } catch (IOException ex) {
-//                ex.printStackTrace();
-//            }
-            System.out.println("Component added! <3");
+
+                System.out.println("Component added! <3");
+            } else {
+                System.out.println("Component bestaat al :(");
+            }
 
 //            for (ComponentModel x : currentComponents)
 //                System.out.println(x.toString());

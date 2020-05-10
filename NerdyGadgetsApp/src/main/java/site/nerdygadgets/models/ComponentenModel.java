@@ -20,12 +20,20 @@ public class ComponentenModel {
         this.componentModels = componentModels;
     }
 
-    public void addComponentModel(ComponentModel model) {
+    public boolean addComponentModel(ComponentModel model) {
         try {
+            ArrayList<ComponentModel> l = Serialization.deserializeComponents();
+            for (ComponentModel m : l) {
+                if (m.toString().equals(model.toString())) {
+                    return false;
+                }
+            }
             componentModels.add(model);
             Serialization.serializeComponents(componentModels);
+            return true;
         }catch (IOException e){
             System.out.println("Error ding");
+            return false;
         }
     }
 

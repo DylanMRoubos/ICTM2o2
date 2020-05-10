@@ -79,7 +79,12 @@ public class ComponentManagementPanel extends JPanel {
         jpHuidigeComponenten.add(jpHuidigeComponentenContent);
         jpHuidigeComponentenContent.setLayout(new BorderLayout());
         //init Content linker panel
-        tableModel = new DefaultTableModel();
+        tableModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         tableModel.addColumn("Type");
         tableModel.addColumn("Name");
         tableModel.addColumn("Availability");
