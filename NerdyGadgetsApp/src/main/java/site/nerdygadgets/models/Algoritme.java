@@ -1,6 +1,7 @@
 package site.nerdygadgets.models;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,8 +77,13 @@ public class Algoritme {
 
         int test2;
         int test3;
+<<<<<<< HEAD
         int dbPrijs = 0;
         double dbPercentage = 1;
+=======
+        int prijs = 0;
+        double percentage = 1;
+>>>>>>> 46673dc05e32209f2b7764a351ee0935a04ec12e
 
         int test4;
         int test5;
@@ -88,6 +94,7 @@ public class Algoritme {
         double totaalPercentage;
         int goedkoop = 0;
 
+<<<<<<< HEAD
         for (String test : dboplossingen) {
             for (String webTest : weboplossingen) {
 
@@ -110,6 +117,12 @@ public class Algoritme {
                             //System.out.println(1 - (Double.parseDouble(strInt[1]) / 100));
                             webPercentage = webPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
                         }
+=======
+                    if (test2 == test3) {
+                        prijs += Integer.parseInt(strInt[2]);
+                        percentage *= (1 - (Double.parseDouble(strInt[1]) / 100));
+
+>>>>>>> 46673dc05e32209f2b7764a351ee0935a04ec12e
                     }
 
                 }
@@ -117,6 +130,7 @@ public class Algoritme {
                 dbPercentage = (1 - dbPercentage);
 
 
+<<<<<<< HEAD
                 totaalPercentage = (webPercentage * dbPercentage * 0.99998) * 100;
                 totaalPrijs = webPrijs + dbPrijs + 4000;
 
@@ -137,6 +151,15 @@ public class Algoritme {
                         System.out.println();
                     }
                 }
+=======
+            percentage = (1 - percentage) * 100;
+            System.out.println(percentage);
+            System.out.println(test);
+            System.out.println(prijs);
+
+            percentage = 1;
+            prijs = 0;
+>>>>>>> 46673dc05e32209f2b7764a351ee0935a04ec12e
 
                 webPercentage = 1;
                 webPrijs = 0;
