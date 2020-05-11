@@ -1,4 +1,11 @@
 package site.nerdygadgets.scraper;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 /**
  * Server class
  * Contains all the information of single server.
@@ -35,10 +42,12 @@ public class Server {
     public void grabData() {
         // check if the ssh client is still connected. if not, try once to connect. if it can't reconnect the server will be marked offline.
         if (!sshManager.isConnected()) {
-            sshManager.startSession();
+            if (pingServer()) {
+                sshManager.startSession();
+            }
         }
         if (!sshManager.isConnected()) {
-            // sercer offline
+            // server offline
             online = false;
             cpu = "-";
             memory = "-";
@@ -60,6 +69,20 @@ public class Server {
             }
         }
 
+    }
+
+    private boolean pingServer() {
+
+        try {
+            try (Socket soc = new Socket()) {
+                soc.connect(new InetSocketAddress(ip, 22), 2000);
+            }
+            System.out.println("Host is reachable");
+            return true;
+        } catch (IOException ex) {
+            System.out.println("Sorry ! We can't reach to this host");
+            return false;
+        }
     }
 
     public void writeToDatabase() {
