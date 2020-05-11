@@ -11,7 +11,7 @@ public class Algoritme {
     public static void main(String[] args) {
 
         // tijdelijke beschikbaarheid
-        double bescikbaarheid = 99.99;
+        double beschikbaarheid = 99.99;
 
         // arraylist voor de componenten
         List<String[]> componenten = new ArrayList<>();
@@ -29,14 +29,14 @@ public class Algoritme {
 
         // toevoegen van de componenten aan de array
         componenten.add(pf1);
-        componenten.add(dbnull);
-        componenten.add(db1);
-        componenten.add(db2);
         componenten.add(db3);
-        componenten.add(webnull);
-        componenten.add(web1);
-        componenten.add(web2);
+        componenten.add(db2);
+        componenten.add(db1);
+        componenten.add(dbnull);
         componenten.add(web3);
+        componenten.add(web2);
+        componenten.add(web1);
+        componenten.add(webnull);
 
         // max aantal servers
         int amount = 5;
@@ -111,14 +111,15 @@ public class Algoritme {
                         }
                     }
 
-                    }
+                }
                     webPercentage = (1 - webPercentage);
                     dbPercentage = (1 - dbPercentage);
 
                     totaalPercentage = (webPercentage * dbPercentage * 0.99998) * 100;
                     totaalPrijs = webPrijs + dbPrijs + 4000;
 
-                    if (totaalPercentage >= bescikbaarheid) {
+                    if (totaalPercentage >= beschikbaarheid) {
+
                         if (goedkoop == 0) {
                             System.out.println(totaalPrijs);
                             System.out.println(totaalPercentage);
