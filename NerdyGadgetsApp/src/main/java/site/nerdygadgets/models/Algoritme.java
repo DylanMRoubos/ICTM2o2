@@ -40,7 +40,7 @@ public class Algoritme {
         componenten.add(web3);
 
         // max aantal servers
-        int amount = 3;
+        int amount = 4;
 
         // array voor de database servers null + aantal db servers
         int[] dbArr = new int[4];
@@ -76,39 +76,77 @@ public class Algoritme {
 
         int test2;
         int test3;
-        int prijs = 0;
-        double percentage = 1;
-        double tijdelijke2;
+        int dbPrijs = 0;
+        double dbPercentage = 1;
+
+        int test4;
+        int test5;
+        int webPrijs = 0;
+        double webPercentage = 1;
+
+        int totaalPrijs = 0;
+        double totaalPercentage;
+        int goedkoop = 0;
 
         for (String test : dboplossingen) {
+            for (String webTest : weboplossingen) {
 
-            for (x = 0; x < amount; x++) {
-                test2 = Character.getNumericValue(test.charAt(x));
+                for (x = 0; x < amount; x++) {
+                    test2 = Character.getNumericValue(test.charAt(x));
+                    test4 = Character.getNumericValue(webTest.charAt(x));
 
-                for (String[] strInt : componenten){
-                    test3 = Integer.parseInt(strInt[4]);
+                    for (String[] strInt : componenten) {
+                        test3 = Integer.parseInt(strInt[4]);
+                        test5 = Integer.parseInt(strInt[4]);
 
-                    if (test2 == test3) {
-                        prijs += Integer.parseInt(strInt[2]);
-                        //System.out.println(1 - (Double.parseDouble(strInt[1]) / 100));
-                        percentage = percentage * (1 - (Double.parseDouble(strInt[1]) / 100));
+                        if (test2 == test3) {
+                            dbPrijs += Integer.parseInt(strInt[2]);
+                            //System.out.println(1 - (Double.parseDouble(strInt[1]) / 100));
+                            dbPercentage = dbPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
+                        }
+
+                        if (test4 == test5) {
+                            webPrijs += Integer.parseInt(strInt[2]);
+                            //System.out.println(1 - (Double.parseDouble(strInt[1]) / 100));
+                            webPercentage = webPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
+                        }
+                    }
+
+                }
+                webPercentage = (1 - webPercentage);
+                dbPercentage = (1 - dbPercentage);
+
+
+                totaalPercentage = (webPercentage * dbPercentage * 0.99998) * 100;
+                totaalPrijs = webPrijs + dbPrijs + 4000;
+
+                if (totaalPercentage >= bescikbaarheid){
+                    if (goedkoop == 0) {
+                        System.out.println(totaalPrijs);
+                        System.out.println(totaalPercentage);
+                        System.out.println(webTest + test);
+                        goedkoop = totaalPrijs;
+                        System.out.println();
+
+                    }
+                    else if (totaalPrijs < goedkoop ){
+                        goedkoop = totaalPrijs;
+                        System.out.println(totaalPrijs);
+                        System.out.println(totaalPercentage);
+                        System.out.println(webTest + test);
+                        System.out.println();
                     }
                 }
 
+                webPercentage = 1;
+                webPrijs = 0;
+                dbPrijs = 0;
+                dbPercentage = 1;
+
             }
-
-            System.out.println(percentage);
-            System.out.println(test);
-            System.out.println(prijs);
-
-            percentage = 0;
-            prijs = 0;
-
-            System.out.println();
-
         }
-
     }
+
 
     static void CombinationRepetition(int[] arr, int n, int r) {
         // Allocate memory
