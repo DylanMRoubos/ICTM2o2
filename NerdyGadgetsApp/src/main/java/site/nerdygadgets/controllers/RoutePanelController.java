@@ -12,13 +12,9 @@ import java.io.File;
 
 public class RoutePanelController {
     private MainFrameView mainFrameView;
-    private DesignController dc;
-    private ComponentenController cc;
 
-    public RoutePanelController(MainFrameView mainFrameView, DesignController dc, ComponentenController cc) {
+    public RoutePanelController(MainFrameView mainFrameView) {
         this.mainFrameView = mainFrameView;
-        this.dc = dc;
-        this.cc = cc;
         initController();
     }
 
@@ -46,36 +42,7 @@ public class RoutePanelController {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                // TODO: implement dialog
-                JFileChooser fc = new JFileChooser();
-                fc.setFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        if (f.getAbsolutePath().endsWith(".json") || f.isDirectory())
-                            return true;
-                        return false;
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return "(*.json) JSON Format";
-                    }
-                });
-
-                System.out.println("open a dialog or something");
-                int returnVal = fc.showOpenDialog(mainFrameView.getParent());
-
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    //This is where a real application would open the file.
-                    dc.openFile(file);
-                    switchPanel(Views.DESIGN);
-                    System.out.println("Opening: " + file.getName());
-
-                } else {
-                    System.out.println("Open command cancelled by user.");
-                }
-
+                switchPanel(Views.DESIGN);
             }
         });
         // nieuw ontwerp panel (gelijk naar design panel)

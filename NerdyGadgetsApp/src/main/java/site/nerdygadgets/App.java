@@ -43,8 +43,8 @@ public class App {
             // invoke frame here
             mainFrameView = new MainFrameView();
             ComponentenController cc = new ComponentenController(mainFrameView.getComponentManagementPanel(), new ComponentenModel());
-            DesignController dc = new DesignController(mainFrameView.getDesignPanel(), new DesignModel());
-            RoutePanelController rpc = new RoutePanelController(mainFrameView, dc, cc);
+            DesignController dc = new DesignController(mainFrameView.getDesignPanel(), new DesignModel(), mainFrameView);
+            RoutePanelController rpc = new RoutePanelController(mainFrameView);
 
             /*
             //Create current infrastructure controllers to add the panels to the JFrame filled with data from the model.

@@ -1,18 +1,20 @@
 package site.nerdygadgets.controllers;
 
-import site.nerdygadgets.functions.CalculateComponent;
-import site.nerdygadgets.functions.ComponentType;
-import site.nerdygadgets.functions.Serialization;
+import site.nerdygadgets.functions.*;
 import site.nerdygadgets.models.ComponentModel;
 import site.nerdygadgets.models.DesignModel;
 import site.nerdygadgets.models.InfrastructuurComponentModel;
 import site.nerdygadgets.views.DesignPanel;
+import site.nerdygadgets.views.MainFrameView;
+import site.nerdygadgets.views.Views;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableCellRenderer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class DesignController implements ActionListener {
     private DesignModel model;
     private ArrayList<ComponentModel> lijst;
 
-    public DesignController(DesignPanel panel, DesignModel model){
+    public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
         this.panel = panel;
         this.model = model;
         lijst = new ArrayList<ComponentModel>();
@@ -43,6 +45,41 @@ public class DesignController implements ActionListener {
         panel.getJcPfsense().addActionListener(this);
 
         panel.getOpslaanButton().addActionListener(this);
+
+        mfv.getHomePanel().getJpOpen().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                // TODO: implement dialog
+                JFileChooser fc = new JFileChooser();
+                fc.setFileFilter(new FileFilter() {
+                    @Override
+                    public boolean accept(File f) {
+                        if (f.getAbsolutePath().endsWith(".json") || f.isDirectory())
+                            return true;
+                        return false;
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "(*.json) JSON Format";
+                    }
+                });
+
+                System.out.println("open a dialog or something");
+                int returnVal = fc.showOpenDialog(mfv.getParent());
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                    //This is where a real application would open the file.
+                    openFile(file);
+                    System.out.println("Opening: " + file.getName());
+
+                } else {
+                    System.out.println("Open command cancelled by user.");
+                }
+            }
+        });
     }
 
     public void openFile(File f) {
@@ -215,104 +252,6 @@ public class DesignController implements ActionListener {
                     Integer.parseInt(panel.getTableModel().getValueAt(i, 4).toString())));
         }
         return l;
-    }
-}
-
-//BUTTON RENDERER CLASS
-class ButtonRenderer extends JButton implements TableCellRenderer
-{
-
-    //CONSTRUCTOR
-    public ButtonRenderer() {
-        //SET BUTTON PROPERTIES
-        setOpaque(true);
-    }
-    @Override
-    public Component getTableCellRendererComponent(JTable table, Object obj,
-                                                   boolean selected, boolean focused, int row, int col) {
-
-        //SET PASSED OBJECT AS BUTTON TEXT
-        setText((obj==null) ? "":obj.toString());
-
-        return this;
-    }
-
-}
-
-//BUTTON EDITOR CLASS
-class ButtonEditor extends DefaultCellEditor
-{
-    protected JButton btn;
-    private String lbl;
-    private Boolean clicked;
-
-    public ButtonEditor(JTextField txt, DesignPanel panel, DesignController controller) {
-        super(txt);
-
-        btn=new JButton();
-        btn.setOpaque(true);
-
-        //WHEN BUTTON IS CLICKED
-        btn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fireEditingStopped();
-                if (lbl.equals(" + ")) {
-                    panel.getTableModel().setValueAt(
-                            String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getjTable().getSelectedRow(), 4).toString())+1),
-                            panel.getjTable().getSelectedRow(), 4);
-                }
-
-                if (lbl.equals(" - ")) {
-                    if (Integer.parseInt(panel.getTableModel().getValueAt(panel.getjTable().getSelectedRow(), 4).toString()) > 1)
-                        panel.getTableModel().setValueAt(String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getjTable().getSelectedRow(), 4).toString())-1), panel.getjTable().getSelectedRow(), 4);
-                    else {
-                        //Misschien verwijderen als hij minder dan 1 word?
-                        //tableModel.removeRow(jTable.getSelectedRow());
-                    }
-
-                }
-
-                if (lbl.equals("Delete")) {
-                    panel.getTableModel().removeRow(panel.getjTable().getSelectedRow());
-                }
-                //Update prijs & beschikbaarheid
-                controller.update();
-            }
-        });
-    }
-
-    //OVERRIDE A COUPLE OF METHODS
-    @Override
-    public Component getTableCellEditorComponent(JTable table, Object obj,
-                                                 boolean selected, int row, int col) {
-
-        //SET TEXT TO BUTTON,SET CLICKED TO TRUE,THEN RETURN THE BTN OBJECT
-        lbl=(obj==null) ? "":obj.toString();
-        btn.setText(lbl);
-        clicked=true;
-        return btn;
-    }
-
-    //IF BUTTON CELL VALUE CHNAGES,IF CLICKED THAT IS
-    @Override
-    public Object getCellEditorValue() {
-        //SET IT TO FALSE NOW THAT ITS CLICKED
-        clicked=false;
-        return new String(lbl);
-    }
-
-    @Override
-    public boolean stopCellEditing() {
-        //SET CLICKED TO FALSE FIRST
-        clicked=false;
-        return super.stopCellEditing();
-    }
-
-    @Override
-    protected void fireEditingStopped() {
-        // TODO Auto-generated method stub
-        super.fireEditingStopped();
     }
 }
 
