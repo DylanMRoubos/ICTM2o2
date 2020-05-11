@@ -29,10 +29,10 @@ public class Algoritme {
 
         // toevoegen van de componenten aan de array
         componenten.add(pf1);
-        componenten.add(db3);
-        componenten.add(db2);
-        componenten.add(db1);
         componenten.add(dbnull);
+        componenten.add(db1);
+        componenten.add(db2);
+        componenten.add(db3);
         componenten.add(web3);
         componenten.add(web2);
         componenten.add(web1);
@@ -86,9 +86,48 @@ public class Algoritme {
         int totaalPrijs;
         double totaalPercentage;
         int goedkoop = 0;
+        int teller;
+
+        double testpercentage = 1;
+        double testpercentage2 = 1;
+        double testtotaalpercentage;
 
         for (String test : dboplossingen) {
+            teller = 0;
             for (String webTest : weboplossingen) {
+                System.out.println(test + webTest);
+                if (teller == 0) {
+                    teller++;
+                    for (x = 0; x < amount; x++) {
+                        test2 = Character.getNumericValue(test.charAt(x));
+                        test4 = Character.getNumericValue(webTest.charAt(x));
+
+                        for (String[] strInt : componenten) {
+                            test3 = Integer.parseInt(strInt[4]);
+                            test5 = Integer.parseInt(strInt[4]);
+
+                            if (test2 == test3) {
+                                testpercentage = testpercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
+                            }
+
+                            if (test4 == test5) {
+                                testpercentage2 = testpercentage2 * (1 - (Double.parseDouble(strInt[1]) / 100));
+                            }
+                        }
+
+                    }
+
+                    testpercentage = (1 - testpercentage);
+                    testpercentage2 = (1 - testpercentage2);
+
+                    testtotaalpercentage = (testpercentage * testpercentage2 * 0.99998) * 100;
+
+                    if (testtotaalpercentage < beschikbaarheid) {
+                        testpercentage = 1;
+                        testpercentage2 = 1;
+                        break;
+                    }
+                }
 
                 for (x = 0; x < amount; x++) {
                     test2 = Character.getNumericValue(test.charAt(x));
