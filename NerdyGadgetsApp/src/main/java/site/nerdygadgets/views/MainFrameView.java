@@ -16,6 +16,7 @@ public class MainFrameView extends JFrame {
         setSize(1200,800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+        setTitle("NerdyGadgets Infrastructuur");
 
         headerPanel = new HeaderPanel();
         add(headerPanel, BorderLayout.PAGE_START);

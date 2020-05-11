@@ -1,5 +1,8 @@
 package site.nerdygadgets.views;
 
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceCortex;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -23,7 +26,8 @@ public class CurrentInfrastructureComponentPanel extends JPanel {
     public CurrentInfrastructureComponentPanel(String name) {
 
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+//        setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        setBackground(SubstanceCortex.GlobalScope.getCurrentSkin().getColorScheme(this, ComponentState.DEFAULT).getLightColor());
 
         this.name = new JLabel("naam: ");
         online = new JLabel("online: ");
@@ -42,6 +46,7 @@ public class CurrentInfrastructureComponentPanel extends JPanel {
 
         southContent = new JPanel();
         southContent.setBorder(BorderFactory.createEmptyBorder(0,10,10,10));
+        southContent.setBackground(SubstanceCortex.GlobalScope.getCurrentSkin().getColorScheme(southContent, ComponentState.DEFAULT).getLightColor());
 
         southContent.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
