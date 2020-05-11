@@ -1,7 +1,5 @@
 package site.nerdygadgets.models;
 
-import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +39,7 @@ public class Algoritme {
         componenten.add(web3);
 
         // max aantal servers
-        int amount = 4;
+        int amount = 5;
 
         // array voor de database servers null + aantal db servers
         int[] dbArr = new int[4];
@@ -52,11 +50,11 @@ public class Algoritme {
         int y = 0;
 
         // voegt de verschillende web en databaseservers toe
-        for (String[] strInt : componenten){
+        for (String[] strInt : componenten) {
             if (strInt[3].equals("0")) {
                 dbArr[x] = Integer.parseInt(strInt[4]);
                 x++;
-            } else if (strInt[3].equals("1")){
+            } else if (strInt[3].equals("1")) {
                 webArr[y] = Integer.parseInt(strInt[4]);
                 y++;
             }
@@ -77,24 +75,18 @@ public class Algoritme {
 
         int test2;
         int test3;
-<<<<<<< HEAD
         int dbPrijs = 0;
         double dbPercentage = 1;
-=======
-        int prijs = 0;
-        double percentage = 1;
->>>>>>> 46673dc05e32209f2b7764a351ee0935a04ec12e
 
         int test4;
         int test5;
         int webPrijs = 0;
         double webPercentage = 1;
 
-        int totaalPrijs = 0;
+        int totaalPrijs;
         double totaalPercentage;
         int goedkoop = 0;
 
-<<<<<<< HEAD
         for (String test : dboplossingen) {
             for (String webTest : weboplossingen) {
 
@@ -117,58 +109,41 @@ public class Algoritme {
                             //System.out.println(1 - (Double.parseDouble(strInt[1]) / 100));
                             webPercentage = webPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
                         }
-=======
-                    if (test2 == test3) {
-                        prijs += Integer.parseInt(strInt[2]);
-                        percentage *= (1 - (Double.parseDouble(strInt[1]) / 100));
-
->>>>>>> 46673dc05e32209f2b7764a351ee0935a04ec12e
                     }
+
+                    }
+                    webPercentage = (1 - webPercentage);
+                    dbPercentage = (1 - dbPercentage);
+
+                    totaalPercentage = (webPercentage * dbPercentage * 0.99998) * 100;
+                    totaalPrijs = webPrijs + dbPrijs + 4000;
+
+                    if (totaalPercentage >= bescikbaarheid) {
+                        if (goedkoop == 0) {
+                            System.out.println(totaalPrijs);
+                            System.out.println(totaalPercentage);
+                            System.out.println(webTest + test);
+                            goedkoop = totaalPrijs;
+                            System.out.println();
+
+                        } else if (totaalPrijs < goedkoop) {
+                            goedkoop = totaalPrijs;
+                            System.out.println(totaalPrijs);
+                            System.out.println(totaalPercentage);
+                            System.out.println(webTest + test);
+                            System.out.println();
+                        }
+                    }
+
+                    webPercentage = 1;
+                    webPrijs = 0;
+                    dbPrijs = 0;
+                    dbPercentage = 1;
 
                 }
-                webPercentage = (1 - webPercentage);
-                dbPercentage = (1 - dbPercentage);
-
-
-<<<<<<< HEAD
-                totaalPercentage = (webPercentage * dbPercentage * 0.99998) * 100;
-                totaalPrijs = webPrijs + dbPrijs + 4000;
-
-                if (totaalPercentage >= bescikbaarheid){
-                    if (goedkoop == 0) {
-                        System.out.println(totaalPrijs);
-                        System.out.println(totaalPercentage);
-                        System.out.println(webTest + test);
-                        goedkoop = totaalPrijs;
-                        System.out.println();
-
-                    }
-                    else if (totaalPrijs < goedkoop ){
-                        goedkoop = totaalPrijs;
-                        System.out.println(totaalPrijs);
-                        System.out.println(totaalPercentage);
-                        System.out.println(webTest + test);
-                        System.out.println();
-                    }
-                }
-=======
-            percentage = (1 - percentage) * 100;
-            System.out.println(percentage);
-            System.out.println(test);
-            System.out.println(prijs);
-
-            percentage = 1;
-            prijs = 0;
->>>>>>> 46673dc05e32209f2b7764a351ee0935a04ec12e
-
-                webPercentage = 1;
-                webPrijs = 0;
-                dbPrijs = 0;
-                dbPercentage = 1;
-
             }
         }
-    }
+
 
 
     static void CombinationRepetition(int[] arr, int n, int r) {
