@@ -9,10 +9,10 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.EventObject;
 
 public class DesignPanel extends JPanel {
-
 
     private JPanel jpOntwerp;
     private JPanel jpOntwerpMaken;
@@ -34,7 +34,7 @@ public class DesignPanel extends JPanel {
     private DefaultTableModel tableModel;
 
     public DesignPanel() {
-        setLayout(new GridLayout(0,2));
+        setLayout(new GridLayout(0, 2));
 
         //Maak het panel waar alle content in staat
         jpOntwerpMaken = new JPanel();
@@ -89,22 +89,12 @@ public class DesignPanel extends JPanel {
         tableModel.addColumn("TEST");
 
         jTable = new JTable(tableModel);
-        //SET CUSTOM RENDERER TO TEAMS COLUMN
-        jTable.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
-        jTable.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
-        jTable.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
-
-        //SET CUSTOM EDITOR TO TEAMS COLUMN
-        jTable.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JTextField()));
-        jTable.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JTextField()));
-        jTable.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor(new JTextField()));
-
-        tableModel.addRow(new Object[]{"firewall", "vuurmuur", "99", "1000", "5", " + ", " - ", "Delete"});
-        tableModel.addRow(new Object[]{"firewall", "vuurmuur", "99", "1000", "5", " + ", " - ", "Delete"});
+//        tableModel.addRow(new Object[]{"firewall", "vuurmuur", "99", "1000", "5", " + ", " - ", "Delete"});
+//        tableModel.addRow(new Object[]{"firewall", "vuurmuur", "99", "1000", "5", " + ", " - ", "Delete"});
 
         JScrollPane sp = new JScrollPane(jTable);
 
-        sp.setPreferredSize(new Dimension(350,500));
+        sp.setPreferredSize(new Dimension(350, 500));
         sp.setBorder(BorderFactory.createLineBorder(Color.black));
         opslaanButton = new JButton("Opslaan Als");
 
@@ -117,19 +107,19 @@ public class DesignPanel extends JPanel {
 
 
         //Content rechter kant
-        jlPrijs = new JLabel("$0.0");
+        jlPrijs = new JLabel("€0.0");
         jlBeschikbaarheid = new JLabel("0.0%");
 
         //Maak het panel waar alle content in staat rechts
         jpWeergavePanel = new JPanel();
-        jpWeergavePanel.setMaximumSize(new Dimension(250,450));
+        jpWeergavePanel.setMaximumSize(new Dimension(250, 450));
 
         //Maak het hele rechter kant panel aan
         jpWeergave = new JPanel();
         add(jpWeergave);
 //        jpComponentToevegoen.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         jpWeergave.setLayout(new BoxLayout(jpWeergave, BoxLayout.PAGE_AXIS));
-        jpWeergave.add( jpWeergavePanel);
+        jpWeergave.add(jpWeergavePanel);
 
         //init Content rechter panel
         jbOpt = new JButton("Optimaliseer");
@@ -182,9 +172,11 @@ public class DesignPanel extends JPanel {
     //zodat de combobox een naam heeft
     class MyComboBoxRenderer extends JLabel implements ListCellRenderer {
         private String _title;
+
         public MyComboBoxRenderer(String title) {
             _title = title;
         }
+
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
             if (index == -1 && value == null)
@@ -194,99 +186,4 @@ public class DesignPanel extends JPanel {
             return this;
         }
     }
-
-    //BUTTON RENDERER CLASS
-    class ButtonRenderer extends JButton implements TableCellRenderer
-    {
-
-        //CONSTRUCTOR
-        public ButtonRenderer() {
-            //SET BUTTON PROPERTIES
-            setOpaque(true);
-        }
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object obj,
-                                                       boolean selected, boolean focused, int row, int col) {
-
-            //SET PASSED OBJECT AS BUTTON TEXT
-            setText((obj==null) ? "":obj.toString());
-
-            return this;
-        }
-
-    }
-
-    //BUTTON EDITOR CLASS
-    class ButtonEditor extends DefaultCellEditor
-    {
-        protected JButton btn;
-        private String lbl;
-        private Boolean clicked;
-
-        public ButtonEditor(JTextField txt) {
-            super(txt);
-
-            btn=new JButton();
-            btn.setOpaque(true);
-
-            //WHEN BUTTON IS CLICKED
-            btn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    fireEditingStopped();
-                    if (lbl.equals(" + ")) {
-                        tableModel.setValueAt(String.valueOf(Integer.parseInt(tableModel.getValueAt(jTable.getSelectedRow(), 4).toString())+1), jTable.getSelectedRow(), 4);
-                    }
-
-                    if (lbl.equals(" - ")) {
-                        if (Integer.parseInt(tableModel.getValueAt(jTable.getSelectedRow(), 4).toString()) > 1)
-                            tableModel.setValueAt(String.valueOf(Integer.parseInt(tableModel.getValueAt(jTable.getSelectedRow(), 4).toString())-1), jTable.getSelectedRow(), 4);
-                        else {
-                            //Misschien verwijderen als hij minder dan 1 word?
-                            //tableModel.removeRow(jTable.getSelectedRow());
-                        }
-
-                    }
-
-                    if (lbl.equals("Delete")) {
-                        tableModel.removeRow(jTable.getSelectedRow());
-                    }
-                }
-            });
-        }
-
-        //OVERRIDE A COUPLE OF METHODS
-        @Override
-        public Component getTableCellEditorComponent(JTable table, Object obj,
-                                                     boolean selected, int row, int col) {
-
-            //SET TEXT TO BUTTON,SET CLICKED TO TRUE,THEN RETURN THE BTN OBJECT
-            lbl=(obj==null) ? "":obj.toString();
-            btn.setText(lbl);
-            clicked=true;
-            return btn;
-        }
-
-        //IF BUTTON CELL VALUE CHNAGES,IF CLICKED THAT IS
-        @Override
-        public Object getCellEditorValue() {
-            //SET IT TO FALSE NOW THAT ITS CLICKED
-            clicked=false;
-            return new String(lbl);
-        }
-
-        @Override
-        public boolean stopCellEditing() {
-            //SET CLICKED TO FALSE FIRST
-            clicked=false;
-            return super.stopCellEditing();
-        }
-
-        @Override
-        protected void fireEditingStopped() {
-            // TODO Auto-generated method stub
-            super.fireEditingStopped();
-        }
-    }
-
 }

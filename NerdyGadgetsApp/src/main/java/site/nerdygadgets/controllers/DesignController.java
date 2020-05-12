@@ -1,16 +1,20 @@
 package site.nerdygadgets.controllers;
 
-import site.nerdygadgets.functions.ComponentType;
-import site.nerdygadgets.functions.Serialization;
+import site.nerdygadgets.functions.*;
 import site.nerdygadgets.models.ComponentModel;
 import site.nerdygadgets.models.DesignModel;
 import site.nerdygadgets.models.InfrastructuurComponentModel;
 import site.nerdygadgets.views.DesignPanel;
+import site.nerdygadgets.views.MainFrameView;
+import site.nerdygadgets.views.Views;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.table.TableCellRenderer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,18 +25,73 @@ public class DesignController implements ActionListener {
     private DesignModel model;
     private ArrayList<ComponentModel> lijst;
 
-    public DesignController(DesignPanel panel, DesignModel model){
+    public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
         this.panel = panel;
         this.model = model;
         lijst = new ArrayList<ComponentModel>();
-
         initController();
+
+        panel.getjTable().getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
+        panel.getjTable().getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
+        panel.getjTable().getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
+
+        //SET CUSTOM EDITOR TO TEAMS COLUMN
+        panel.getjTable().getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
+        panel.getjTable().getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
+        panel.getjTable().getColumnModel().getColumn(7).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
 
         panel.getJcDatabase().addActionListener(this);
         panel.getJcWeb().addActionListener(this);
         panel.getJcPfsense().addActionListener(this);
 
         panel.getOpslaanButton().addActionListener(this);
+
+        mfv.getHomePanel().getJpOpen().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                // TODO: implement dialog
+                JFileChooser fc = new JFileChooser();
+                fc.setFileFilter(new FileFilter() {
+                    @Override
+                    public boolean accept(File f) {
+                        if (f.getAbsolutePath().endsWith(".json") || f.isDirectory())
+                            return true;
+                        return false;
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "(*.json) JSON Format";
+                    }
+                });
+
+                System.out.println("open a dialog or something");
+                int returnVal = fc.showOpenDialog(mfv.getParent());
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                    //This is where a real application would open the file.
+                    openFile(file);
+                    System.out.println("Opening: " + file.getName());
+
+                } else {
+                    System.out.println("Open command cancelled by user.");
+                }
+            }
+        });
+    }
+
+    public void openFile(File f) {
+        try {
+            this.panel.getTableModel().setRowCount(0);
+
+            ArrayList<InfrastructuurComponentModel> l = Serialization.deserializeInfrastructuur(f.getAbsolutePath());
+            for (InfrastructuurComponentModel m : l)
+                this.addModelToTable(m);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void fillArraylist() {
@@ -58,20 +117,25 @@ public class DesignController implements ActionListener {
         //panel.getJcPfsense().removeAllItems();
         for (ComponentModel m : l)
             panel.getJcPfsense().addItem(m.getName());
+    }
 
-        //Update prijs & beschikbaarheid
+    public void update() {
         updatePrijs();
         updateBeschikbaarheid();
     }
-
     public void updatePrijs() {
-        for (int i = 0; i < panel.getjTable().getModel().getRowCount(); i++) {
-
-        }
+        ArrayList<InfrastructuurComponentModel> l = getCurrentModels();
+        double price = CalculateComponent.calculatePrice(l);
+        panel.getJlPrijs().setText("€" + String.valueOf(price));
+    }
+    public void updateBeschikbaarheid() {
+        ArrayList<InfrastructuurComponentModel> l = getCurrentModels();
+        double beschikbaarheid = CalculateComponent.calculateAvailability(l);
+        panel.getJlBeschikbaarheid().setText(String.valueOf(beschikbaarheid) + "%");
     }
 
-    public void updateBeschikbaarheid() {
-
+    private void addModelToTable(InfrastructuurComponentModel model) {
+        panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAantal()), " + ", " - ", "Delete"});
     }
 
     @Override
@@ -152,26 +216,7 @@ public class DesignController implements ActionListener {
             }
 
 
-            ArrayList<InfrastructuurComponentModel> l = new ArrayList<InfrastructuurComponentModel>();
-            int count = panel.getTableModel().getRowCount();
-            for (int i = 0; i < count; i++) {
-                ComponentType type = null;
-                switch (panel.getTableModel().getValueAt(i, 0).toString().toLowerCase()) {
-                    case "database":
-                        type = ComponentType.Database;
-                    case "firewall":
-                        type = ComponentType.Firewall;
-                    case "webserver":
-                        type = ComponentType.Webserver;
-                }
-
-                l.add(new InfrastructuurComponentModel(panel.getTableModel().getValueAt(i, 1).toString(),
-                        Double.parseDouble(panel.getTableModel().getValueAt(i, 2).toString()),
-                        Double.parseDouble(panel.getTableModel().getValueAt(i, 3).toString()),
-                        type,
-                        Integer.parseInt(panel.getTableModel().getValueAt(i, 4).toString())));
-            }
-
+            ArrayList<InfrastructuurComponentModel> l = getCurrentModels();
             try {
                 Serialization.serializeInfrastructuur(l, filePath);
                 System.out.println(l);
@@ -180,6 +225,33 @@ public class DesignController implements ActionListener {
                 ex.printStackTrace();
             }
         }
+    }
+
+    public ArrayList<InfrastructuurComponentModel> getCurrentModels() {
+        ArrayList<InfrastructuurComponentModel> l = new ArrayList<InfrastructuurComponentModel>();
+        int count = panel.getTableModel().getRowCount();
+        for (int i = 0; i < count; i++) {
+            ComponentType type = null;
+
+            switch (panel.getTableModel().getValueAt(i, 0).toString().toLowerCase()) {
+                case "database":
+                    type = ComponentType.Database;
+                    break;
+                case "firewall":
+                    type = ComponentType.Firewall;
+                    break;
+                case "webserver":
+                    type = ComponentType.Webserver;
+                    break;
+            }
+
+            l.add(new InfrastructuurComponentModel(panel.getTableModel().getValueAt(i, 1).toString(),
+                    Double.parseDouble(panel.getTableModel().getValueAt(i, 2).toString()),
+                    Double.parseDouble(panel.getTableModel().getValueAt(i, 3).toString()),
+                    type,
+                    Integer.parseInt(panel.getTableModel().getValueAt(i, 4).toString())));
+        }
+        return l;
     }
 }
 
