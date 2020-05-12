@@ -44,6 +44,12 @@ public class Algoritme {
     private int l = amount;
 
     // default values
+    private int dbServerNumber;
+    private int webServerNumber;
+    private int componentNumber;
+
+    private int highestWebServer = 0;
+
     private int dbPrice = 0;
     private double dbPercentage = 1;
 
@@ -63,6 +69,9 @@ public class Algoritme {
 
         // Add servers to array
         AddServers();
+
+        // current highest webserver
+        HighestWebServer();
 
         // all solutions for dbservers
         CombinationRepetition(dbArr, n, r);
@@ -149,55 +158,49 @@ public class Algoritme {
 
     }
 
+    public void HighestWebServer() {
+        for (String[] strInt : components) {
+            if (strInt[3].equals("1")) {
+                if (highestWebServer == 0) {
+                    this.highestWebServer = Integer.parseInt(strInt[1]);
+                } else if (highestWebServer < Integer.parseInt(strInt[1])) {
+                    this.highestWebServer = Integer.parseInt(strInt[1]);
+                }
+            }
+        }
+
+        this.highestWebServer = (1 - (highestWebServer / 100) ^ amount);
+    }
+
     public void Algoritm() {
+
         // foreach dbsolotion try (almost) all websolutions
         for (String dbsolution : dbSolutions) {
 
-            // for every dbsolution set the first websolution to zero
-            int counter = 0;
+            for (x = 0; x < amount; x++) {
+                dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
+
+                for (String[] strInt : components) {
+                    componentNumber = Integer.parseInt(strInt[4]);
+
+                    if (dbServerNumber == componentNumber) {
+                        dbTestPercentage = dbTestPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
+                    }
+                }
+            }
+
+            dbTestPercentage = (1 - dbTestPercentage);
+
+            double testTotalPercentage = (dbTestPercentage * highestWebServer * 0.99998) * 100;
+
+            // if the percentage of the highest websolution is lower with the current dbsolution break and go to the next dbsolution
+            if (testTotalPercentage < availabilty) {
+                dbTestPercentage = 1;
+                break;
+            }
 
             // foreach websolution calculate the percentage and price
             for (String websolution : webSolutions) {
-
-                int dbServerNumber;
-                int webServerNumber;
-                int componentNumber;
-
-                // check if its the first websolution
-                if (counter == 0) {
-                    // this makes it that the next websolution is the second
-                    counter++;
-
-                    for (x = 0; x < amount; x++) {
-                        dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
-                        webServerNumber = Character.getNumericValue(websolution.charAt(x));
-
-                        for (String[] strInt : components) {
-                            componentNumber = Integer.parseInt(strInt[4]);
-
-                            if (dbServerNumber == componentNumber) {
-                                dbTestPercentage = dbTestPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
-                            }
-
-                            if (webServerNumber == componentNumber) {
-                                webTestPercentage = webTestPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
-                            }
-                        }
-
-                    }
-
-                    dbTestPercentage = (1 - dbTestPercentage);
-                    webTestPercentage = (1 - webTestPercentage);
-
-                    double testTotalPercentage = (dbTestPercentage * webTestPercentage * 0.99998) * 100;
-
-                    // if the percentage of the highest websolution is lower with the current dbsolution break and go to the next dbsolution
-                    if (testTotalPercentage < availabilty) {
-                        dbTestPercentage = 1;
-                        webTestPercentage = 1;
-                        break;
-                    }
-                }
 
                 for (x = 0; x < amount; x++) {
                     dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
