@@ -22,7 +22,7 @@ public class ConsoleJP extends JPanel {
         title = new JLabel("Infrastructuur Console:");
         title.setFont(new Font("Segoe UI", Font.BOLD, 22));
 
-        console = new JTextArea("joe");
+        console = new JTextArea();
         console.setEditable(false);
         console.setBackground(Color.BLACK);
         console.setForeground(Color.GREEN);

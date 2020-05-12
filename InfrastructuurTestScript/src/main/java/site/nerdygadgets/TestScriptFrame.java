@@ -22,7 +22,7 @@ public class TestScriptFrame extends JFrame {
         setLayout(new GridLayout(0, 3));
 
         procedureJP = new ProcedureJP();
-        serverJP = new ServerJP();
+        serverJP = new ServerJP(this);
         consoleJP = new ConsoleJP();
 
         add(procedureJP);

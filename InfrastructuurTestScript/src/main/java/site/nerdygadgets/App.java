@@ -10,6 +10,7 @@ package site.nerdygadgets;
  */
 public class App {
     static TestScriptFrame testScriptFrame;
+    static boolean scriptRunning = false;
 
     public static void main(String[] args) {
 
@@ -24,17 +25,6 @@ public class App {
 //        });
 
         testScriptFrame = new TestScriptFrame();
-        //web1
-        SSHManager ssh = new SSHManager("student", "KHxd4gu7", "172.16.0.190");
-
-        ssh.startSession();
-        String joe = ssh.runCommandSudo("ls");
-        String joe2 = ssh.runCommandSudo("ls");
-        String jo3 = ssh.runCommandSudo("ls");
-
-        testScriptFrame.getConsoleJP().appendConsoleText(joe);
-        testScriptFrame.getConsoleJP().appendConsoleText(jo3);
-        testScriptFrame.getConsoleJP().appendConsoleText(joe2);
 
     }
 }
