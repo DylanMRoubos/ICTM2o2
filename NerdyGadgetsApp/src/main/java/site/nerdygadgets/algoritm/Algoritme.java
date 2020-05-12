@@ -43,11 +43,7 @@ public class Algoritme {
     private int k = webArr.length;
     private int l = amount;
 
-    // default values
-    private int dbServerNumber;
-    private int webServerNumber;
-    private int componentNumber;
-
+    // defaults
     private double highestWebServer = 1;
 
     private int dbPrice = 0;
@@ -126,15 +122,8 @@ public class Algoritme {
             String tijdelijke = "";
 
             for (int i = 0; i < r; i++) {
-
-                if (arr[chosen[i]] <= 3) {
-                    String test = Integer.toString(arr[chosen[i]]);
-                    tijdelijke = tijdelijke + test;
-
-                } else {
-                    String test = Integer.toString(arr[chosen[i]]);
-                    tijdelijke = tijdelijke + test;
-                }
+                String test = Integer.toString(arr[chosen[i]]);
+                tijdelijke = tijdelijke + test;
             }
 
             if (tijdelijke.contains("1") || tijdelijke.contains("2") || tijdelijke.contains("3") || tijdelijke.contains("0")) {
@@ -183,6 +172,9 @@ public class Algoritme {
         // foreach dbsolotion try (almost) all websolutions
         for (String dbsolution : dbSolutions) {
 
+            int dbServerNumber;
+            int componentNumber;
+
             for (x = 0; x < amount; x++) {
                 dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
 
@@ -208,7 +200,7 @@ public class Algoritme {
 
                 for (x = 0; x < amount; x++) {
                     dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
-                    webServerNumber = Character.getNumericValue(websolution.charAt(x));
+                    int webServerNumber = Character.getNumericValue(websolution.charAt(x));
 
                     for (String[] strInt : components) {
                         componentNumber = Integer.parseInt(strInt[4]);
