@@ -48,7 +48,7 @@ public class Algoritme {
     private int webServerNumber;
     private int componentNumber;
 
-    private int highestWebServer = 0;
+    private double highestWebServer = 1;
 
     private int dbPrice = 0;
     private double dbPercentage = 1;
@@ -59,7 +59,6 @@ public class Algoritme {
     private int bestSolution = 0;
 
     private double dbTestPercentage = 1;
-    private double webTestPercentage = 1;
 
     // default constructor
     public Algoritme() {
@@ -159,17 +158,24 @@ public class Algoritme {
     }
 
     public void HighestWebServer() {
+        double tijdelijk = 1;
         for (String[] strInt : components) {
             if (strInt[3].equals("1")) {
-                if (highestWebServer == 0) {
-                    this.highestWebServer = Integer.parseInt(strInt[1]);
-                } else if (highestWebServer < Integer.parseInt(strInt[1])) {
-                    this.highestWebServer = Integer.parseInt(strInt[1]);
+                if (tijdelijk == 1) {
+                    tijdelijk = Double.parseDouble(strInt[1]);
+                } else if (tijdelijk < Integer.parseInt(strInt[1])) {
+                    tijdelijk = Double.parseDouble(strInt[1]);
                 }
             }
         }
+        int z ;
 
-        this.highestWebServer = (1 - (highestWebServer / 100) ^ amount);
+        for (z = 0; z < amount; z++) {
+            highestWebServer = highestWebServer * (1 - (tijdelijk / 100));
+        }
+
+        highestWebServer = ( 1 - highestWebServer);
+
     }
 
     public void Algoritm() {
@@ -198,6 +204,7 @@ public class Algoritme {
                 dbTestPercentage = 1;
                 break;
             }
+
 
             // foreach websolution calculate the percentage and price
             for (String websolution : webSolutions) {
