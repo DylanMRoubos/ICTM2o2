@@ -64,7 +64,5 @@ public class RoutePanelController {
     private void switchPanel(Views views) {
         CardLayout cl = (CardLayout) mainFrameView.getContent().getLayout();
         cl.show(mainFrameView.getContent(), views.name());
-        if (views.name() == "DESIGN")
-            mainFrameView.getDesignPanel();
     }
 }
