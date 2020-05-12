@@ -44,6 +44,7 @@ public class SSHManager {
         }
     }
 
+    //Run a command on the server
     public String runCommand(String command) {
         try {
             Channel channel = session.openChannel("exec");
@@ -75,7 +76,7 @@ public class SSHManager {
             return null;
         }
     }
-
+    //Run a command on the server in Sudo mode
     public String runCommandSudo(String command) {
         try {
             Channel channel = session.openChannel("exec");

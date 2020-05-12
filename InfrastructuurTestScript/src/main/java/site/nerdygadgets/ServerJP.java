@@ -5,6 +5,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * ServerJP class
+ * JPanel with the servers in a card layout which can be switched
+ * Individual server commands can be run from this JPanel
+ *
+ * @author Mike Thomas & Dylan Roubos
+ * @version 1.0
+ * @since 12-05-2020
+ */
 public class ServerJP extends JPanel implements ActionListener {
     private JLabel title;
     private JPanel north, south, s1, s2, s3, s4;
@@ -61,6 +70,7 @@ public class ServerJP extends JPanel implements ActionListener {
         setVisible(true);
     }
 
+    //Switch panels
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == t1) {

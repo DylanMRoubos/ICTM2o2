@@ -3,7 +3,14 @@ package site.nerdygadgets;
 import javax.naming.ldap.Control;
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * TestScriptFrame class
+ * JFrame with the 3 three main components in a gridlayout
+ *
+ * @author Mike Thomas & Dylan Roubos
+ * @version 1.0
+ * @since 12-05-2020
+ */
 public class TestScriptFrame extends JFrame {
     private ConsoleJP consoleJP;
     private ProcedureJP procedureJP;
