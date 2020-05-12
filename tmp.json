@@ -1,1 +1,1 @@
-[]
+[{"name":"test","availability":1.0,"price":1.0,"type":"Database"},{"name":"test","availability":1.0,"price":1.0,"type":"Webserver"},{"name":"test","availability":1.0,"price":1.0,"type":"Firewall"}]
