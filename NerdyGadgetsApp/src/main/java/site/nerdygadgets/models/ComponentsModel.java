@@ -24,9 +24,13 @@ public class ComponentsModel {
         try {
             ArrayList<ComponentModel> l = Serialization.deserializeComponents();
             for (ComponentModel m : l) {
+                if (m.getName().equals(model.getName()) && m.getType().name().equals(model.getType().name()))
+                    return false;
+
+                /* Vergelijkt hele object terwijl alleen naam+type unique is
                 if (m.toString().equals(model.toString())) {
                     return false;
-                }
+                }*/
             }
             componentModels.add(model);
             Serialization.serializeComponents(componentModels);

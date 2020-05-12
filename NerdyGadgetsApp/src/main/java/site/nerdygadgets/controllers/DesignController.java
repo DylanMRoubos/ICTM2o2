@@ -163,13 +163,17 @@ public class DesignController implements ActionListener {
                     return;
                 }
                 boolean hasItem = false;
+                int r = 0;
                 for(int i = 0; i < panel.getTableModel().getRowCount(); i++){
-                    if(panel.getJTable().getValueAt(i,0).equals(model.getType().name()) && panel.getJTable().getValueAt(i,1).equals(model.getName())){
-                        System.out.println("kan niet");
-                    }else {
-                        panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
+                    if(panel.getJTable().getValueAt(i,0).toString().equals(model.getType().name()) && panel.getJTable().getValueAt(i,1).toString().equals(model.getName())){
+                        hasItem = true;
+                        r = i;
                     }
                 }
+                if (!hasItem)
+                    panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
+                else
+                    panel.getTableModel().setValueAt(Integer.parseInt(panel.getJTable().getValueAt(r, 4).toString()) + 1, r, 4);
 
             }
 

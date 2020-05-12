@@ -78,6 +78,18 @@ public class DesignPanel extends JPanel {
                     return Integer.class;
                 return super.getColumnClass(columnIndex);
             }
+
+            @Override
+            public void fireTableCellUpdated(int row, int column) {
+                if (column == 4) {
+                    if (Integer.parseInt(super.getValueAt(row, column).toString()) < 0)
+                        super.setValueAt(Integer.parseInt(super.getValueAt(row, column).toString()) * -1, row, column);
+                    else if (Integer.parseInt(super.getValueAt(row, column).toString()) < 1)
+                        super.setValueAt(1, row, column);
+                }
+
+                super.fireTableCellUpdated(row, column);
+            }
         };
         tableModel.addColumn("Type");
         tableModel.addColumn("Naam");
