@@ -1,16 +1,11 @@
 package site.nerdygadgets;
 
 import org.pushingpixels.substance.api.skin.SubstanceBusinessBlackSteelLookAndFeel;
-import site.nerdygadgets.controllers.ComponentenController;
-import site.nerdygadgets.controllers.CurrentInfrastructureController;
+import site.nerdygadgets.controllers.ComponentsController;
 import site.nerdygadgets.controllers.DesignController;
 import site.nerdygadgets.controllers.RoutePanelController;
-import site.nerdygadgets.models.ComponentenModel;
-import site.nerdygadgets.models.CurrentInfrastructureComponentModel;
+import site.nerdygadgets.models.ComponentsModel;
 import site.nerdygadgets.models.DesignModel;
-import site.nerdygadgets.scraper.Database;
-import site.nerdygadgets.scraper.ServerManager;
-import site.nerdygadgets.views.CurrentInfrastructureComponentPanel;
 import site.nerdygadgets.views.MainFrameView;
 
 import javax.swing.*;
@@ -42,7 +37,7 @@ public class App {
             }
             // invoke frame here
             mainFrameView = new MainFrameView();
-            ComponentenController cc = new ComponentenController(mainFrameView.getComponentManagementPanel(), new ComponentenModel());
+            ComponentsController cc = new ComponentsController(mainFrameView.getComponentManagementPanel(), new ComponentsModel());
             DesignController dc = new DesignController(mainFrameView.getDesignPanel(), new DesignModel(), mainFrameView);
             RoutePanelController rpc = new RoutePanelController(mainFrameView);
 

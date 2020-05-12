@@ -1,9 +1,8 @@
 package site.nerdygadgets.controllers;
 
 import site.nerdygadgets.functions.ComponentType;
-import site.nerdygadgets.functions.Serialization;
 import site.nerdygadgets.models.ComponentModel;
-import site.nerdygadgets.models.ComponentenModel;
+import site.nerdygadgets.models.ComponentsModel;
 import site.nerdygadgets.views.ComponentManagementPanel;
 
 import javax.swing.*;
@@ -11,14 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class ComponentenController implements ActionListener{
+public class ComponentsController implements ActionListener{
     private ComponentManagementPanel view;
-    private ComponentenModel model;
+    private ComponentsModel model;
 
-    public ComponentenController(ComponentManagementPanel view, ComponentenModel model){
+    public ComponentsController(ComponentManagementPanel view, ComponentsModel model){
         this.model = model;
         this.view = view;
         initController();
@@ -26,23 +24,23 @@ public class ComponentenController implements ActionListener{
     }
 
     public void initController(){
-        view.getJbVoegToe().addActionListener(this);
-        view.getjTable().addMouseListener(new MouseListener() {
+        view.getJbAdd().addActionListener(this);
+        view.getJTable().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) { }
             @Override
             public void mousePressed(MouseEvent e) { }
             @Override
             public void mouseReleased(MouseEvent e) {
-                int row = view.getjTable().rowAtPoint(e.getPoint());
-                if (row >= 0 && row < view.getjTable().getRowCount()) {
-                    view.getjTable().setRowSelectionInterval(row, row);
+                int row = view.getJTable().rowAtPoint(e.getPoint());
+                if (row >= 0 && row < view.getJTable().getRowCount()) {
+                    view.getJTable().setRowSelectionInterval(row, row);
                 } else {
-                    view.getjTable().clearSelection();
+                    view.getJTable().clearSelection();
                 }
 
                 //Row index is found
-                int rowIndex = view.getjTable().getSelectedRow();
+                int rowIndex = view.getJTable().getSelectedRow();
                 if (rowIndex < 0)
                     return;
                 if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
@@ -88,7 +86,7 @@ public class ComponentenController implements ActionListener{
         }
     }
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == view.getJbVoegToe()) {
+        if (e.getSource() == view.getJbAdd()) {
             //Voeg toe gedrukt
             double availability = this.getAvailability();
             if (availability == -1) {
@@ -114,18 +112,16 @@ public class ComponentenController implements ActionListener{
                 return;
             }
 
-            ComponentModel m = new ComponentModel(view.getJtNaam().getText(), this.getAvailability(), this.getPrice(),this.getType());
+            ComponentModel m = new ComponentModel(view.getJtName().getText(), this.getAvailability(), this.getPrice(),this.getType());
             if (this.model.addComponentModel(m)) {
-                view.getTableModel().addRow(new Object[]{getType().name(), view.getJtNaam().getText(), String.valueOf(this.getAvailability()), String.valueOf(this.getPrice())});
-                this.model.printComponenten();
+                view.getTableModel().addRow(new Object[]{getType().name(), view.getJtName().getText(), String.valueOf(this.getAvailability()), String.valueOf(this.getPrice())});
+                this.model.printComponents();
 
                 System.out.println("Component added! <3");
             } else {
                 System.out.println("Component bestaat al :(");
             }
 
-//            for (ComponentModel x : currentComponents)
-//                System.out.println(x.toString());
         }
     }
 
@@ -134,7 +130,7 @@ public class ComponentenController implements ActionListener{
 
     public double getPrice() {
         try {
-            double price = Double.parseDouble(view.getJtPrijs().getText());
+            double price = Double.parseDouble(view.getJtPrice().getText());
             if (price < 0) {
                 return -1; //invalid price
             } else {
@@ -147,7 +143,7 @@ public class ComponentenController implements ActionListener{
 
     public double getAvailability() {
         try {
-            double availability = Double.parseDouble(view.getJtBeschikbaarheid().getText());
+            double availability = Double.parseDouble(view.getJtAvailability().getText());
             if (availability < 0) {
                 return -1; //invalid availability
             } else {
@@ -159,12 +155,12 @@ public class ComponentenController implements ActionListener{
     }
 
     public ComponentType getType() {
-        switch (String.valueOf(view.getJcComponenten().getSelectedItem())) {
+        switch (String.valueOf(view.getJcComponents().getSelectedItem())) {
             case "Webserver":
                 return ComponentType.Webserver;
             case "Database":
                 return ComponentType.Database;
-            case "PFSense":
+            case "Firewall":
                 return ComponentType.Firewall;
             default:
                 System.out.println("Type Unavailable");

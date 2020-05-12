@@ -14,21 +14,21 @@ import java.util.EventObject;
 
 public class DesignPanel extends JPanel {
 
-    private JPanel jpOntwerp;
-    private JPanel jpOntwerpMaken;
+    private JPanel jpDesign;
+    private JPanel jpMakeDesign;
 
-    private JPanel jpWeergave;
-    private JPanel jpWeergavePanel;
+    private JPanel jpDisplay;
+    private JPanel jpDisplayPanel;
     //private JList jList;
     //private DefaultListModel jListModel;
     private JComboBox jcDatabase;
     private JComboBox jcWeb;
-    private JComboBox jcPfsense;
+    private JComboBox jcFirewall;
     private JButton jbOpt;
-    private JButton opslaanButton;
+    private JButton saveButton;
 
-    private JLabel jlPrijs;
-    private JLabel jlBeschikbaarheid;
+    private JLabel jlPrice;
+    private JLabel jlAvailability;
 
     private JTable jTable;
     private DefaultTableModel tableModel;
@@ -37,28 +37,28 @@ public class DesignPanel extends JPanel {
         setLayout(new GridLayout(0, 2));
 
         //Maak het panel waar alle content in staat
-        jpOntwerpMaken = new JPanel();
-        jpOntwerpMaken.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpOntwerpMaken.setMaximumSize(new Dimension(400, 650));
+        jpMakeDesign = new JPanel();
+//        jpMakeDesign.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        jpMakeDesign.setMaximumSize(new Dimension(600, 650));
 
         //maak het hele linker kant panel aan
-        jpOntwerp = new JPanel();
-        add(jpOntwerp);
-        jpOntwerp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpOntwerp.setLayout(new BoxLayout(jpOntwerp, BoxLayout.PAGE_AXIS));
-        jpOntwerp.add(jpOntwerpMaken);
+        jpDesign = new JPanel();
+        add(jpDesign);
+        jpDesign.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        jpDesign.setLayout(new BoxLayout(jpDesign, BoxLayout.PAGE_AXIS));
+        jpDesign.add(jpMakeDesign);
 
         //init Content linker panel
         jcDatabase = new JComboBox(new String[]{""});
         jcWeb = new JComboBox(new String[]{""});
-        jcPfsense = new JComboBox(new String[]{""});
+        jcFirewall = new JComboBox(new String[]{""});
 
         jcDatabase.setRenderer(new MyComboBoxRenderer("Databaseservers"));
         jcDatabase.setSelectedIndex(-1);
         jcWeb.setRenderer(new MyComboBoxRenderer("Webservers"));
         jcWeb.setSelectedIndex(-1);
-        jcPfsense.setRenderer(new MyComboBoxRenderer("Firewall"));
-        jcPfsense.setSelectedIndex(-1);
+        jcFirewall.setRenderer(new MyComboBoxRenderer("Firewall"));
+        jcFirewall.setSelectedIndex(-1);
 
         tableModel = new DefaultTableModel() {
             @Override
@@ -84,9 +84,9 @@ public class DesignPanel extends JPanel {
         tableModel.addColumn("Beschikbaarheid");
         tableModel.addColumn("Prijs");
         tableModel.addColumn("Aantal");
-        tableModel.addColumn("Increment");
-        tableModel.addColumn("Decrement");
-        tableModel.addColumn("TEST");
+        tableModel.addColumn("Verhogen");
+        tableModel.addColumn("Verlagen");
+        tableModel.addColumn("Verwijder");
 
         jTable = new JTable(tableModel);
 //        tableModel.addRow(new Object[]{"firewall", "vuurmuur", "99", "1000", "5", " + ", " - ", "Delete"});
@@ -94,51 +94,51 @@ public class DesignPanel extends JPanel {
 
         JScrollPane sp = new JScrollPane(jTable);
 
-        sp.setPreferredSize(new Dimension(350, 500));
+        sp.setPreferredSize(new Dimension(550, 590));
         sp.setBorder(BorderFactory.createLineBorder(Color.black));
-        opslaanButton = new JButton("Opslaan Als");
+        saveButton = new JButton("Opslaan Als");
 
         //Voeg content toe aan linker panel
-        jpOntwerpMaken.add(jcDatabase);
-        jpOntwerpMaken.add(jcWeb);
-        jpOntwerpMaken.add(jcPfsense);
-        jpOntwerpMaken.add(sp);
-        jpOntwerpMaken.add(opslaanButton);
+        jpMakeDesign.add(jcDatabase);
+        jpMakeDesign.add(jcWeb);
+        jpMakeDesign.add(jcFirewall);
+        jpMakeDesign.add(sp);
+        jpMakeDesign.add(saveButton);
 
 
         //Content rechter kant
-        jlPrijs = new JLabel("€0.0");
-        jlBeschikbaarheid = new JLabel("0.0%");
+        jlPrice = new JLabel("€0.0");
+        jlAvailability = new JLabel("0.0%");
 
         //Maak het panel waar alle content in staat rechts
-        jpWeergavePanel = new JPanel();
-        jpWeergavePanel.setMaximumSize(new Dimension(250, 450));
+        jpDisplayPanel = new JPanel();
+        jpDisplayPanel.setMaximumSize(new Dimension(250, 450));
 
         //Maak het hele rechter kant panel aan
-        jpWeergave = new JPanel();
-        add(jpWeergave);
+        jpDisplay = new JPanel();
+        add(jpDisplay);
 //        jpComponentToevegoen.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpWeergave.setLayout(new BoxLayout(jpWeergave, BoxLayout.PAGE_AXIS));
-        jpWeergave.add(jpWeergavePanel);
+        jpDisplay.setLayout(new BoxLayout(jpDisplay, BoxLayout.PAGE_AXIS));
+        jpDisplay.add(jpDisplayPanel);
 
         //init Content rechter panel
         jbOpt = new JButton("Optimaliseer");
 
         //Voeg alle content toe
-        jpWeergavePanel.setLayout(new FlowLayout());
-        jpWeergavePanel.add(jbOpt);
-        jpWeergavePanel.add(new JLabel("Prijs"));
-        jpWeergavePanel.add(jlPrijs);
-        jpWeergavePanel.add(new JLabel("Beschikbaarheid"));
-        jpWeergavePanel.add(jlBeschikbaarheid);
+        jpDisplayPanel.setLayout(new FlowLayout());
+        jpDisplayPanel.add(jbOpt);
+        jpDisplayPanel.add(new JLabel("Prijs"));
+        jpDisplayPanel.add(jlPrice);
+        jpDisplayPanel.add(new JLabel("Beschikbaarheid"));
+        jpDisplayPanel.add(jlAvailability);
     }
 
     public JComboBox getJcDatabase() {
         return jcDatabase;
     }
 
-    public JComboBox getJcPfsense() {
-        return jcPfsense;
+    public JComboBox getJcFirewall() {
+        return jcFirewall;
     }
 
     public JComboBox getJcWeb() {
@@ -149,19 +149,19 @@ public class DesignPanel extends JPanel {
         return jbOpt;
     }
 
-    public JButton getOpslaanButton() {
-        return opslaanButton;
+    public JButton getSaveButton() {
+        return saveButton;
     }
 
-    public JLabel getJlPrijs() {
-        return jlPrijs;
+    public JLabel getJlPrice() {
+        return jlPrice;
     }
 
-    public JLabel getJlBeschikbaarheid() {
-        return jlBeschikbaarheid;
+    public JLabel getJlAvailability() {
+        return jlAvailability;
     }
 
-    public JTable getjTable() {
+    public JTable getJTable() {
         return jTable;
     }
 

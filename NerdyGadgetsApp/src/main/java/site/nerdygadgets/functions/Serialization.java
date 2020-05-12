@@ -3,14 +3,12 @@ package site.nerdygadgets.functions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import site.nerdygadgets.models.ComponentModel;
-import site.nerdygadgets.models.InfrastructuurComponentModel;
+import site.nerdygadgets.models.InfrastructureComponentModel;
 
 import javax.swing.*;
 import java.io.*;
-import java.lang.reflect.Type;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Serialization {
 
@@ -83,7 +81,7 @@ public class Serialization {
         fw.close();
     }
 
-    public static void serializeInfrastructuur(ArrayList<InfrastructuurComponentModel> components) throws IOException {
+    public static void serializeInfrastructuur(ArrayList<InfrastructureComponentModel> components) throws IOException {
 
         Gson g = new Gson();
         String s = g.toJson(components);
@@ -101,7 +99,7 @@ public class Serialization {
         fw.close();
     }
 
-    public static void serializeInfrastructuur(ArrayList<InfrastructuurComponentModel> components, String path) throws IOException {
+    public static void serializeInfrastructure(ArrayList<InfrastructureComponentModel> components, String path) throws IOException {
         Gson g = new Gson();
         String s = g.toJson(components);
 
@@ -154,7 +152,7 @@ public class Serialization {
 
     }
 
-    public static ArrayList<InfrastructuurComponentModel> deserializeInfrastructuur() throws IOException {
+    public static ArrayList<InfrastructureComponentModel> deserializeInfrastructure() throws IOException {
         Gson g = new Gson();
         String path = System.getProperty("user.dir") + "\\tmp.json";
         File f = new File(path);
@@ -166,10 +164,10 @@ public class Serialization {
         while ((line = br.readLine()) != null) {
             Json += line;
         }
-        return g.fromJson(Json, new TypeToken<ArrayList<InfrastructuurComponentModel>>(){}.getType());
+        return g.fromJson(Json, new TypeToken<ArrayList<InfrastructureComponentModel>>(){}.getType());
     }
 
-    public static ArrayList<InfrastructuurComponentModel> deserializeInfrastructuur(String path) throws IOException {
+    public static ArrayList<InfrastructureComponentModel> deserializeInfrastructure(String path) throws IOException {
         Gson g = new Gson();
         File f = new File(path);
         if (!f.exists())
@@ -180,7 +178,7 @@ public class Serialization {
         while ((line = br.readLine()) != null) {
             Json += line;
         }
-        return g.fromJson(Json, new TypeToken<ArrayList<InfrastructuurComponentModel>>(){}.getType());
+        return g.fromJson(Json, new TypeToken<ArrayList<InfrastructureComponentModel>>(){}.getType());
     }
 
 }

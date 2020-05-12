@@ -41,13 +41,13 @@ public class DesignModel {
         return web;
     }
 
-    public ArrayList<ComponentModel> getPfsenseModels(){
-        ArrayList<ComponentModel> pfsense = new ArrayList<ComponentModel>();
+    public ArrayList<ComponentModel> getFirewallModels(){
+        ArrayList<ComponentModel> firewall = new ArrayList<ComponentModel>();
         for(ComponentModel l : list){
             if(l.getType() == ComponentType.Firewall){
-                pfsense.add(l);
+                firewall.add(l);
             }
         }
-        return pfsense;
+        return firewall;
     }
 }

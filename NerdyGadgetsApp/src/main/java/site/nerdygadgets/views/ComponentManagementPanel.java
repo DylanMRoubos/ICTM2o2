@@ -17,67 +17,64 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ComponentManagementPanel extends JPanel {
-    private JLabel jlHuidigeComponenten;
-    private JPanel jpHuidigeComponenten;
-    private JPanel jpHuidigeComponentenContent;
+    private JLabel jlCurrentComponents;
+    private JPanel jpCurrentComponents;
+    private JPanel jpCurrentComponentsContent;
 
-    private JLabel jlComponentToevoegen;
-    private JPanel jpComponentToevoegen;
-    private JPanel jpComponentToevoegenContent;
+    private JLabel jlAddComponents;
+    private JPanel jpAddComponents;
+    private JPanel jpAddComponentsContent;
 
-    //HuidigeComponenten content
+    //Huidigecomponents content
     private JTable jTable;
     private DefaultTableModel tableModel;
     private JScrollPane tableScrollPane;
 
-//    private JList jListHuidigeComponenten;
-//    private DefaultListModel listModel;
-
     //ComponentToevoegen content
-    private JLabel jlNaam;
-    private JTextField jtNaam;
-    private JLabel jlPrijs;
-    private JTextField jtPrijs;
-    private JLabel jlBeschikbaarheid;
-    private JTextField jtBeschikbaarheid;
-    String[] componenten = {"Database", "Webserver", "PFSense"};
-    private JComboBox jcComponenten;
-    private JButton jbVoegToe;
+    private JLabel jlName;
+    private JTextField jtName;
+    private JLabel jlPrice;
+    private JTextField jtPrice;
+    private JLabel jlAvailability;
+    private JTextField jtAvailability;
+    String[] components = {"Database", "Webserver", "Firewall"};
+    private JComboBox jcComponents;
+    private JButton jbAdd;
 
 //    private ArrayList<ComponentModel> currentComponents;
 
     public ComponentManagementPanel() {
-//        add(new JLabel("Dit moet het componenten paneel voorstellen."))
+//        add(new JLabel("Dit moet het components paneel voorstellen."))
         setLayout(new GridLayout(0,2));
 
 //        currentComponents = new ArrayList<ComponentModel>();
 
         //maak de label
-        jlHuidigeComponenten = new JLabel("Huidige componenten:");
-        jlHuidigeComponenten.setFont(new Font("Test", Font.BOLD, 15));
-        jlHuidigeComponenten.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jlHuidigeComponenten.setBorder(new EmptyBorder(5, 20, 20,20));
+        jlCurrentComponents = new JLabel("Huidige componenten:");
+        jlCurrentComponents.setFont(new Font("Test", Font.BOLD, 15));
+        jlCurrentComponents.setAlignmentX(Component.CENTER_ALIGNMENT);
+        jlCurrentComponents.setBorder(new EmptyBorder(5, 20, 20,20));
 
         //Maak de label
-        jlComponentToevoegen = new JLabel("Component toevoegen:");
-        jlComponentToevoegen.setFont(new Font("Test", Font.BOLD, 15));
-        jlComponentToevoegen.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jlComponentToevoegen.setBorder(new EmptyBorder(5,20,20,20));
+        jlAddComponents = new JLabel("Component toevoegen:");
+        jlAddComponents.setFont(new Font("Test", Font.BOLD, 15));
+        jlAddComponents.setAlignmentX(Component.CENTER_ALIGNMENT);
+        jlAddComponents.setBorder(new EmptyBorder(5,20,20,20));
 
         //Maak het panel waar alle content in staat
-        jpHuidigeComponentenContent = new JPanel();
-        jpHuidigeComponentenContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpHuidigeComponentenContent.setMaximumSize(new Dimension(250, 450));
+        jpCurrentComponentsContent = new JPanel();
+        jpCurrentComponentsContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        jpCurrentComponentsContent.setMaximumSize(new Dimension(450, 550));
 
         //maak het hele linker kant panel aan
-        jpHuidigeComponenten = new JPanel();
-        add(jpHuidigeComponenten);
-//        jpHuidigeComponenten.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        //jpHuidigeComponenten.setLayout(new BorderLayout());
-        jpHuidigeComponenten.setLayout(new BoxLayout(jpHuidigeComponenten, BoxLayout.PAGE_AXIS));
-        jpHuidigeComponenten.add(jlHuidigeComponenten);
-        jpHuidigeComponenten.add(jpHuidigeComponentenContent);
-        jpHuidigeComponentenContent.setLayout(new BorderLayout());
+        jpCurrentComponents = new JPanel();
+        add(jpCurrentComponents);
+//        jpCurrentComponents.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        //jpCurrentComponents.setLayout(new BorderLayout());
+        jpCurrentComponents.setLayout(new BoxLayout(jpCurrentComponents, BoxLayout.PAGE_AXIS));
+        jpCurrentComponents.add(jlCurrentComponents);
+        jpCurrentComponents.add(jpCurrentComponentsContent);
+        jpCurrentComponentsContent.setLayout(new BorderLayout());
         //init Content linker panel
         tableModel = new DefaultTableModel() {
             @Override
@@ -86,9 +83,9 @@ public class ComponentManagementPanel extends JPanel {
             }
         };
         tableModel.addColumn("Type");
-        tableModel.addColumn("Name");
-        tableModel.addColumn("Availability");
-        tableModel.addColumn("Price");
+        tableModel.addColumn("Naam");
+        tableModel.addColumn("Beschikbaarheid");
+        tableModel.addColumn("Prijs");
 
         //tableModel.addRow(new Object[]{"mep", "mep", "mep", "mep"});
 
@@ -98,65 +95,65 @@ public class ComponentManagementPanel extends JPanel {
 
         //Voeg content toe aan linker panel
 
-        jpHuidigeComponentenContent.add(tableScrollPane);
+        jpCurrentComponentsContent.add(tableScrollPane);
 
         //Maak het panel waar alle content in staat
-        jpComponentToevoegenContent = new JPanel();
-        jpComponentToevoegenContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpComponentToevoegenContent.setMaximumSize(new Dimension(250,450));
+        jpAddComponentsContent = new JPanel();
+        jpAddComponentsContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        jpAddComponentsContent.setMaximumSize(new Dimension(450,550));
 
         //Maak het hele rechter kant panel aan
-        jpComponentToevoegen = new JPanel();
-        add(jpComponentToevoegen);
+        jpAddComponents = new JPanel();
+        add(jpAddComponents);
 //        jpComponentToevegoen.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpComponentToevoegen.setLayout(new BoxLayout(jpComponentToevoegen, BoxLayout.PAGE_AXIS));
-        jpComponentToevoegen.add(jlComponentToevoegen);
-        jpComponentToevoegen.add(jpComponentToevoegenContent);
+        jpAddComponents.setLayout(new BoxLayout(jpAddComponents, BoxLayout.PAGE_AXIS));
+        jpAddComponents.add(jlAddComponents);
+        jpAddComponents.add(jpAddComponentsContent);
 
         //init Content rechter panel
-        jlNaam = new JLabel("Naam: ");
-        jlPrijs = new JLabel("Prijs: ");
-        jlBeschikbaarheid = new JLabel("Beschikbaarheid:");
-        jtNaam = new JTextField(15);
-        jtPrijs = new JTextField(15);
-        jtBeschikbaarheid = new JTextField(10);
-        jcComponenten = new JComboBox(componenten);
-        jbVoegToe = new JButton("Voeg Toe");
+        jlName = new JLabel("Naam: ");
+        jlPrice = new JLabel("Prijs: ");
+        jlAvailability = new JLabel("Beschikbaarheid:");
+        jtName = new JTextField(15);
+        jtPrice = new JTextField(15);
+        jtAvailability = new JTextField(10);
+        jcComponents = new JComboBox(components);
+        jbAdd = new JButton("Voeg Toe");
 
         //Voeg alle content toe
-        jpComponentToevoegenContent.setLayout(new FlowLayout());
-        jpComponentToevoegenContent.add(jlNaam);
-        jpComponentToevoegenContent.add(jtNaam);
-        jpComponentToevoegenContent.add(jlPrijs);
-        jpComponentToevoegenContent.add(jtPrijs);
-        jpComponentToevoegenContent.add(jlBeschikbaarheid);
-        jpComponentToevoegenContent.add(jtBeschikbaarheid);
-        jpComponentToevoegenContent.add(jcComponenten);
-        jpComponentToevoegenContent.add(jbVoegToe);
+        jpAddComponentsContent.setLayout(new FlowLayout());
+        jpAddComponentsContent.add(jlName);
+        jpAddComponentsContent.add(jtName);
+        jpAddComponentsContent.add(jlPrice);
+        jpAddComponentsContent.add(jtPrice);
+        jpAddComponentsContent.add(jlAvailability);
+        jpAddComponentsContent.add(jtAvailability);
+        jpAddComponentsContent.add(jcComponents);
+        jpAddComponentsContent.add(jbAdd);
 
     }
 
-    public JTextField getJtNaam(){
-        return jtNaam;
+    public JTextField getJtName(){
+        return jtName;
     }
 
-    public JTextField getJtPrijs() {
-        return jtPrijs;
+    public JTextField getJtPrice() {
+        return jtPrice;
     }
 
-    public JTextField getJtBeschikbaarheid() {
-        return jtBeschikbaarheid;
+    public JTextField getJtAvailability() {
+        return jtAvailability;
     }
 
-    public JComboBox getJcComponenten() {
-        return jcComponenten;
+    public JComboBox getJcComponents() {
+        return jcComponents;
     }
 
-    public JButton getJbVoegToe() {
-        return jbVoegToe;
+    public JButton getJbAdd() {
+        return jbAdd;
     }
 
-    public JTable getjTable() {
+    public JTable getJTable() {
         return jTable;
     }
 

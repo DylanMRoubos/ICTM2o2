@@ -3,14 +3,12 @@ package site.nerdygadgets.controllers;
 import site.nerdygadgets.functions.*;
 import site.nerdygadgets.models.ComponentModel;
 import site.nerdygadgets.models.DesignModel;
-import site.nerdygadgets.models.InfrastructuurComponentModel;
+import site.nerdygadgets.models.InfrastructureComponentModel;
 import site.nerdygadgets.views.DesignPanel;
 import site.nerdygadgets.views.MainFrameView;
-import site.nerdygadgets.views.Views;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.table.TableCellRenderer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -18,33 +16,32 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.awt.Component;
 
 public class DesignController implements ActionListener {
     private DesignPanel panel;
     private DesignModel model;
-    private ArrayList<ComponentModel> lijst;
+    private ArrayList<ComponentModel> list;
 
     public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
         this.panel = panel;
         this.model = model;
-        lijst = new ArrayList<ComponentModel>();
+        list = new ArrayList<ComponentModel>();
         initController();
 
-        panel.getjTable().getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
-        panel.getjTable().getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
-        panel.getjTable().getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
+        panel.getJTable().getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
+        panel.getJTable().getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
+        panel.getJTable().getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
 
         //SET CUSTOM EDITOR TO TEAMS COLUMN
-        panel.getjTable().getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
-        panel.getjTable().getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
-        panel.getjTable().getColumnModel().getColumn(7).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
+        panel.getJTable().getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
+        panel.getJTable().getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
+        panel.getJTable().getColumnModel().getColumn(7).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
 
         panel.getJcDatabase().addActionListener(this);
         panel.getJcWeb().addActionListener(this);
-        panel.getJcPfsense().addActionListener(this);
+        panel.getJcFirewall().addActionListener(this);
 
-        panel.getOpslaanButton().addActionListener(this);
+        panel.getSaveButton().addActionListener(this);
 
         mfv.getHomePanel().getJpOpen().addMouseListener(new MouseAdapter() {
             @Override
@@ -91,8 +88,8 @@ public class DesignController implements ActionListener {
         try {
             this.panel.getTableModel().setRowCount(0);
 
-            ArrayList<InfrastructuurComponentModel> l = Serialization.deserializeInfrastructuur(f.getAbsolutePath());
-            for (InfrastructuurComponentModel m : l)
+            ArrayList<InfrastructureComponentModel> l = Serialization.deserializeInfrastructure(f.getAbsolutePath());
+            for (InfrastructureComponentModel m : l)
                 this.addModelToTable(m);
         } catch (IOException e) {
             e.printStackTrace();
@@ -101,9 +98,9 @@ public class DesignController implements ActionListener {
 
     private void fillArraylist() {
         model.reloadList();
-        this.lijst.addAll(model.getDatabaseModels());
-        this.lijst.addAll(model.getWebModels());
-        this.lijst.addAll(model.getPfsenseModels());
+        this.list.addAll(model.getDatabaseModels());
+        this.list.addAll(model.getWebModels());
+        this.list.addAll(model.getFirewallModels());
     }
 
     public void initController() {
@@ -119,34 +116,34 @@ public class DesignController implements ActionListener {
         for (ComponentModel m : l)
             panel.getJcWeb().addItem(m.getName());
 
-        l = model.getPfsenseModels();
+        l = model.getFirewallModels();
         //panel.getJcPfsense().removeAllItems();
         for (ComponentModel m : l)
-            panel.getJcPfsense().addItem(m.getName());
+            panel.getJcFirewall().addItem(m.getName());
     }
 
     public void update() {
-        updatePrijs();
-        updateBeschikbaarheid();
+        updatePrice();
+        updateAvailability();
     }
-    public void updatePrijs() {
-        ArrayList<InfrastructuurComponentModel> l = getCurrentModels();
+    public void updatePrice() {
+        ArrayList<InfrastructureComponentModel> l = getCurrentModels();
         double price = CalculateComponent.calculatePrice(l);
-        panel.getJlPrijs().setText("€" + String.valueOf(price));
+        panel.getJlPrice().setText("€" + String.valueOf(price));
     }
-    public void updateBeschikbaarheid() {
-        ArrayList<InfrastructuurComponentModel> l = getCurrentModels();
+    public void updateAvailability() {
+        ArrayList<InfrastructureComponentModel> l = getCurrentModels();
         double beschikbaarheid = CalculateComponent.calculateAvailability(l);
-        panel.getJlBeschikbaarheid().setText(String.valueOf(beschikbaarheid) + "%");
+        panel.getJlAvailability().setText(String.valueOf(beschikbaarheid) + "%");
     }
 
-    private void addModelToTable(InfrastructuurComponentModel model) {
-        panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAantal()), " + ", " - ", "Delete"});
+    private void addModelToTable(InfrastructureComponentModel model) {
+        panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAmount()), " + ", " - ", "Verwijder"});
     }
 
-    private void addInfModelsToTable(ArrayList<InfrastructuurComponentModel> l) {
-        for (InfrastructuurComponentModel model : l)
-            panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAantal()), " + ", " - ", "Delete"});
+    private void addInfModelsToTable(ArrayList<InfrastructureComponentModel> l) {
+        for (InfrastructureComponentModel model : l)
+            panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAmount()), " + ", " - ", "Verwijder"});
     }
 
     @Override
@@ -164,8 +161,7 @@ public class DesignController implements ActionListener {
                     System.out.println("Unable to convert component");
                     return;
                 }
-                //tableModel.addRow(new Object[]{"firewall", "vuurmuur", "99%", "1000", "5", " + ", " - ", "Delete"});
-                panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Delete"});
+                panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
             }
 
             if (e.getSource() == panel.getJcWeb()) {
@@ -175,11 +171,10 @@ public class DesignController implements ActionListener {
                     System.out.println("Unable to convert component");
                     return;
                 }
-                panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Delete"});
-                //panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice())});
+                panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
             }
 
-            if (e.getSource() == panel.getJcPfsense()) {
+            if (e.getSource() == panel.getJcFirewall()) {
                 model = ComponentModel.getModel(item, ComponentType.Firewall);
                 System.out.println(model);
                 if(model == null)
@@ -187,16 +182,16 @@ public class DesignController implements ActionListener {
                     System.out.println("Unable to convert component");
                     return;
                 }
-                panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Delete"});
+                panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
                 //panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice())});
             }
 
             //Update prijs & beschikbaarheid
-            updatePrijs();
-            updateBeschikbaarheid();
+            updatePrice();
+            updateAvailability();
         }
 
-        if (e.getSource() == panel.getOpslaanButton()) {
+        if (e.getSource() == panel.getSaveButton()) {
             String filePath;
 
             JFileChooser fileChooser = new JFileChooser();
@@ -227,9 +222,9 @@ public class DesignController implements ActionListener {
             }
 
 
-            ArrayList<InfrastructuurComponentModel> l = getCurrentModels();
+            ArrayList<InfrastructureComponentModel> l = getCurrentModels();
             try {
-                Serialization.serializeInfrastructuur(l, filePath);
+                Serialization.serializeInfrastructure(l, filePath);
                 System.out.println(l);
                 System.out.println("Gelukt jawelll");
             } catch (IOException ex) {
@@ -238,8 +233,8 @@ public class DesignController implements ActionListener {
         }
     }
 
-    public ArrayList<InfrastructuurComponentModel> getCurrentModels() {
-        ArrayList<InfrastructuurComponentModel> l = new ArrayList<InfrastructuurComponentModel>();
+    public ArrayList<InfrastructureComponentModel> getCurrentModels() {
+        ArrayList<InfrastructureComponentModel> l = new ArrayList<InfrastructureComponentModel>();
         int count = panel.getTableModel().getRowCount();
         for (int i = 0; i < count; i++) {
             ComponentType type = null;
@@ -256,7 +251,7 @@ public class DesignController implements ActionListener {
                     break;
             }
 
-            l.add(new InfrastructuurComponentModel(panel.getTableModel().getValueAt(i, 1).toString(),
+            l.add(new InfrastructureComponentModel(panel.getTableModel().getValueAt(i, 1).toString(),
                     Double.parseDouble(panel.getTableModel().getValueAt(i, 2).toString()),
                     Double.parseDouble(panel.getTableModel().getValueAt(i, 3).toString()),
                     type,

@@ -28,13 +28,13 @@ public class ButtonEditor extends DefaultCellEditor
                 fireEditingStopped();
                 if (lbl.equals(" + ")) {
                     panel.getTableModel().setValueAt(
-                            String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getjTable().getSelectedRow(), 4).toString())+1),
-                            panel.getjTable().getSelectedRow(), 4);
+                            String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getJTable().getSelectedRow(), 4).toString())+1),
+                            panel.getJTable().getSelectedRow(), 4);
                 }
 
                 if (lbl.equals(" - ")) {
-                    if (Integer.parseInt(panel.getTableModel().getValueAt(panel.getjTable().getSelectedRow(), 4).toString()) > 1)
-                        panel.getTableModel().setValueAt(String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getjTable().getSelectedRow(), 4).toString())-1), panel.getjTable().getSelectedRow(), 4);
+                    if (Integer.parseInt(panel.getTableModel().getValueAt(panel.getJTable().getSelectedRow(), 4).toString()) > 1)
+                        panel.getTableModel().setValueAt(String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getJTable().getSelectedRow(), 4).toString())-1), panel.getJTable().getSelectedRow(), 4);
                     else {
                         //Misschien verwijderen als hij minder dan 1 word?
                         //tableModel.removeRow(jTable.getSelectedRow());
@@ -42,8 +42,8 @@ public class ButtonEditor extends DefaultCellEditor
 
                 }
 
-                if (lbl.equals("Delete")) {
-                    panel.getTableModel().removeRow(panel.getjTable().getSelectedRow());
+                if (lbl.equals("Verwijder")) {
+                    panel.getTableModel().removeRow(panel.getJTable().getSelectedRow());
                 }
                 //Update prijs & beschikbaarheid
                 controller.update();

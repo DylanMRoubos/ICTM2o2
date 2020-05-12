@@ -5,10 +5,10 @@ import site.nerdygadgets.functions.Serialization;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ComponentenModel {
+public class ComponentsModel {
     private ArrayList<ComponentModel> componentModels;
 
-    public ComponentenModel(){
+    public ComponentsModel(){
         componentModels = new ArrayList<ComponentModel>();
     }
 
@@ -32,7 +32,7 @@ public class ComponentenModel {
             Serialization.serializeComponents(componentModels);
             return true;
         }catch (IOException e){
-            System.out.println("Error ding");
+            System.out.println("Error");
             return false;
         }
     }
@@ -54,7 +54,7 @@ public class ComponentenModel {
         }
     }
 
-    public void printComponenten(){
+    public void printComponents(){
         for(ComponentModel m: componentModels){
             System.out.println(m);
         }

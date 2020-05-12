@@ -1,35 +1,28 @@
 package site.nerdygadgets.functions;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import site.nerdygadgets.models.ComponentModel;
-import site.nerdygadgets.models.InfrastructuurComponentModel;
+import site.nerdygadgets.models.InfrastructureComponentModel;
 
-import java.io.*;
-import java.lang.reflect.Type;
-import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CalculateComponent {
 
-    public static double calculatePrice(ArrayList<InfrastructuurComponentModel> components) {
+    public static double calculatePrice(ArrayList<InfrastructureComponentModel> components) {
         double totalPrice = 0;
-        for (InfrastructuurComponentModel model : components) {
-            for (int i = 0; i < model.getAantal(); i++)
+        for (InfrastructureComponentModel model : components) {
+            for (int i = 0; i < model.getAmount(); i++)
                 totalPrice += model.getPrice();
         }
         return totalPrice;
     }
 
-    public static double calculateAvailability(ArrayList<InfrastructuurComponentModel> components) {
+    public static double calculateAvailability(ArrayList<InfrastructureComponentModel> components) {
         double firewall   = 0;
         double webservers = 0;
         double databases   = 0;
         double totalAvailability = 0;
 
-        for (InfrastructuurComponentModel model : components) {
-            for (int i = 0; i < model.getAantal(); i++) {
+        for (InfrastructureComponentModel model : components) {
+            for (int i = 0; i < model.getAmount(); i++) {
                 System.out.println(model.getAvailability()/100);
                 switch (model.getType()) {
                     case Firewall:

@@ -7,19 +7,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class InfrastructuurComponentModel {
+public class InfrastructureComponentModel {
     private String name;
     private double availability;
     private double price;
     private ComponentType type;
-    private int aantal;
+    private int amount;
 
-    public InfrastructuurComponentModel(String name, double availability, double price, ComponentType type, int aantal) {
+    public InfrastructureComponentModel(String name, double availability, double price, ComponentType type, int amount) {
         this.name = name;
         this.availability = availability;
         this.price = price;
         this.type = type;
-        this.aantal = aantal;
+        this.amount = amount;
     }
 
     public ComponentType getType() {
@@ -38,29 +38,29 @@ public class InfrastructuurComponentModel {
         return this.name;
     }
 
-    public int getAantal() {
-        return aantal;
+    public int getAmount() {
+        return amount;
     }
 
     @Override
     public String toString() {
-        return "InfrastructuurComponentModel{" +
+        return "InfrastructureComponentModel{" +
                 "name='" + name + '\'' +
                 ", availability=" + availability +
                 ", price=" + price +
                 ", type=" + type +
-                ", aantal=" + aantal +
+                ", amount=" + amount +
                 '}';
     }
 
-    public static InfrastructuurComponentModel makeInfrastructuurComponentModel(ComponentModel m, int amount) {
-        return new InfrastructuurComponentModel(m.getName(), m.getAvailability(), m.getPrice(), m.getType(), amount);
+    public static InfrastructureComponentModel makeInfrastructureComponentModel(ComponentModel m, int amount) {
+        return new InfrastructureComponentModel(m.getName(), m.getAvailability(), m.getPrice(), m.getType(), amount);
     }
 
-    public static InfrastructuurComponentModel getModel(String name, ComponentType type) {
+    public static InfrastructureComponentModel getModel(String name, ComponentType type) {
         try {
-            ArrayList<InfrastructuurComponentModel> l = Serialization.deserializeInfrastructuur();
-            for (InfrastructuurComponentModel m : l) {
+            ArrayList<InfrastructureComponentModel> l = Serialization.deserializeInfrastructure();
+            for (InfrastructureComponentModel m : l) {
                 if (m.getType() == type && m.getName().equals(name)) {
                     return m;
                 }
