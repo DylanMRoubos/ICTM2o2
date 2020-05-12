@@ -28,11 +28,11 @@ public class Algoritme {
     private String[] webnull = {"Null", "0", "0", "1", "8"};
 
     // array for dbservers, dbserver null + amount dbservers = 4
-    // ! method to count the amount of dbservers or to count the chosen dbservers !
+    // TODO: method to count the amount of dbservers or to count the chosen dbservers
     private int[] dbArr = new int[4];
     private int x = 0;
 
-    // ! method to count the amount of webservers or to count the chosen webservers !
+    // TODO: method to count the amount of webservers or to count the chosen webservers
     // array for webervers, webserver null + amount webservers = 4
     private int[] webArr = new int[4];
     private int y = 0;
@@ -55,6 +55,17 @@ public class Algoritme {
     private int bestSolution = 0;
 
     private double dbTestPercentage = 1;
+
+    // TODO: constructor for given availabilty
+    // TODO: constructor for given availabilty and given components
+
+    public Algoritme(double availabilty) {
+
+    }
+
+    public Algoritme(double availabilty, ArrayList components) {
+
+    }
 
     // default constructor
     public Algoritme() {
