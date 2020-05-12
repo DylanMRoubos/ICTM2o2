@@ -53,6 +53,10 @@ public class InfrastructuurComponentModel {
                 '}';
     }
 
+    public static InfrastructuurComponentModel makeInfrastructuurComponentModel(ComponentModel m, int amount) {
+        return new InfrastructuurComponentModel(m.getName(), m.getAvailability(), m.getPrice(), m.getType(), amount);
+    }
+
     public static InfrastructuurComponentModel getModel(String name, ComponentType type) {
         try {
             ArrayList<InfrastructuurComponentModel> l = Serialization.deserializeInfrastructuur();

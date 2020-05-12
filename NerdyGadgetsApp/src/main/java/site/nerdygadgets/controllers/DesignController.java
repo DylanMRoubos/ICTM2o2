@@ -80,6 +80,11 @@ public class DesignController implements ActionListener {
                 }
             }
         });
+
+        //je hebt buttons
+        //componenten = fillArrayList() update lijst
+        //ComponentModel to InfrastructureComponentModel converter = InfrastructuurComponentModel.makeInfrastructuurComponentModel()
+
     }
 
     public void openFile(File f) {
@@ -95,6 +100,7 @@ public class DesignController implements ActionListener {
     }
 
     private void fillArraylist() {
+        model.reloadList();
         this.lijst.addAll(model.getDatabaseModels());
         this.lijst.addAll(model.getWebModels());
         this.lijst.addAll(model.getPfsenseModels());
@@ -136,6 +142,11 @@ public class DesignController implements ActionListener {
 
     private void addModelToTable(InfrastructuurComponentModel model) {
         panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAantal()), " + ", " - ", "Delete"});
+    }
+
+    private void addInfModelsToTable(ArrayList<InfrastructuurComponentModel> l) {
+        for (InfrastructuurComponentModel model : l)
+            panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAantal()), " + ", " - ", "Delete"});
     }
 
     @Override
