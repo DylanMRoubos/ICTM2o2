@@ -194,20 +194,17 @@ public class Algoritme {
                     }
                 }
             }
-
             dbTestPercentage = (1 - dbTestPercentage);
-
             double testTotalPercentage = (dbTestPercentage * highestWebServer * 0.99998) * 100;
-
-            // if the percentage of the highest websolution is lower with the current dbsolution break and go to the next dbsolution
-            if (testTotalPercentage < availabilty) {
-                dbTestPercentage = 1;
-                break;
-            }
-
+            dbTestPercentage = 1;
 
             // foreach websolution calculate the percentage and price
             for (String websolution : webSolutions) {
+
+                // if the percentage of the highest websolution is lower with the current dbsolution break and go to the next dbsolution
+                if (testTotalPercentage < availabilty) {
+                    break;
+                }
 
                 for (x = 0; x < amount; x++) {
                     dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
