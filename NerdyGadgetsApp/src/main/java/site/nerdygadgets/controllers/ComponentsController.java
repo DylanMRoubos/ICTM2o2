@@ -89,7 +89,10 @@ public class ComponentsController implements ActionListener{
         if (e.getSource() == view.getJbAdd()) {
             //Voeg toe gedrukt
             double availability = this.getAvailability();
-            if (availability == -1) {
+            if(availability > 100.0){
+                JOptionPane.showMessageDialog(null, "Beschikbaarheid hoger dan 100%", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if (availability == -1) {
                 //invalid availability (0>)
                 JOptionPane.showMessageDialog(null, "Invalid availability input", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
                 return;

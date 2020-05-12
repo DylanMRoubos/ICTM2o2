@@ -155,13 +155,22 @@ public class DesignController implements ActionListener {
             ComponentModel model;
 
             if (e.getSource() == panel.getJcDatabase()) {
+                // naam en componenttype is unique
                 model = ComponentModel.getModel(item, ComponentType.Database);
                 if(model == null)
                 {
                     System.out.println("Unable to convert component");
                     return;
                 }
-                panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
+                boolean hasItem = false;
+                for(int i = 0; i < panel.getTableModel().getRowCount(); i++){
+                    if(panel.getJTable().getValueAt(i,0).equals(model.getType().name()) && panel.getJTable().getValueAt(i,1).equals(model.getName())){
+                        System.out.println("kan niet");
+                    }else {
+                        panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
+                    }
+                }
+
             }
 
             if (e.getSource() == panel.getJcWeb()) {
