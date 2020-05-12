@@ -235,18 +235,19 @@ public class Algoritme {
                 int totalPrice = webPrice + dbPrice + 4000;
 
                 if (totalPercentage >= availabilty) {
+                    // TODO: arraylist with the best solution
                     if (bestSolution == 0) {
-                        System.out.println(totalPrice);
-                        System.out.println(totalPercentage);
-                        System.out.println(websolution + dbsolution);
+//                        System.out.println(totalPrice);
+//                        System.out.println(totalPercentage);
+//                        System.out.println(websolution + dbsolution);
+//                        System.out.println();
                         bestSolution = totalPrice;
-                        System.out.println();
                     } else if (totalPrice < bestSolution) {
                         bestSolution = totalPrice;
-                        System.out.println(totalPrice);
-                        System.out.println(totalPercentage);
-                        System.out.println(websolution + dbsolution);
-                        System.out.println();
+//                        System.out.println(totalPrice);
+//                        System.out.println(totalPercentage);
+//                        System.out.println(websolution + dbsolution);
+//                        System.out.println();
                     }
                 }
 
