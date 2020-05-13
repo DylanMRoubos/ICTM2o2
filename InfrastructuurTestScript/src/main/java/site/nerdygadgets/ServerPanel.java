@@ -41,9 +41,9 @@ public class ServerPanel extends JPanel implements ActionListener {
 
         } else if (type.equals("db")) {
             // buttons voor db
-            ndbdsJB = new JButton("service status ndbd");
             stopdbsJB = new JButton("stop services");
             startdbsJB = new JButton("start services");
+            ndbdsJB = new JButton("service status ndbd");
             restartdbsJB = new JButton("restart services");
 
             ndbdsJB.addActionListener(this);
