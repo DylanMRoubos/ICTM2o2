@@ -54,8 +54,6 @@ public class ComponentManagementPanel extends JPanel {
         //maak het hele linker kant panel aan
         jpCurrentComponents = new JPanel();
         add(jpCurrentComponents);
-//        jpCurrentComponents.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        //jpCurrentComponents.setLayout(new BorderLayout());
         jpCurrentComponents.setLayout(new BoxLayout(jpCurrentComponents, BoxLayout.PAGE_AXIS));
         jpCurrentComponents.add(jlCurrentComponents);
         jpCurrentComponents.add(jpCurrentComponentsContent);
@@ -73,7 +71,6 @@ public class ComponentManagementPanel extends JPanel {
         tableModel.addColumn("Beschikbaarheid");
         tableModel.addColumn("Prijs");
 
-        //tableModel.addRow(new Object[]{"mep", "mep", "mep", "mep"});
         jTable = new JTable(tableModel);
         tableScrollPane = new JScrollPane(jTable);
         tableScrollPane.setSize(new Dimension(250, 450));

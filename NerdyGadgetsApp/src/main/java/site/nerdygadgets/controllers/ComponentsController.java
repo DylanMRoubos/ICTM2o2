@@ -44,8 +44,9 @@ public class ComponentsController implements ActionListener{
 
                 //Row index is found
                 int rowIndex = view.getJTable().getSelectedRow();
-                if (rowIndex < 0)
+                if (rowIndex < 0){
                     return;
+                }
                 if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
                     JPopupMenu popup = createYourPopUp(rowIndex);
                     popup.show(e.getComponent(), e.getX(), e.getY());
@@ -108,7 +109,7 @@ public class ComponentsController implements ActionListener{
             double price = this.getPrice();
             if (price == -1) {
                 //invalid price (0>)
-                //Error afhandelen?
+                //Error afhandelen
                 JOptionPane.showMessageDialog(null, "Invalid price input", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (price == -2) {

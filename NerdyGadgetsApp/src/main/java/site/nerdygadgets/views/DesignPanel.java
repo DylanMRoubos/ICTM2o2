@@ -20,8 +20,7 @@ public class DesignPanel extends JPanel {
     private JPanel jpDisplay;
     private JPanel jpDisplayPanel;
     private JPanel jpDisplayControls;
-    //private JList jList;
-    //private DefaultListModel jListModel;
+
     private JComboBox jcDatabase;
     private JComboBox jcWeb;
     private JComboBox jcFirewall;
@@ -30,14 +29,12 @@ public class DesignPanel extends JPanel {
 
     private JLabel jlPrice;
     private JLabel jlAvailability;
-    private boolean hasToReload;
 
     private JTable jTable;
     private DefaultTableModel tableModel;
 
     public DesignPanel() {
         setLayout(new GridLayout(0, 2));
-        hasToReload = false;
         //Maak het panel waar alle content in staat
         jpMakeDesign = new JPanel();
         jpMakeDesign.setPreferredSize(new Dimension(600, 650));
@@ -102,9 +99,6 @@ public class DesignPanel extends JPanel {
         tableModel.addColumn("Verwijder");
 
         jTable = new JTable(tableModel);
-//        tableModel.addRow(new Object[]{"firewall", "vuurmuur", "99", "1000", "5", " + ", " - ", "Delete"});
-//        tableModel.addRow(new Object[]{"firewall", "vuurmuur", "99", "1000", "5", " + ", " - ", "Delete"});
-
         JScrollPane sp = new JScrollPane(jTable);
 
         sp.setPreferredSize(new Dimension(550, 590));
@@ -141,7 +135,6 @@ public class DesignPanel extends JPanel {
         jbOpt = new JButton("Optimaliseer");
 
         //Voeg alle content toe
-//        jpDisplayPanel.setLayout(new FlowLayout());
         jpDisplay.add(jpDisplayControls);
         jpDisplayControls.add(jbOpt);
         jpDisplayControls.add(jpDisplayPanel);
