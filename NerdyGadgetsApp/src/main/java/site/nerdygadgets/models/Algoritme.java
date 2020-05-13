@@ -47,6 +47,8 @@ public class Algoritme {
     private int dbCounter = 1;
     private int webCounter = 1;
 
+    private int algorithmCounter;
+
     private ArrayList<ComponentModel> components;
 
     // TODO: constructor for given availabilty and given components / all components
@@ -105,6 +107,7 @@ public class Algoritme {
         // for the best solution
         Algoritm();
 
+        System.out.println(webSolutions);
     }
 
     public void AddComponents() {
@@ -137,6 +140,11 @@ public class Algoritme {
             }
 
             componentCounter++;
+        }
+        if (componentCounter<11) {
+            algorithmCounter = (dbCounter + webCounter) * 2;
+        }else{
+            algorithmCounter = (dbCounter + webCounter) * 2 + (componentCounter - 10);
         }
     }
 
@@ -174,14 +182,23 @@ public class Algoritme {
 
             for (int i = 0; i < r; i++) {
                 String test = Integer.toString(arr[chosen[i]]);
-                tijdelijke = tijdelijke + test;
+                if (tijdelijke.equals("")) {
+
+                    tijdelijke = tijdelijke + test;
+                }else{
+                    tijdelijke = tijdelijke + "-" + test;
+                }
             }
+            System.out.println(tijdelijke);
             for (String[] strInt : algorithmComponents) {
                 if (tijdelijke.contains(strInt[4]) && strInt[3].equals("Database")) {
                     dbSolutions.add(tijdelijke);
+
                 } else if (tijdelijke.contains(strInt[4]) && strInt[3].equals("Webserver")) {
                     webSolutions.add(tijdelijke);
+
                 }
+
             }
 
             return;
@@ -210,7 +227,7 @@ public class Algoritme {
         }
         int z ;
 
-        for (z = 0; z < amount; z++) {
+        for (z = 0; z < webCounter; z++) {
             highestWebServer = highestWebServer * (1 - (tijdelijk / 100));
         }
 
@@ -225,9 +242,17 @@ public class Algoritme {
 
             int dbServerNumber;
             int componentNumber;
+            int webServerNumber;
 
-            for (x = 0; x < amount; x++) {
-                dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
+            for (x = 0; x < algorithmCounter; x++) {
+                if (dbsolution.charAt(x) == '-'){
+                    break;
+                }else if (!(dbsolution.charAt(x+1) == '-')){
+                    dbServerNumber = Character.getNumericValue(dbsolution.charAt(x)) + Character.getNumericValue(dbsolution.charAt(x+1));
+                    x++;
+                }else{
+                    dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
+                }
 
                 for (String[] strInt : algorithmComponents) {
                     componentNumber = Integer.parseInt(strInt[4]);
@@ -250,10 +275,15 @@ public class Algoritme {
                     break;
                 }
 
-                for (x = 0; x < amount; x++) {
-                    dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
-                    int webServerNumber = Character.getNumericValue(websolution.charAt(x));
-
+                for (x = 0; x < algorithmCounter; x++) {
+                    if (dbsolution.charAt(x) == '-') {
+                        break;
+                    } else if (!(dbsolution.charAt(x + 1) == '-')) {
+                        dbServerNumber = Character.getNumericValue(dbsolution.charAt(x)) + Character.getNumericValue(dbsolution.charAt(x + 1));
+                        x++;
+                    } else {
+                        dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
+                    }
                     for (String[] strInt : algorithmComponents) {
                         componentNumber = Integer.parseInt(strInt[4]);
 
@@ -261,14 +291,28 @@ public class Algoritme {
                             dbPrice += Double.parseDouble(strInt[2]);
                             dbPercentage = dbPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
                         }
+                    }
+                }
+                for (x = 0; x < algorithmCounter; x++) {
+                    if (websolution.charAt(x) == '-') {
+                        break;
+                    } else if (!(websolution.charAt(x + 1) == '-')) {
+                        webServerNumber = Character.getNumericValue(websolution.charAt(x)) + Character.getNumericValue(websolution.charAt(x + 1));
+                        x++;
+                    } else {
+                        webServerNumber = Character.getNumericValue(websolution.charAt(x));
+                    }
+                    for (String[] strInt : algorithmComponents) {
+                        componentNumber = Integer.parseInt(strInt[4]);
 
                         if (webServerNumber == componentNumber) {
                             webPrice += Double.parseDouble(strInt[2]);
                             webPercentage = webPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
                         }
                     }
-
                 }
+
+
                 webPercentage = (1 - webPercentage);
                 dbPercentage = (1 - dbPercentage);
 
@@ -285,7 +329,7 @@ public class Algoritme {
                         bestSolutionAvailabilty = totalPercentage;
                         System.out.println(bestSolutionPrice);
                         System.out.println(totalPercentage);
-                        System.out.println(websolution + dbsolution);
+                        System.out.println(websolution + "-" + dbsolution);
                     }
                 }
 
