@@ -22,13 +22,11 @@ public class Algoritme {
     private String[] dbnull = {"Null", "0", "0", "Database", "0"};
     private String[] webnull = {"Null", "0", "0", "Webserver", "1"};
 
-    // array for dbservers, dbserver null + amount dbservers = 4
-    // TODO: method to count the amount of dbservers or to count the chosen dbservers
+    // array for dbservers, dbserver null + amount dbservers
     private int[] dbArr;
     private int x = 0;
 
-    // TODO: method to count the amount of webservers or to count the chosen webservers
-    // array for webervers, webserver null + amount webservers = 4
+    // array for webervers, webserver null + amount webservers
     private int[] webArr;
     private int y = 0;
 
@@ -52,10 +50,35 @@ public class Algoritme {
     private ArrayList<ComponentModel> components;
 
     // TODO: constructor for given availabilty and given components / all components
-    public Algoritme(double availabilty, List components , boolean ownChoice) {
+    public Algoritme(double availabilty, ArrayList<ComponentModel> chosenComponents, ArrayList<ComponentModel> components ) {
+        this.availabilty = availabilty;
+        this.components = components;
+
+        // Add components to arraylist components
+        AddComponents();
+
+        // Add servers to array
+        AddServers();
+
+        // current highest webserver
+        HighestWebServer();
+
+        // all solutions for dbservers
+        int n = dbArr.length;
+        int r = amount;
+        CombinationRepetition(dbArr, n, r);
+
+        // all solutions for webservers
+        int l = amount;
+        int k = webArr.length;
+        CombinationRepetition(webArr, k, l);
+
+        // for the best solution
+        Algoritm();
 
     }
 
+    // constructor for given availabilty and all components
     public Algoritme(double availabilty, ArrayList<ComponentModel> components) {
         this.availabilty = availabilty;
         this.components = components;
@@ -92,6 +115,8 @@ public class Algoritme {
 
         // 1
         algorithmComponents.add(webnull);
+
+        // TODO : if chosenComponents exist
 
         for (ComponentModel test : components) {
             System.out.println(test);
@@ -247,6 +272,7 @@ public class Algoritme {
                 webPercentage = (1 - webPercentage);
                 dbPercentage = (1 - dbPercentage);
 
+                // TODO : pfsene beschikbaarheid en prijs fixxen
                 double totalPercentage = (webPercentage * dbPercentage * 0.99998) * 100;
                 double totalPrice = webPrice + dbPrice + 4000;
 

@@ -255,8 +255,13 @@ public class DesignController implements ActionListener {
         // ! added !
         if (e.getSource() == panel.getJbOpt()) {
 
+            // TODO : dialog om beschikbaarheid in te vullen
+
             fillArraylist();
             algoritme = new Algoritme(99.99, list);
+
+            panel.getJlPrice().setText("€" + algoritme.getBestSolutionPrice());
+            panel.getJlAvailability().setText(algoritme.getBestSolutionAvailabilty() + "%");
         }
     }
 
