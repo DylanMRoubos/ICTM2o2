@@ -1,5 +1,6 @@
 package site.nerdygadgets.controllers;
 
+import site.nerdygadgets.models.Algoritme;
 import site.nerdygadgets.functions.*;
 import site.nerdygadgets.models.ComponentModel;
 import site.nerdygadgets.models.DesignModel;
@@ -22,6 +23,9 @@ public class DesignController implements ActionListener {
     private DesignModel model;
     private ArrayList<ComponentModel> list;
 
+    // ! added !
+    private Algoritme algoritme;
+
     public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
         this.panel = panel;
         this.model = model;
@@ -42,6 +46,9 @@ public class DesignController implements ActionListener {
         panel.getJcFirewall().addActionListener(this);
 
         panel.getSaveButton().addActionListener(this);
+
+        // ! added !
+        panel.getJbOpt().addActionListener(this);
 
         mfv.getHomePanel().getJpOpen().addMouseListener(new MouseAdapter() {
             @Override
@@ -243,6 +250,13 @@ public class DesignController implements ActionListener {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        }
+
+        // ! added !
+        if (e.getSource() == panel.getJbOpt()) {
+
+            fillArraylist();
+            algoritme = new Algoritme(99.99, list);
         }
     }
 

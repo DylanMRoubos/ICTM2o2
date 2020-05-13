@@ -1,4 +1,6 @@
-package site.nerdygadgets.algoritm;
+package site.nerdygadgets.models;
+
+import site.nerdygadgets.functions.ComponentType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,22 +12,15 @@ public class Algoritme {
     private List<String> webSolutions = new ArrayList<>();
 
     // temporary availabilty and amount of dbservers and webservers
-    private double availabilty = 99.99;
+    private double availabilty;
     private int amount = 5;
 
     // arraylist for components
-    private List<String[]> components = new ArrayList<>();
+    private List<String[]> algorithmComponents = new ArrayList<>();
 
-    // Components
-    private String[] db1 = {"HAL90001DB", "90", "5100", "0", "1"};
-    private String[] db2 = {"HAL9002DB", "95", "7700", "0", "2"};
-    private String[] db3 = {"HAL9003DB", "98", "12200", "0", "3"};
-    private String[] web1 = {"HAL90001W", "80", "2200", "1", "4"};
-    private String[] web2 = {"HAL9002DW", "90", "3200", "1", "5"};
-    private String[] web3 = {"HAL9003DW", "95", "5100", "1", "6"};
-    private String[] pf1 = {"firewall pfSense", "99.998", "4000", "2", "7"};
-    private String[] dbnull = {"Null", "0", "0", "0", "0"};
-    private String[] webnull = {"Null", "0", "0", "1", "8"};
+    // Null Components
+    private String[] dbnull = {"Null", "0", "0", "Database", "0"};
+    private String[] webnull = {"Null", "0", "0", "Webserver", "1"};
 
     // array for dbservers, dbserver null + amount dbservers = 4
     // TODO: method to count the amount of dbservers or to count the chosen dbservers
@@ -46,29 +41,27 @@ public class Algoritme {
     // defaults
     private double highestWebServer = 1;
 
-    private int dbPrice = 0;
+    private double dbPrice = 0;
     private double dbPercentage = 1;
 
-    private int webPrice = 0;
+    private double webPrice = 0;
     private double webPercentage = 1;
 
-    private int bestSolution = 0;
+    private double bestSolutionPrice = 0;
+    private double bestSolutionAvailabilty = 0;
 
     private double dbTestPercentage = 1;
 
-    // TODO: constructor for given availabilty
-    // TODO: constructor for given availabilty and given components
+    private ArrayList<ComponentModel> test123;
 
-    public Algoritme(double availabilty) {
-
-    }
-
-    public Algoritme(double availabilty, List components) {
+    // TODO: constructor for given availabilty and given components / all components
+    public Algoritme(double availabilty, List components , boolean ownChoice) {
 
     }
 
-    // default constructor
-    public Algoritme() {
+    public Algoritme(double availabilty, ArrayList<ComponentModel> components) {
+        this.availabilty = availabilty;
+        this.test123 = components;
 
         // Add components to arraylist components
         AddComponents();
@@ -85,33 +78,51 @@ public class Algoritme {
         // all solutions for webservers
         CombinationRepetition(webArr, k, l);
 
-        // site.nerdygadgets.algoritm for the best solution
+        // for the best solution
         Algoritm();
+
     }
 
     public void AddComponents() {
-        // lowest availabilty dbservers first
-        // highest availabilty webservers first
-        components.add(pf1);
-        components.add(dbnull);
-        components.add(db1);
-        components.add(db2);
-        components.add(db3);
-        components.add(web3);
-        components.add(web2);
-        components.add(web1);
-        components.add(webnull);
+        int componentCounter = 2;
+
+        algorithmComponents.add(dbnull);
+        algorithmComponents.add(webnull);
+
+        for (ComponentModel test : test123) {
+            System.out.println(test);
+
+            if (test.getType().equals(ComponentType.Database)) {
+                String[] add = {test.getName(), String.valueOf(test.getAvailability()), String.valueOf(test.getPrice()), String.valueOf(test.getType()), String.valueOf(componentCounter)};
+                algorithmComponents.add(add);
+
+            } else if (test.getType().equals(ComponentType.Webserver)) {
+                String[] add = {test.getName(), String.valueOf(test.getAvailability()), String.valueOf(test.getPrice()), String.valueOf(test.getType()), String.valueOf(componentCounter)};
+                algorithmComponents.add(add);
+
+            } else if (test.getType().equals(ComponentType.Firewall)){
+                String[] add = {test.getName(), String.valueOf(test.getAvailability()), String.valueOf(test.getPrice()), String.valueOf(test.getType()), String.valueOf(componentCounter)};
+                algorithmComponents.add(add);
+            }
+
+            componentCounter++;
+        }
+
+        for (String[] strInt : algorithmComponents) {
+            System.out.println(strInt[4] + strInt[0]);
+        }
+
     }
 
     public void AddServers() {
         // check if component is a webserver or a dbserver and then adds the componentnumber to the array
-        for (String[] strInt : components) {
+        for (String[] strInt : algorithmComponents) {
 
-            if (strInt[3].equals("0")) {
+            if (strInt[3].equals("Database")) {
                 dbArr[x] = Integer.parseInt(strInt[4]);
                 x++;
 
-            } else if (strInt[3].equals("1")) {
+            } else if (strInt[3].equals("Webserver")) {
                 webArr[y] = Integer.parseInt(strInt[4]);
                 y++;
             }
@@ -136,12 +147,12 @@ public class Algoritme {
                 String test = Integer.toString(arr[chosen[i]]);
                 tijdelijke = tijdelijke + test;
             }
-
-            if (tijdelijke.contains("1") || tijdelijke.contains("2") || tijdelijke.contains("3") || tijdelijke.contains("0")) {
-                dbSolutions.add(tijdelijke);
-
-            } else {
-                webSolutions.add(tijdelijke);
+            for (String[] strInt : algorithmComponents) {
+                if (tijdelijke.contains(strInt[4]) && strInt[3].equals("Database")) {
+                    dbSolutions.add(tijdelijke);
+                } else if (tijdelijke.contains(strInt[4]) && strInt[3].equals("Webserver")) {
+                    webSolutions.add(tijdelijke);
+                }
             }
 
             return;
@@ -159,11 +170,11 @@ public class Algoritme {
 
     public void HighestWebServer() {
         double tijdelijk = 1;
-        for (String[] strInt : components) {
-            if (strInt[3].equals("1")) {
+        for (String[] strInt : algorithmComponents) {
+            if (strInt[3].equals("Webserver")) {
                 if (tijdelijk == 1) {
                     tijdelijk = Double.parseDouble(strInt[1]);
-                } else if (tijdelijk < Integer.parseInt(strInt[1])) {
+                } else if (tijdelijk < Double.parseDouble(strInt[1])) {
                     tijdelijk = Double.parseDouble(strInt[1]);
                 }
             }
@@ -189,7 +200,7 @@ public class Algoritme {
             for (x = 0; x < amount; x++) {
                 dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
 
-                for (String[] strInt : components) {
+                for (String[] strInt : algorithmComponents) {
                     componentNumber = Integer.parseInt(strInt[4]);
 
                     if (dbServerNumber == componentNumber) {
@@ -197,6 +208,7 @@ public class Algoritme {
                     }
                 }
             }
+
             dbTestPercentage = (1 - dbTestPercentage);
             double testTotalPercentage = (dbTestPercentage * highestWebServer * 0.99998) * 100;
             dbTestPercentage = 1;
@@ -213,16 +225,16 @@ public class Algoritme {
                     dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
                     int webServerNumber = Character.getNumericValue(websolution.charAt(x));
 
-                    for (String[] strInt : components) {
+                    for (String[] strInt : algorithmComponents) {
                         componentNumber = Integer.parseInt(strInt[4]);
 
                         if (dbServerNumber == componentNumber) {
-                            dbPrice += Integer.parseInt(strInt[2]);
+                            dbPrice += Double.parseDouble(strInt[2]);
                             dbPercentage = dbPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
                         }
 
                         if (webServerNumber == componentNumber) {
-                            webPrice += Integer.parseInt(strInt[2]);
+                            webPrice += Double.parseDouble(strInt[2]);
                             webPercentage = webPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
                         }
                     }
@@ -232,22 +244,18 @@ public class Algoritme {
                 dbPercentage = (1 - dbPercentage);
 
                 double totalPercentage = (webPercentage * dbPercentage * 0.99998) * 100;
-                int totalPrice = webPrice + dbPrice + 4000;
+                double totalPrice = webPrice + dbPrice + 4000;
 
                 if (totalPercentage >= availabilty) {
                     // TODO: arraylist with the best solution
-                    if (bestSolution == 0) {
-                        System.out.println(totalPrice);
-                        System.out.println(totalPercentage);
-                        System.out.println(websolution + dbsolution);
-                        System.out.println();
-                        bestSolution = totalPrice;
-                    } else if (totalPrice < bestSolution) {
-                        bestSolution = totalPrice;
-                        System.out.println(totalPrice);
-                        System.out.println(totalPercentage);
-                        System.out.println(websolution + dbsolution);
-                        System.out.println();
+                    if (bestSolutionPrice == 0) {
+                        bestSolutionPrice = totalPrice;
+                    } else if (totalPrice < bestSolutionPrice) {
+                        bestSolutionPrice = totalPrice;
+                        bestSolutionAvailabilty = totalPercentage;
+                        // System.out.println(bestSolutionPrice);
+                        // System.out.println(totalPercentage);
+                        // System.out.println(websolution + dbsolution);
                     }
                 }
 
@@ -257,6 +265,16 @@ public class Algoritme {
                 dbPercentage = 1;
             }
         }
+    }
+
+    // TODO : return a arraylist with the solution naam beschikbaarheid prijs type (nummer) amount
+    // TODO : + totale beschikbaarheid totale prijs
+    public double getBestSolutionAvailabilty() {
+        return bestSolutionAvailabilty;
+    }
+
+    public double getBestSolutionPrice() {
+        return bestSolutionPrice;
     }
 }
 
