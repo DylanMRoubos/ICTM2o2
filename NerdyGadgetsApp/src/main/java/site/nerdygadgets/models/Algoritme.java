@@ -24,19 +24,13 @@ public class Algoritme {
 
     // array for dbservers, dbserver null + amount dbservers = 4
     // TODO: method to count the amount of dbservers or to count the chosen dbservers
-    private int[] dbArr = new int[4];
+    private int[] dbArr;
     private int x = 0;
 
     // TODO: method to count the amount of webservers or to count the chosen webservers
     // array for webervers, webserver null + amount webservers = 4
-    private int[] webArr = new int[4];
+    private int[] webArr;
     private int y = 0;
-
-    private int n = dbArr.length;
-    private int r = amount;
-
-    private int k = webArr.length;
-    private int l = amount;
 
     // defaults
     private double highestWebServer = 1;
@@ -52,7 +46,10 @@ public class Algoritme {
 
     private double dbTestPercentage = 1;
 
-    private ArrayList<ComponentModel> test123;
+    private int dbCounter = 1;
+    private int webCounter = 1;
+
+    private ArrayList<ComponentModel> components;
 
     // TODO: constructor for given availabilty and given components / all components
     public Algoritme(double availabilty, List components , boolean ownChoice) {
@@ -61,7 +58,7 @@ public class Algoritme {
 
     public Algoritme(double availabilty, ArrayList<ComponentModel> components) {
         this.availabilty = availabilty;
-        this.test123 = components;
+        this.components = components;
 
         // Add components to arraylist components
         AddComponents();
@@ -73,9 +70,13 @@ public class Algoritme {
         HighestWebServer();
 
         // all solutions for dbservers
+        int n = dbArr.length;
+        int r = amount;
         CombinationRepetition(dbArr, n, r);
 
         // all solutions for webservers
+        int l = amount;
+        int k = webArr.length;
         CombinationRepetition(webArr, k, l);
 
         // for the best solution
@@ -86,19 +87,24 @@ public class Algoritme {
     public void AddComponents() {
         int componentCounter = 2;
 
+        // 0
         algorithmComponents.add(dbnull);
+
+        // 1
         algorithmComponents.add(webnull);
 
-        for (ComponentModel test : test123) {
+        for (ComponentModel test : components) {
             System.out.println(test);
 
             if (test.getType().equals(ComponentType.Database)) {
                 String[] add = {test.getName(), String.valueOf(test.getAvailability()), String.valueOf(test.getPrice()), String.valueOf(test.getType()), String.valueOf(componentCounter)};
                 algorithmComponents.add(add);
+                dbCounter++;
 
             } else if (test.getType().equals(ComponentType.Webserver)) {
                 String[] add = {test.getName(), String.valueOf(test.getAvailability()), String.valueOf(test.getPrice()), String.valueOf(test.getType()), String.valueOf(componentCounter)};
                 algorithmComponents.add(add);
+                webCounter++;
 
             } else if (test.getType().equals(ComponentType.Firewall)){
                 String[] add = {test.getName(), String.valueOf(test.getAvailability()), String.valueOf(test.getPrice()), String.valueOf(test.getType()), String.valueOf(componentCounter)};
@@ -107,14 +113,12 @@ public class Algoritme {
 
             componentCounter++;
         }
-
-        for (String[] strInt : algorithmComponents) {
-            System.out.println(strInt[4] + strInt[0]);
-        }
-
     }
 
     public void AddServers() {
+        webArr = new int[webCounter];
+        dbArr = new int[dbCounter];
+
         // check if component is a webserver or a dbserver and then adds the componentnumber to the array
         for (String[] strInt : algorithmComponents) {
 
@@ -253,9 +257,9 @@ public class Algoritme {
                     } else if (totalPrice < bestSolutionPrice) {
                         bestSolutionPrice = totalPrice;
                         bestSolutionAvailabilty = totalPercentage;
-                        // System.out.println(bestSolutionPrice);
-                        // System.out.println(totalPercentage);
-                        // System.out.println(websolution + dbsolution);
+                        System.out.println(bestSolutionPrice);
+                        System.out.println(totalPercentage);
+                        System.out.println(websolution + dbsolution);
                     }
                 }
 
