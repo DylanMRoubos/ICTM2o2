@@ -21,7 +21,7 @@ public class TestScriptFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(0, 3));
 
-        procedureJP = new ProcedureJP();
+        procedureJP = new ProcedureJP(this);
         serverJP = new ServerJP(this);
         consoleJP = new ConsoleJP();
 
