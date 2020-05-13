@@ -63,7 +63,7 @@ public class Algoritme {
 
     }
 
-    public Algoritme(double availabilty, ArrayList components) {
+    public Algoritme(double availabilty, List components) {
 
     }
 
