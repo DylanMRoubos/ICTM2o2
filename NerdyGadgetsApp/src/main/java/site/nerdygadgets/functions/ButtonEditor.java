@@ -46,7 +46,8 @@ public class ButtonEditor extends DefaultCellEditor
                     panel.getTableModel().removeRow(panel.getJTable().getSelectedRow());
                 }
                 //Update prijs & beschikbaarheid
-                controller.update();
+                controller.updateAvailability();
+                controller.updatePrice();
             }
         });
     }

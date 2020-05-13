@@ -6,6 +6,7 @@ import site.nerdygadgets.models.DesignModel;
 import site.nerdygadgets.models.InfrastructureComponentModel;
 import site.nerdygadgets.views.DesignPanel;
 import site.nerdygadgets.views.MainFrameView;
+import site.nerdygadgets.views.Views;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -20,13 +21,14 @@ import java.util.ArrayList;
 public class DesignController implements ActionListener {
     private DesignPanel panel;
     private DesignModel model;
-    private ArrayList<ComponentModel> list;
+
+    private boolean isUpdatingComboboxes;
 
     public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
         this.panel = panel;
         this.model = model;
-        list = new ArrayList<ComponentModel>();
-        initController();
+        this.isUpdatingComboboxes = false;
+        //initController();
 
         panel.getJTable().getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
         panel.getJTable().getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
@@ -42,6 +44,15 @@ public class DesignController implements ActionListener {
         panel.getJcFirewall().addActionListener(this);
 
         panel.getSaveButton().addActionListener(this);
+
+        mfv.getHomePanel().getJpCreate().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                updateComboboxes();
+            }
+        });
+
 
         mfv.getHomePanel().getJpOpen().addMouseListener(new MouseAdapter() {
             @Override
@@ -77,11 +88,6 @@ public class DesignController implements ActionListener {
                 }
             }
         });
-
-        //je hebt buttons
-        //componenten = fillArrayList() update lijst
-        //ComponentModel to InfrastructureComponentModel converter = InfrastructuurComponentModel.makeInfrastructuurComponentModel()
-
     }
 
     public void openFile(File f) {
@@ -96,36 +102,28 @@ public class DesignController implements ActionListener {
         }
     }
 
-    private void fillArraylist() {
-        model.reloadList();
-        this.list.addAll(model.getDatabaseModels());
-        this.list.addAll(model.getWebModels());
-        this.list.addAll(model.getFirewallModels());
-    }
-
-    public void initController() {
+    public void updateComboboxes() {
+        this.isUpdatingComboboxes = true;
+        panel.getJcDatabase().removeAllItems();
+        panel.getJcWeb().removeAllItems();
+        panel.getJcFirewall().removeAllItems();
+        System.out.println("Items removed");
         model.reloadList();
 
         ArrayList<ComponentModel> l = model.getDatabaseModels();
-        //panel.getJcDatabase().removeAllItems();
         for (ComponentModel m : l)
-            panel.getJcDatabase().addItem(m.getName());
+            panel.getJcDatabase().addItem(m.getName()); //Voegt ook toe aan table? waarom? alleen bij 1e itteratie?
 
         l = model.getWebModels();
-        //panel.getJcWeb().removeAllItems();
         for (ComponentModel m : l)
-            panel.getJcWeb().addItem(m.getName());
+            panel.getJcWeb().addItem(m.getName()); //Voegt ook toe aan table? waarom? alleen bij 1e itteratie?
 
         l = model.getFirewallModels();
-        //panel.getJcPfsense().removeAllItems();
         for (ComponentModel m : l)
-            panel.getJcFirewall().addItem(m.getName());
+            panel.getJcFirewall().addItem(m.getName()); //Voegt ook toe aan table? waarom? alleen bij 1e itteratie?
+        this.isUpdatingComboboxes = false;
     }
 
-    public void update() {
-        updatePrice();
-        updateAvailability();
-    }
     public void updatePrice() {
         ArrayList<InfrastructureComponentModel> l = getCurrentModels();
         double price = CalculateComponent.calculatePrice(l);
@@ -148,20 +146,20 @@ public class DesignController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() instanceof JComboBox) {
+        if (e.getSource() instanceof JComboBox && !isUpdatingComboboxes) {
             JComboBox cb = (JComboBox)e.getSource();
             String item = String.valueOf(cb.getSelectedItem());
             cb.setSelectedIndex(-1);
             ComponentModel model;
-
             if (e.getSource() == panel.getJcDatabase()) {
                 // naam en componenttype is unique
                 model = ComponentModel.getModel(item, ComponentType.Database);
                 if(model == null)
                 {
-                    System.out.println("Unable to convert component");
+                    System.out.println("Unable to convert component TO DATABASE");
                     return;
                 }
+
                 boolean hasItem = false;
                 int r = 0;
                 for(int i = 0; i < panel.getTableModel().getRowCount(); i++){
@@ -174,29 +172,52 @@ public class DesignController implements ActionListener {
                     panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
                 else
                     panel.getTableModel().setValueAt(Integer.parseInt(panel.getJTable().getValueAt(r, 4).toString()) + 1, r, 4);
-
             }
 
             if (e.getSource() == panel.getJcWeb()) {
                 model = ComponentModel.getModel(item, ComponentType.Webserver);
                 if(model == null)
                 {
-                    System.out.println("Unable to convert component");
+                    System.out.println("Unable to convert component TO WEBSERVER");
                     return;
                 }
-                panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
+
+                boolean hasItem = false;
+                int r = 0;
+                for(int i = 0; i < panel.getTableModel().getRowCount(); i++){
+                    if(panel.getJTable().getValueAt(i,0).toString().equals(model.getType().name()) && panel.getJTable().getValueAt(i,1).toString().equals(model.getName())){
+                        hasItem = true;
+                        r = i;
+                    }
+                }
+                if (!hasItem)
+                    panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
+                else
+                    panel.getTableModel().setValueAt(Integer.parseInt(panel.getJTable().getValueAt(r, 4).toString()) + 1, r, 4);
+                //panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
             }
 
             if (e.getSource() == panel.getJcFirewall()) {
                 model = ComponentModel.getModel(item, ComponentType.Firewall);
-                System.out.println(model);
                 if(model == null)
                 {
-                    System.out.println("Unable to convert component");
+                    System.out.println("Unable to convert component TO FIREWALL");
                     return;
                 }
-                panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
-                //panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice())});
+
+                boolean hasItem = false;
+                int r = 0;
+                for(int i = 0; i < panel.getTableModel().getRowCount(); i++){
+                    if(panel.getJTable().getValueAt(i,0).toString().equals(model.getType().name()) && panel.getJTable().getValueAt(i,1).toString().equals(model.getName())){
+                        hasItem = true;
+                        r = i;
+                    }
+                }
+                if (!hasItem)
+                    panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
+                else
+                    panel.getTableModel().setValueAt(Integer.parseInt(panel.getJTable().getValueAt(r, 4).toString()) + 1, r, 4);
+                //panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
             }
 
             //Update prijs & beschikbaarheid
