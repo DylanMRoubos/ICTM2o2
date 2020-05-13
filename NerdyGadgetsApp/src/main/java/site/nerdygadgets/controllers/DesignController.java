@@ -23,6 +23,7 @@ public class DesignController implements ActionListener {
     private ArrayList<ComponentModel> list;
 
     public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
+
         this.panel = panel;
         this.model = model;
         list = new ArrayList<ComponentModel>();
