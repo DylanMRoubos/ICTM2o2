@@ -25,10 +25,10 @@ public class DesignController implements ActionListener {
     private boolean isUpdatingComboboxes;
 
     public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
+
         this.panel = panel;
         this.model = model;
         this.isUpdatingComboboxes = false;
-        //initController();
 
         panel.getJTable().getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
         panel.getJTable().getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
@@ -112,18 +112,15 @@ public class DesignController implements ActionListener {
 
         ArrayList<ComponentModel> l = model.getDatabaseModels();
         for (ComponentModel m : l)
-            panel.getJcDatabase().addItem(m.getName()); //Voegt ook toe aan table? waarom? alleen bij 1e itteratie?
+            panel.getJcDatabase().addItem(m.getName());
 
         l = model.getWebModels();
         for (ComponentModel m : l)
-            panel.getJcWeb().addItem(m.getName()); //Voegt ook toe aan table? waarom? alleen bij 1e itteratie?
+            panel.getJcWeb().addItem(m.getName());
 
         l = model.getFirewallModels();
         for (ComponentModel m : l)
-            panel.getJcFirewall().addItem(m.getName()); //Voegt ook toe aan table? waarom? alleen bij 1e itteratie?
-        panel.getJcFirewall().setSelectedIndex(-1);
-        panel.getJcWeb().setSelectedIndex(-1);
-        panel.getJcDatabase().setSelectedIndex(-1);
+            panel.getJcFirewall().addItem(m.getName());
         this.isUpdatingComboboxes = false;
     }
 
@@ -171,10 +168,11 @@ public class DesignController implements ActionListener {
                         r = i;
                     }
                 }
-                if (!hasItem)
+                if (!hasItem) {
                     panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
-                else
+                }else {
                     panel.getTableModel().setValueAt(Integer.parseInt(panel.getJTable().getValueAt(r, 4).toString()) + 1, r, 4);
+                }
             }
 
             if (e.getSource() == panel.getJcWeb()) {
@@ -193,11 +191,11 @@ public class DesignController implements ActionListener {
                         r = i;
                     }
                 }
-                if (!hasItem)
+                if (!hasItem) {
                     panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
-                else
+                }else {
                     panel.getTableModel().setValueAt(Integer.parseInt(panel.getJTable().getValueAt(r, 4).toString()) + 1, r, 4);
-                //panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
+                }
             }
 
             if (e.getSource() == panel.getJcFirewall()) {
@@ -216,11 +214,11 @@ public class DesignController implements ActionListener {
                         r = i;
                     }
                 }
-                if (!hasItem)
+                if (!hasItem) {
                     panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
-                else
+                }else {
                     panel.getTableModel().setValueAt(Integer.parseInt(panel.getJTable().getValueAt(r, 4).toString()) + 1, r, 4);
-                //panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
+                }
             }
 
             //Update prijs & beschikbaarheid
@@ -236,8 +234,9 @@ public class DesignController implements ActionListener {
             fileChooser.setFileFilter(new FileFilter() {
                 @Override
                 public boolean accept(File f) {
-                    if (f.isDirectory())
+                    if (f.isDirectory()){
                         return true;
+                    }
                     return (f.getName().toLowerCase().endsWith(".json"));
                 }
 
@@ -251,8 +250,9 @@ public class DesignController implements ActionListener {
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
                 filePath = fileToSave.getAbsolutePath();
-                if (!filePath.endsWith(".json"))
+                if (!filePath.endsWith(".json")){
                     filePath = filePath + ".json";
+                }
                 System.out.println("Save as file: " + filePath);
             } else {
                 return;

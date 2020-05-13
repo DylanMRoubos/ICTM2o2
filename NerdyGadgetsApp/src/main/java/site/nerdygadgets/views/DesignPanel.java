@@ -19,8 +19,8 @@ public class DesignPanel extends JPanel {
 
     private JPanel jpDisplay;
     private JPanel jpDisplayPanel;
-    //private JList jList;
-    //private DefaultListModel jListModel;
+    private JPanel jpDisplayControls;
+
     private JComboBox jcDatabase;
     private JComboBox jcWeb;
     private JComboBox jcFirewall;
@@ -35,17 +35,15 @@ public class DesignPanel extends JPanel {
 
     public DesignPanel() {
         setLayout(new GridLayout(0, 2));
-
         //Maak het panel waar alle content in staat
         jpMakeDesign = new JPanel();
-//        jpMakeDesign.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpMakeDesign.setMaximumSize(new Dimension(600, 650));
+        jpMakeDesign.setPreferredSize(new Dimension(600, 650));
+        jpMakeDesign.setBorder(BorderFactory.createEmptyBorder(5,0,0,0));
 
         //maak het hele linker kant panel aan
         jpDesign = new JPanel();
         add(jpDesign);
-        jpDesign.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpDesign.setLayout(new BoxLayout(jpDesign, BoxLayout.PAGE_AXIS));
+        jpDesign.setLayout(new FlowLayout());
         jpDesign.add(jpMakeDesign);
 
         //init Content linker panel
@@ -101,9 +99,6 @@ public class DesignPanel extends JPanel {
         tableModel.addColumn("Verwijder");
 
         jTable = new JTable(tableModel);
-//        tableModel.addRow(new Object[]{"firewall", "vuurmuur", "99", "1000", "5", " + ", " - ", "Delete"});
-//        tableModel.addRow(new Object[]{"firewall", "vuurmuur", "99", "1000", "5", " + ", " - ", "Delete"});
-
         JScrollPane sp = new JScrollPane(jTable);
 
         sp.setPreferredSize(new Dimension(550, 590));
@@ -124,25 +119,29 @@ public class DesignPanel extends JPanel {
 
         //Maak het panel waar alle content in staat rechts
         jpDisplayPanel = new JPanel();
-        jpDisplayPanel.setMaximumSize(new Dimension(250, 450));
+        jpDisplayPanel.setPreferredSize(new Dimension(550, 590));
 
         //Maak het hele rechter kant panel aan
         jpDisplay = new JPanel();
         add(jpDisplay);
-//        jpComponentToevegoen.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpDisplay.setLayout(new BoxLayout(jpDisplay, BoxLayout.PAGE_AXIS));
-        jpDisplay.add(jpDisplayPanel);
+        jpDisplayControls = new JPanel();
+        jpDisplayControls.setPreferredSize(new Dimension(600, 650));
+
+        jpDisplay.setLayout(new FlowLayout());
+        jpDisplayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        jpDisplayControls.setBorder(BorderFactory.createEmptyBorder(0,50,0,50));
 
         //init Content rechter panel
         jbOpt = new JButton("Optimaliseer");
 
         //Voeg alle content toe
-        jpDisplayPanel.setLayout(new FlowLayout());
-        jpDisplayPanel.add(jbOpt);
-        jpDisplayPanel.add(new JLabel("Prijs"));
-        jpDisplayPanel.add(jlPrice);
-        jpDisplayPanel.add(new JLabel("Beschikbaarheid"));
-        jpDisplayPanel.add(jlAvailability);
+        jpDisplay.add(jpDisplayControls);
+        jpDisplayControls.add(jbOpt);
+        jpDisplayControls.add(jpDisplayPanel);
+        jpDisplayControls.add(new JLabel("Prijs"));
+        jpDisplayControls.add(jlPrice);
+        jpDisplayControls.add(new JLabel("Beschikbaarheid"));
+        jpDisplayControls.add(jlAvailability);
     }
 
     public JComboBox getJcDatabase() {
@@ -180,6 +179,7 @@ public class DesignPanel extends JPanel {
     public DefaultTableModel getTableModel() {
         return tableModel;
     }
+
 
     //zodat de combobox een naam heeft
     class MyComboBoxRenderer extends JLabel implements ListCellRenderer {

@@ -4,6 +4,7 @@ import site.nerdygadgets.functions.ComponentType;
 import site.nerdygadgets.models.ComponentModel;
 import site.nerdygadgets.models.ComponentsModel;
 import site.nerdygadgets.views.ComponentManagementPanel;
+import site.nerdygadgets.views.MainFrameView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,8 +16,10 @@ import java.util.ArrayList;
 public class ComponentsController implements ActionListener{
     private ComponentManagementPanel view;
     private ComponentsModel model;
+    private MainFrameView mainFrameView;
 
-    public ComponentsController(ComponentManagementPanel view, ComponentsModel model){
+    public ComponentsController(ComponentManagementPanel view, ComponentsModel model, MainFrameView mainFrameView){
+        this.mainFrameView = mainFrameView;
         this.model = model;
         this.view = view;
         initController();
@@ -41,8 +44,9 @@ public class ComponentsController implements ActionListener{
 
                 //Row index is found
                 int rowIndex = view.getJTable().getSelectedRow();
-                if (rowIndex < 0)
+                if (rowIndex < 0){
                     return;
+                }
                 if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
                     JPopupMenu popup = createYourPopUp(rowIndex);
                     popup.show(e.getComponent(), e.getX(), e.getY());
@@ -105,7 +109,7 @@ public class ComponentsController implements ActionListener{
             double price = this.getPrice();
             if (price == -1) {
                 //invalid price (0>)
-                //Error afhandelen?
+                //Error afhandelen
                 JOptionPane.showMessageDialog(null, "Invalid price input", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (price == -2) {
@@ -119,7 +123,6 @@ public class ComponentsController implements ActionListener{
             if (this.model.addComponentModel(m)) {
                 view.getTableModel().addRow(new Object[]{getType().name(), view.getJtName().getText(), String.valueOf(this.getAvailability()), String.valueOf(this.getPrice())});
                 this.model.printComponents();
-
                 System.out.println("Component added! <3");
             } else {
                 JOptionPane.showMessageDialog(null, "Component bestaat al, zorg dat naam & type uniek zijn.", "ErrorInformation", JOptionPane.ERROR_MESSAGE);

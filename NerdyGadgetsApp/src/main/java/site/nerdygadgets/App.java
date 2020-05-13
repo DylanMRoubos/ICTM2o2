@@ -37,7 +37,7 @@ public class App {
             }
             // invoke frame here
             mainFrameView = new MainFrameView();
-            ComponentsController cc = new ComponentsController(mainFrameView.getComponentManagementPanel(), new ComponentsModel());
+            ComponentsController cc = new ComponentsController(mainFrameView.getComponentManagementPanel(), new ComponentsModel(),mainFrameView);
             DesignController dc = new DesignController(mainFrameView.getDesignPanel(), new DesignModel(), mainFrameView);
             RoutePanelController rpc = new RoutePanelController(mainFrameView);
 
