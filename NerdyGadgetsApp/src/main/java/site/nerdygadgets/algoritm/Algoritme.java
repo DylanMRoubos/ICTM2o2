@@ -237,17 +237,17 @@ public class Algoritme {
                 if (totalPercentage >= availabilty) {
                     // TODO: arraylist with the best solution
                     if (bestSolution == 0) {
-//                        System.out.println(totalPrice);
-//                        System.out.println(totalPercentage);
-//                        System.out.println(websolution + dbsolution);
-//                        System.out.println();
+                        System.out.println(totalPrice);
+                        System.out.println(totalPercentage);
+                        System.out.println(websolution + dbsolution);
+                        System.out.println();
                         bestSolution = totalPrice;
                     } else if (totalPrice < bestSolution) {
                         bestSolution = totalPrice;
-//                        System.out.println(totalPrice);
-//                        System.out.println(totalPercentage);
-//                        System.out.println(websolution + dbsolution);
-//                        System.out.println();
+                        System.out.println(totalPrice);
+                        System.out.println(totalPercentage);
+                        System.out.println(websolution + dbsolution);
+                        System.out.println();
                     }
                 }
 
