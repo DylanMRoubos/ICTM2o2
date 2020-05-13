@@ -127,7 +127,6 @@ public class ComponentsController implements ActionListener{
                 JOptionPane.showMessageDialog(null, "Component bestaat al, zorg dat naam & type uniek zijn.", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
                 System.out.println("Component bestaat al :(");
             }
-
         }
     }
 

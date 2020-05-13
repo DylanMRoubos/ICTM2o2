@@ -48,9 +48,9 @@ public class CalculateComponent {
                 }
             }
         }
-        System.out.println("Availability Firewall:   " + (1-firewall));
-        System.out.println("Availability Webservers: " + (1-webservers));
-        System.out.println("Availability Databases:  " + (1-databases));
+//        System.out.println("Availability Firewall:   " + (1-firewall));
+//        System.out.println("Availability Webservers: " + (1-webservers));
+//        System.out.println("Availability Databases:  " + (1-databases));
 
         //Voor de berekening anders krijg je 0*availability
 //        if (firewall == 0)
@@ -62,7 +62,7 @@ public class CalculateComponent {
 
         totalAvailability = (1-firewall)*(1-webservers)*(1-databases)*100;
 
-        System.out.println("Total availability: " + totalAvailability);
+//        System.out.println("Total availability: " + totalAvailability);
         return totalAvailability;
     }
 }
