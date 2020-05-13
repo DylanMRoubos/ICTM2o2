@@ -121,6 +121,9 @@ public class DesignController implements ActionListener {
         l = model.getFirewallModels();
         for (ComponentModel m : l)
             panel.getJcFirewall().addItem(m.getName()); //Voegt ook toe aan table? waarom? alleen bij 1e itteratie?
+        panel.getJcFirewall().setSelectedIndex(-1);
+        panel.getJcWeb().setSelectedIndex(-1);
+        panel.getJcDatabase().setSelectedIndex(-1);
         this.isUpdatingComboboxes = false;
     }
 
