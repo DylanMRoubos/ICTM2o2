@@ -52,6 +52,13 @@
       <artifactId>radiance-substance</artifactId>
       <version>2.5.1</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.20</version>
+    </dependency>
+
   </dependencies>
 
   <build><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->

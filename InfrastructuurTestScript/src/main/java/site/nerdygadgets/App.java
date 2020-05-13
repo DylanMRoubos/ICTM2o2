@@ -26,5 +26,15 @@ public class App {
 
         testScriptFrame = new TestScriptFrame();
 
+        // test dbconnection
+        DbConnection conn1 = new DbConnection(1,"172.16.0.190", "root", "ArshhU8K", "wideworldimporters");
+        System.out.println(conn1.getLastRowFromTestTable());
+        System.out.println(conn1.updateTestTable());
+        System.out.println(conn1.getLastRowFromTestTable());
+
+        DbConnection conn2 = new DbConnection(2,"172.16.0.191", "root", "ArshhU8K", "wideworldimporters");
+        System.out.println(conn2.getLastRowFromTestTable());
+        System.out.println(conn2.updateTestTable());
+        System.out.println(conn2.getLastRowFromTestTable());
     }
 }

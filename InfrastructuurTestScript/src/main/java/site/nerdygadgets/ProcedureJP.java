@@ -2,6 +2,8 @@ package site.nerdygadgets;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * ProcedureJP class
@@ -11,7 +13,7 @@ import java.awt.*;
  * @version 1.0
  * @since 12-05-2020
  */
-public class ProcedureJP extends JPanel {
+public class ProcedureJP extends JPanel implements ActionListener {
     private JLabel title;
     private SSHManager w1, w2, db1, db2;
     private DbConnection sql1, sql2;
@@ -46,4 +48,8 @@ public class ProcedureJP extends JPanel {
     }
 
     //TODO: implement: actionlistener
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+
+    }
 }
