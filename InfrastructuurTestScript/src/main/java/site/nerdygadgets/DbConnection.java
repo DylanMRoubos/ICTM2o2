@@ -4,7 +4,6 @@ import java.sql.*;
 import java.time.Instant;
 
 public class DbConnection {
-    //TODO: create dbconnection
     Connection conn;
     Statement stmt;
     int id;
