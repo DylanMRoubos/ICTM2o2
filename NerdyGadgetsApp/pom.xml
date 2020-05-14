@@ -6,7 +6,7 @@
 
   <groupId>site.nerdygadgets</groupId>
   <artifactId>NerdyGadgetsApp</artifactId>
-  <version>0.1</version>
+  <version>1.0.0</version>
 
   <name>NerdyGadgetsApp</name>
   <url>http://www.nerdy-gadgets.site</url>
@@ -22,29 +22,29 @@
       <email>mike.thomas2402@gmail.com</email>
     </developer>
     <developer>
-      <id><!-- zelf vullen --></id>
+      <id>DylanMRoubos</id>
       <name>Dylan Roubos</name>
-      <email><!-- zelf vullen -->></email>
+      <email>dylanroubos@gmail.com</email>
     </developer>
     <developer>
-      <id><!-- zelf vullen --></id>
+      <id>nando520024</id>
       <name>Ruben Oosting</name>
-      <email><!-- zelf vullen -->></email>
+      <email>rubenoosting7@gmail.com</email>
     </developer>
     <developer>
-      <id><!-- zelf vullen --></id>
+      <id>JordyWielaard</id>
       <name>Jordy Wielaard</name>
-      <email><!-- zelf vullen -->></email>
+      <email>jordy.wielaard@windesheim.nl</email>
     </developer>
     <developer>
-      <id><!-- zelf vullen --></id>
+      <id>TheYAW21</id>
       <name>Ade Wattimena</name>
-      <email><!-- zelf vullen -->></email>
+      <email>ade.wattimena@windesheim.nl</email>
     </developer>
     <developer>
-      <id><!-- zelf vullen --></id>
+      <id>tristanscholten</id>
       <name>Tristan Scholten</name>
-      <email><!-- zelf vullen -->></email>
+      <email>tristan.scholten@windesheim.nl</email>
     </developer>
   </developers>
 
