@@ -80,64 +80,122 @@ public class ProcedureJP extends JPanel {
 
     public void testReplicatieAndFailoverDb2toDb1() {
         //TODO: implement: DB 1 uit -> invoeren in DB (dit gebeurd op db2) -> DB 1 aan -> DB 2 uit->  Data ophalen (dit gebeurd dan op db 1) -> alles aan
-        new Thread(() -> {
-            System.out.println("dit moet nog geïmplementeerd worden");
-            // clear gui console
-            frame.getConsoleJP().clearText();
+        if(!App.scriptRunning) {
+            new Thread(() -> {
+                App.scriptRunning = true;
+                // clear gui console
+                frame.getConsoleJP().clearText();
+                frame.getConsoleJP().appendConsoleText("Start test: DB2 -> DB 1 Replicatie & Failover\n");
 
-            // stop db1 and log
-            frame.getConsoleJP().appendConsoleText("Stopping data node 1..\n");
-            servicesDataNode("stop", db1);
-            frame.getConsoleJP().appendConsoleText("Stopped data node 1\nWaiting 5s...\n");
-            wait(5);
+                // stop db1 and log
+                frame.getConsoleJP().appendConsoleText("Stopping data node 1..\n");
+                servicesDataNode("stop", db1);
+                frame.getConsoleJP().appendConsoleText("Stopped data node 1\nWaiting 5s...\n");
+                wait(5);
 
-            // do update and log
-            frame.getConsoleJP().appendConsoleText("Inserting data into db..\n");
-            sql1.updateTestTable();
-            wait(1);
-            String result1 = sql1.getLastRowFromTestTable();
-            frame.getConsoleJP().appendConsoleText("Updated record into DB:\n" + result1 + "\n");
+                // do update and log
+                frame.getConsoleJP().appendConsoleText("Inserting data into db..\n");
+                sql1.updateTestTable();
+                wait(1);
+                String result1 = sql1.getLastRowFromTestTable();
+                frame.getConsoleJP().appendConsoleText("Updated record into DB:\n" + result1 + "\n");
 
-            wait(5);
-            // start db1
-            frame.getConsoleJP().appendConsoleText("Starting data node 1..\n");
-            servicesDataNode("start", db1);
-            frame.getConsoleJP().appendConsoleText("Started data node 1, waiting 30s to start up\n");
+                wait(5);
+                // start db1
+                frame.getConsoleJP().appendConsoleText("Starting data node 1..\n");
+                servicesDataNode("start", db1);
+                frame.getConsoleJP().appendConsoleText("Started data node 1, waiting 30s to start up\n");
 
-            // wait 30s for sync
-            wait(30);
-            frame.getConsoleJP().appendConsoleText("Data node 1 up\n");
+                // wait 30s for sync
+                wait(30);
+                frame.getConsoleJP().appendConsoleText("Data node 1 up\n");
 
-            // stop db2
-            frame.getConsoleJP().appendConsoleText("Stopping data node 2..\n");
-            servicesDataNode("stop", db2);
-            frame.getConsoleJP().appendConsoleText("Stopped data node 2\n");
-            wait(5);
+                // stop db2
+                frame.getConsoleJP().appendConsoleText("Stopping data node 2..\n");
+                servicesDataNode("stop", db2);
+                frame.getConsoleJP().appendConsoleText("Stopped data node 2\n");
+                wait(5);
 
-            // do select query to check if data is correct
-            frame.getConsoleJP().appendConsoleText("Do select query on data node 1 to check\nif data has been replicated.\n");
-            String result2 = sql1.getLastRowFromTestTable();
-            frame.getConsoleJP().appendConsoleText(result2 + "\n");
-            wait(5);
+                // do select query to check if data is correct
+                frame.getConsoleJP().appendConsoleText("Do select query on data node 1 to check\nif data has been replicated.\n");
+                String result2 = sql1.getLastRowFromTestTable();
+                frame.getConsoleJP().appendConsoleText(result2 + "\n");
+                wait(5);
 
-            // start db2 back up
-            frame.getConsoleJP().appendConsoleText("start data node 2 again\n");
-            servicesDataNode("start", db2);
+                // start db2 back up
+                frame.getConsoleJP().appendConsoleText("start data node 2 again\n");
+                servicesDataNode("start", db2);
 
-            // compare results
-            frame.getConsoleJP().appendConsoleText("Comparing results:\nResult 1: " + result1 + "\nResult 2: " + result2 +"\n");
-            if (result1.equals(result2)) {
-                frame.getConsoleJP().appendConsoleText("Test Finished Successfully.\n");
-            } else {
-                frame.getConsoleJP().appendConsoleText("Test Failed.\n");
-            }
-
-        }).start();
+                // compare results
+                frame.getConsoleJP().appendConsoleText("Comparing results:\nResult 1: " + result1 + "\nResult 2: " + result2 + "\n");
+                if (result1.equals(result2)) {
+                    frame.getConsoleJP().appendConsoleText("Test Finished Successfully.\n");
+                } else {
+                    frame.getConsoleJP().appendConsoleText("Test Failed.\n");
+                }
+                App.scriptRunning = false;
+            }).start();
+        }
     }
 
     public void testReplicatieAndFailoverDb1toDb2() {
         //TODO: implement:DB 2 uit -> invoeren in DB (dit gebeurd op db1) -> DB 2 aan -> DB 1 uit->  Data ophalen (dit gebeurd dan op db 2) -> alles aan
-        System.out.println("dit moet nog geïmplementeerd worden");
+        if(!App.scriptRunning) {
+            new Thread(() -> {
+                App.scriptRunning = true;
+                // clear gui console
+                frame.getConsoleJP().clearText();
+                frame.getConsoleJP().appendConsoleText("Start test: DB1 -> DB 2 Replicatie & Failover\n");
+
+                // stop db2 and log
+                frame.getConsoleJP().appendConsoleText("Stopping data node 2..\n");
+                servicesDataNode("stop", db2);
+                frame.getConsoleJP().appendConsoleText("Stopped data node 2\nWaiting 5s...\n");
+                wait(5);
+
+                // do update and log
+                frame.getConsoleJP().appendConsoleText("Inserting data into db..\n");
+                sql1.updateTestTable();
+                wait(1);
+                String result1 = sql2.getLastRowFromTestTable();
+                frame.getConsoleJP().appendConsoleText("Updated record into DB:\n" + result1 + "\n");
+
+                wait(5);
+                // start db2
+                frame.getConsoleJP().appendConsoleText("Starting data node 2..\n");
+                servicesDataNode("start", db2);
+                frame.getConsoleJP().appendConsoleText("Started data node 2, waiting 30s to start up\n");
+
+                // wait 30s for sync
+                wait(30);
+                frame.getConsoleJP().appendConsoleText("Data node 2 up\n");
+
+                // stop db1
+                frame.getConsoleJP().appendConsoleText("Stopping data node 1..\n");
+                servicesDataNode("stop", db1);
+                frame.getConsoleJP().appendConsoleText("Stopped data node 1\n");
+                wait(5);
+
+                // do select query to check if data is correct
+                frame.getConsoleJP().appendConsoleText("Do select query on data node 2 to check\nif data has been replicated.\n");
+                String result2 = sql2.getLastRowFromTestTable();
+                frame.getConsoleJP().appendConsoleText(result2 + "\n");
+                wait(5);
+
+                // start db1 back up
+                frame.getConsoleJP().appendConsoleText("start data node 1 again\n");
+                servicesDataNode("start", db1);
+
+                // compare results
+                frame.getConsoleJP().appendConsoleText("Comparing results:\nResult 1: " + result1 + "\nResult 2: " + result2 + "\n");
+                if (result1.equals(result2)) {
+                    frame.getConsoleJP().appendConsoleText("Test Finished Successfully.\n");
+                } else {
+                    frame.getConsoleJP().appendConsoleText("Test Failed.\n");
+                }
+                App.scriptRunning = false;
+            }).start();
+        }
     }
 
     public void testWebServerSynchronous() {
