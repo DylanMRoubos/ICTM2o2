@@ -42,6 +42,7 @@ public class ComponentManagementPanel extends JPanel {
         jlCurrentComponents = new JLabel("Huidige componenten:");
         jlCurrentComponents.setFont(new Font("Test", Font.BOLD, 15));
         jlCurrentComponents.setAlignmentX(Component.CENTER_ALIGNMENT);
+        jlCurrentComponents.setBorder(new EmptyBorder(10,20,20,20));
 
         jlAddComponents = new JLabel("Component toevoegen:");
         jlAddComponents.setFont(new Font("Test", Font.BOLD, 15));
