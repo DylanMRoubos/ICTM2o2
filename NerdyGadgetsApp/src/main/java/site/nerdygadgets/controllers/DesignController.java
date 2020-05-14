@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 14-05-2020
  */
-public class DesignController implements ActionListener {
+public class DesignController implements ActionListener, TableModelListener {
     private DesignPanel panel;
     private DesignModel model;
 
@@ -53,6 +53,8 @@ public class DesignController implements ActionListener {
         panel.getJcWeb().addActionListener(this);
         panel.getJcFirewall().addActionListener(this);
         panel.getSaveButton().addActionListener(this);
+        panel.getTableModel().addTableModelListener(this);
+
 
         //Update combobox on click get new compents
         mfv.getHomePanel().getJpCreate().addMouseListener(new MouseAdapter() {
@@ -157,6 +159,12 @@ public class DesignController implements ActionListener {
     private void addInfModelsToTable(ArrayList<InfrastructureComponentModel> l) {
         for (InfrastructureComponentModel model : l)
             panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAmount()), " + ", " - ", "Verwijder"});
+    }
+
+    @Override
+    public void tableChanged(TableModelEvent tableModelEvent) {
+        updateAvailability();
+        updatePrice();
     }
 
     @Override

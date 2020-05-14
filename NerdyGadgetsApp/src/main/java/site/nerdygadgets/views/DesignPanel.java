@@ -187,8 +187,4 @@ public class DesignPanel extends JPanel {
         return tableModel;
     }
 
-    public void setTableModel(DefaultTableModel tableModel) {
-        this.tableModel = tableModel;
-    }
-
 }
