@@ -29,6 +29,8 @@ public class DesignModel {
     }
 
     public ArrayList<ComponentModel> getDatabaseModels(){
+        if (list == null)
+            reloadList();
         ArrayList<ComponentModel> database = new ArrayList<ComponentModel>();
         for(ComponentModel l : list){
             if(l.getType() == ComponentType.Database){
@@ -39,6 +41,8 @@ public class DesignModel {
     }
 
     public ArrayList<ComponentModel> getWebModels(){
+        if (list == null)
+            reloadList();
         ArrayList<ComponentModel> web = new ArrayList<ComponentModel>();
         for(ComponentModel l : list){
             if(l.getType() == ComponentType.Webserver){
@@ -49,6 +53,8 @@ public class DesignModel {
     }
 
     public ArrayList<ComponentModel> getFirewallModels(){
+        if (list == null)
+            reloadList();
         ArrayList<ComponentModel> firewall = new ArrayList<ComponentModel>();
         for(ComponentModel l : list){
             if(l.getType() == ComponentType.Firewall){

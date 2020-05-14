@@ -93,14 +93,15 @@ public class Serialization {
         String path = System.getProperty("user.dir") + "\\tmp.json";
         File f = new File(path);
         if (!f.exists())
-            throw new FileNotFoundException();
+            f.createNewFile();
+            //throw new FileNotFoundException();
         BufferedReader br = new BufferedReader(new FileReader(path));
         String Json = "";
         String line;
         while ((line = br.readLine()) != null) {
             Json += line;
         }
-        return g.fromJson(Json, new TypeToken<ArrayList<ComponentModel>>(){}.getType());
+        return (g.fromJson(Json, new TypeToken<ArrayList<ComponentModel>>(){}.getType()) == null) ? new ArrayList<ComponentModel>() : g.fromJson(Json, new TypeToken<ArrayList<ComponentModel>>(){}.getType());
     }
 
     // Get model from file
