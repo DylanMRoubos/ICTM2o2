@@ -79,7 +79,6 @@ public class ProcedureJP extends JPanel {
     }
 
     public void testReplicatieAndFailoverDb2toDb1() {
-        //TODO: implement: DB 1 uit -> invoeren in DB (dit gebeurd op db2) -> DB 1 aan -> DB 2 uit->  Data ophalen (dit gebeurd dan op db 1) -> alles aan
         if(!App.scriptRunning) {
             new Thread(() -> {
                 App.scriptRunning = true;
@@ -139,7 +138,6 @@ public class ProcedureJP extends JPanel {
     }
 
     public void testReplicatieAndFailoverDb1toDb2() {
-        //TODO: implement:DB 2 uit -> invoeren in DB (dit gebeurd op db1) -> DB 2 aan -> DB 1 uit->  Data ophalen (dit gebeurd dan op db 2) -> alles aan
         if(!App.scriptRunning) {
             new Thread(() -> {
                 App.scriptRunning = true;
@@ -199,8 +197,77 @@ public class ProcedureJP extends JPanel {
     }
 
     public void testWebServerSynchronous() {
-        //TODO: implement: Connectie web1 (sql) -> invoeren data web1 -> connectie web2 -> checken of data is doorgevoerd op web2 -> alles aan
-        System.out.println("dit moet nog geïmplementeerd worden");
+        if (!App.scriptRunning) {
+            new Thread(() -> {
+                App.scriptRunning = true;
+
+                frame.getConsoleJP().clearText();
+                frame.getConsoleJP().appendConsoleText("Start test: Synchroon database\n");
+                wait(1);
+
+                // insert data sql1 and show
+                frame.getConsoleJP().appendConsoleText("Inserting data into sql1:\n");
+                sql1.updateTestTable();
+                String sql1result1 = sql1.getLastRowFromTestTable();
+                frame.getConsoleJP().appendConsoleText("Result from sql1: " + sql1result1 + "\n");
+
+                // wait 2s
+                wait(2);
+
+                // show data from sql2
+                frame.getConsoleJP().appendConsoleText("Getting data from sql2:\n");
+                String sql2result1 = sql2.getLastRowFromTestTable();
+                frame.getConsoleJP().appendConsoleText("Result from sql2: " + sql2result1 + "\n");
+
+                // compare
+                boolean equalResultSet1;
+                frame.getConsoleJP().appendConsoleText("Comparing results: ");
+                if (sql1result1.equals(sql2result1)) {
+                    frame.getConsoleJP().appendConsoleText("equal\n");
+                    equalResultSet1 = true;
+                } else {
+                    frame.getConsoleJP().appendConsoleText("not equal\n");
+                    equalResultSet1 = false;
+                }
+
+                // wait 5s
+                wait(5);
+
+                // insert data sql2 and show
+                frame.getConsoleJP().appendConsoleText("Inserting data into sql2:\n");
+                sql2.updateTestTable();
+                String sql2result2 = sql2.getLastRowFromTestTable();
+                frame.getConsoleJP().appendConsoleText("Result from sql2: " + sql2result2 + "\n");
+
+                // wait 2s
+                wait(2);
+
+                // show data from sql1
+                frame.getConsoleJP().appendConsoleText("Getting data from sql1:\n");
+                String sql1result2 = sql1.getLastRowFromTestTable();
+                frame.getConsoleJP().appendConsoleText("Result from sql1: " + sql1result2 + "\n");
+
+                // compare
+                boolean equalResultSet2;
+                frame.getConsoleJP().appendConsoleText("Comparing results: ");
+                if (sql1result2.equals(sql2result2)) {
+                    frame.getConsoleJP().appendConsoleText("equal\n");
+                    equalResultSet2 = true;
+                } else {
+                    frame.getConsoleJP().appendConsoleText("not equal\n");
+                    equalResultSet2 = false;
+                }
+
+                // if both compare were good, test successful
+                if (equalResultSet1 && equalResultSet2) {
+                    frame.getConsoleJP().appendConsoleText("Test Finished Successfully");
+                } else {
+                    frame.getConsoleJP().appendConsoleText("Test Failed");
+                }
+
+                App.scriptRunning = false;
+            }).start();
+        }
     }
 
     public void servicesDataNode(String option, SSHManager s) {
