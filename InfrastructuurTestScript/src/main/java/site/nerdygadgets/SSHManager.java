@@ -7,6 +7,7 @@ import com.jcraft.jsch.Session;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 
 /**
  * SSHManager class
@@ -72,7 +73,7 @@ public class SSHManager {
             return result;
 
         } catch (Exception e) {
-            System.err.println("Something went wrong with creating a channel or running the command");
+            System.err.println("Something went wrong with creating a channel or running the command, command: " + command);
             return null;
         }
     }
@@ -107,7 +108,7 @@ public class SSHManager {
             return result;
 
         } catch (Exception e) {
-            System.err.println("Something went wrong with creating a channel or running the command");
+            System.err.println("Something went wrong with creating a channel or running the command, command: " + command);
             return null;
         }
     }
@@ -121,5 +122,18 @@ public class SSHManager {
             return false;
         }
         return session.isConnected();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SSHManager that = (SSHManager) o;
+        return Objects.equals(host, that.host);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(host);
     }
 }
