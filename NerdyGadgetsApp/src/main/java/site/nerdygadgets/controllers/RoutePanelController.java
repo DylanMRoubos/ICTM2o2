@@ -1,11 +1,15 @@
 package site.nerdygadgets.controllers;
 
+import site.nerdygadgets.views.DesignPanel;
 import site.nerdygadgets.views.MainFrameView;
 import site.nerdygadgets.views.Views;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 public class RoutePanelController {
     private MainFrameView mainFrameView;
@@ -16,7 +20,6 @@ public class RoutePanelController {
     }
 
     private void initController() {
-
         // header panel home button
         mainFrameView.getHeaderPanel().addMouseListener(new MouseAdapter() {
             @Override
@@ -40,8 +43,7 @@ public class RoutePanelController {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                // TODO: implement dialog
-                System.out.println("open a dialog or something");
+                switchPanel(Views.DESIGN);
             }
         });
         // nieuw ontwerp panel (gelijk naar design panel)
