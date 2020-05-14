@@ -88,6 +88,8 @@ public class ComponentsController implements ActionListener{
     private void loadComponents() {
         model.reloadComponentModel();
         ArrayList<ComponentModel> componenten = model.getComponentModels();
+        if (componenten == null)
+            componenten = new ArrayList<ComponentModel>();
         this.model.setComponentModels(componenten);
         if (componenten.size() > 0) {
             view.getTableModel().setRowCount(0);

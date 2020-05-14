@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * @since 14-05-2020
  */
 public class ComponentsModel {
+
     private ArrayList<ComponentModel> componentModels;
 
     public ComponentsModel(){
@@ -31,12 +32,14 @@ public class ComponentsModel {
     public boolean addComponentModel(ComponentModel model) {
         try {
             ArrayList<ComponentModel> l = Serialization.deserializeComponents();
+            if (l == null)
+                l = new ArrayList<ComponentModel>();
             for (ComponentModel m : l) {
                 if (m.getName().equals(model.getName()) && m.getType().name().equals(model.getType().name())) {
                     return false;
                 }
             }
-            componentModels.add(model);
+            componentModels.add(model); // componentModels is null???? maar word in contructor aangemaakt?
             Serialization.serializeComponents(componentModels);
             return true;
         }catch (IOException e){
