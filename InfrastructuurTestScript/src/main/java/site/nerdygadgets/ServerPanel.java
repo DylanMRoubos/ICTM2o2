@@ -9,8 +9,11 @@ public class ServerPanel extends JPanel implements ActionListener {
     private String type;
     private JButton ndbsJB, ndbssJB, sassJB, stopwsJB, startwsJB, restartwsJB, ndbdsJB, stopdbsJB, startdbsJB, restartdbsJB, shutdownJB, rebootJB;
     private TestScriptFrame frame;
+    private SSHManager webSSH;
+    private String host;
 
     public ServerPanel(TestScriptFrame frame, String type, String host, String user, String password) {
+        this.host = host;
         this.frame = frame;
 
         sshManager = new SSHManager(user, password, host);
@@ -55,6 +58,9 @@ public class ServerPanel extends JPanel implements ActionListener {
             add(stopdbsJB);
             add(startdbsJB);
             add(restartdbsJB);
+
+            webSSH = new SSHManager("student", "KHxd4gu7", "172.16.0.190");
+            webSSH.startSession();
         }
 
         // buttons algemeen
@@ -139,7 +145,11 @@ public class ServerPanel extends JPanel implements ActionListener {
                     App.scriptRunning = true;
                     frame.getConsoleJP().clearText();
                     frame.getConsoleJP().appendConsoleText("Stopping services:\n");
-                    frame.getConsoleJP().appendConsoleText("ndbd: " + sshManager.runCommandSudo("pkill -f ndbd") + sshManager.runCommandSudo("systemctl stop ndbd") + "stopped\n");
+                    if (host.equals("172.16.0.158")) {
+                        frame.getConsoleJP().appendConsoleText("ndbd: " + webSSH.runCommandSudo("ndb_mgm -e '3 stop'") + sshManager.runCommandSudo("systemctl stop ndbd") + "stopped\n");
+                    } else if (host.equals("172.16.0.159")) {
+                        frame.getConsoleJP().appendConsoleText("ndbd: " + webSSH.runCommandSudo("ndb_mgm -e '4 stop'") + sshManager.runCommandSudo("systemctl stop ndbd") + "stopped\n");
+                    }
                     frame.getConsoleJP().appendConsoleText("Services stopped");
                     App.scriptRunning = false;
                 }).start();
