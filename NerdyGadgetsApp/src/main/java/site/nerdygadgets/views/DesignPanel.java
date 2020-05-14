@@ -1,5 +1,7 @@
 package site.nerdygadgets.views;
 
+import site.nerdygadgets.functions.ComboRenderer;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.CellEditorListener;
@@ -11,7 +13,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.EventObject;
-
+/**
+ * DesignPanel class
+ * DesignPanel for infrastructures
+ *
+ * @author Tristan Scholten & Jordy Wielaard
+ * @version 1.0
+ * @since 14-05-2020
+ */
 public class DesignPanel extends JPanel {
 
     private JPanel jpDesign;
@@ -35,41 +44,41 @@ public class DesignPanel extends JPanel {
 
     public DesignPanel() {
         setLayout(new GridLayout(0, 2));
-        //Maak het panel waar alle content in staat
         jpMakeDesign = new JPanel();
         jpMakeDesign.setPreferredSize(new Dimension(600, 650));
         jpMakeDesign.setBorder(BorderFactory.createEmptyBorder(5,0,0,0));
 
-        //maak het hele linker kant panel aan
+        //Make panel left side
         jpDesign = new JPanel();
         add(jpDesign);
         jpDesign.setLayout(new FlowLayout());
         jpDesign.add(jpMakeDesign);
 
-        //init Content linker panel
+        //init Content left panel
         jcDatabase = new JComboBox(new String[]{""});
         jcWeb = new JComboBox(new String[]{""});
         jcFirewall = new JComboBox(new String[]{""});
 
-        jcDatabase.setRenderer(new MyComboBoxRenderer("Databaseservers"));
+        jcDatabase.setRenderer(new ComboRenderer("Databaseservers"));
         jcDatabase.setSelectedIndex(-1);
-        jcWeb.setRenderer(new MyComboBoxRenderer("Webservers"));
+        jcWeb.setRenderer(new ComboRenderer("Webservers"));
         jcWeb.setSelectedIndex(-1);
-        jcFirewall.setRenderer(new MyComboBoxRenderer("Firewall"));
+        jcFirewall.setRenderer(new ComboRenderer("Firewall"));
         jcFirewall.setSelectedIndex(-1);
 
         tableModel = new DefaultTableModel() {
+
             @Override
             public boolean isCellEditable(int row, int column) {
-                //voor custom amount
+                //Add custom amount
                 if (column == 4)
                     return true;
-                //zodat buttons werken
+                //make buttons function
                 if (column == 5 || column == 6 || column == 7)
                     return true;
                 return false;
             }
-
+            //Only able to enter integer in amount column
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 if (columnIndex == 4)
@@ -78,6 +87,7 @@ public class DesignPanel extends JPanel {
             }
 
             @Override
+            //check if amount is not negative and/or below 1
             public void fireTableCellUpdated(int row, int column) {
                 if (column == 4) {
                     if (Integer.parseInt(super.getValueAt(row, column).toString()) < 0)
@@ -89,6 +99,7 @@ public class DesignPanel extends JPanel {
                 super.fireTableCellUpdated(row, column);
             }
         };
+        //
         tableModel.addColumn("Type");
         tableModel.addColumn("Naam");
         tableModel.addColumn("Beschikbaarheid");
@@ -105,23 +116,19 @@ public class DesignPanel extends JPanel {
         sp.setBorder(BorderFactory.createLineBorder(Color.black));
         saveButton = new JButton("Opslaan Als");
 
-        //Voeg content toe aan linker panel
         jpMakeDesign.add(jcDatabase);
         jpMakeDesign.add(jcWeb);
         jpMakeDesign.add(jcFirewall);
         jpMakeDesign.add(sp);
         jpMakeDesign.add(saveButton);
 
-
-        //Content rechter kant
         jlPrice = new JLabel("€0.0");
         jlAvailability = new JLabel("0.0%");
 
-        //Maak het panel waar alle content in staat rechts
+        //Panels right side
         jpDisplayPanel = new JPanel();
         jpDisplayPanel.setPreferredSize(new Dimension(550, 590));
 
-        //Maak het hele rechter kant panel aan
         jpDisplay = new JPanel();
         add(jpDisplay);
         jpDisplayControls = new JPanel();
@@ -131,7 +138,7 @@ public class DesignPanel extends JPanel {
         jpDisplayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         jpDisplayControls.setBorder(BorderFactory.createEmptyBorder(0,50,0,50));
 
-        //init Content rechter panel
+        //init Content right panel
         jbOpt = new JButton("Optimaliseer");
 
         //Voeg alle content toe
@@ -180,22 +187,8 @@ public class DesignPanel extends JPanel {
         return tableModel;
     }
 
-
-    //zodat de combobox een naam heeft
-    class MyComboBoxRenderer extends JLabel implements ListCellRenderer {
-        private String _title;
-
-        public MyComboBoxRenderer(String title) {
-            _title = title;
-        }
-
-        @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
-            if (index == -1 && value == null)
-                setText(_title);
-            else
-                setText(value.toString());
-            return this;
-        }
+    public void setTableModel(DefaultTableModel tableModel) {
+        this.tableModel = tableModel;
     }
+
 }

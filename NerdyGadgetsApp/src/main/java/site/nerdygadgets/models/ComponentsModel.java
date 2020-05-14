@@ -4,7 +4,14 @@ import site.nerdygadgets.functions.Serialization;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+/**
+ * ComponentsModel class
+ * Edit compnent model
+ *
+ * @author Tristan Scholten & Jordy Wielaard
+ * @version 1.0
+ * @since 14-05-2020
+ */
 public class ComponentsModel {
     private ArrayList<ComponentModel> componentModels;
 
@@ -20,6 +27,7 @@ public class ComponentsModel {
         this.componentModels = componentModels;
     }
 
+// Adds component to ArrayList and file
     public boolean addComponentModel(ComponentModel model) {
         try {
             ArrayList<ComponentModel> l = Serialization.deserializeComponents();
@@ -36,7 +44,7 @@ public class ComponentsModel {
             return false;
         }
     }
-
+// Reload ArrayList
     public void reloadComponentModel() {
         try {
             this.componentModels = Serialization.deserializeComponents();
@@ -44,7 +52,7 @@ public class ComponentsModel {
             e.printStackTrace();
         }
     }
-
+// Remove component from ArrayList and file
     public void removeAt(int index) {
         componentModels.remove(index);
         try {

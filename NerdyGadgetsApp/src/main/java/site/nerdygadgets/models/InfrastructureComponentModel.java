@@ -5,8 +5,14 @@ import site.nerdygadgets.functions.Serialization;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-
+/**
+ * InfrastructureComponentModel class
+ * Create components and set the amount
+ *
+ * @author Tristan Scholten & Jordy Wielaard
+ * @version 1.0
+ * @since 14-05-2020
+ */
 public class InfrastructureComponentModel {
     private String name;
     private double availability;
@@ -31,7 +37,7 @@ public class InfrastructureComponentModel {
     }
 
     public double getAvailability() {
-        return this.availability/100;
+        return this.availability;
     }
 
     public String getName() {

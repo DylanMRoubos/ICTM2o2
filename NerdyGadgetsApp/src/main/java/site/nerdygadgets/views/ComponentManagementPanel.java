@@ -4,7 +4,14 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-
+/**
+ * ComponentManagementPanel class
+ * ComponentManagementPanel for creating and deleting components
+ *
+ * @author Tristan Scholten & Jordy Wielaard
+ * @version 1.0
+ * @since 14-05-2020
+ */
 public class ComponentManagementPanel extends JPanel {
     private JLabel jlCurrentComponents;
     private JPanel jpCurrentComponents;
@@ -15,12 +22,10 @@ public class ComponentManagementPanel extends JPanel {
     private JPanel jpAddComponentsLayout;
     private JPanel jpAddComponentsContent;
 
-    //Huidigecomponents content
     private JTable jTable;
     private DefaultTableModel tableModel;
     private JScrollPane tableScrollPane;
 
-    //ComponentToevoegen content
     private JLabel jlName;
     private JTextField jtName;
     private JLabel jlPrice;
@@ -34,24 +39,20 @@ public class ComponentManagementPanel extends JPanel {
     public ComponentManagementPanel() {
         setLayout(new GridLayout(0,2));
 
-        //maak de label
         jlCurrentComponents = new JLabel("Huidige componenten:");
         jlCurrentComponents.setFont(new Font("Test", Font.BOLD, 15));
         jlCurrentComponents.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jlCurrentComponents.setBorder(new EmptyBorder(10, 20, 20,20));
 
-        //Maak de label
         jlAddComponents = new JLabel("Component toevoegen:");
         jlAddComponents.setFont(new Font("Test", Font.BOLD, 15));
         jlAddComponents.setAlignmentX(Component.CENTER_ALIGNMENT);
         jlAddComponents.setBorder(new EmptyBorder(0,20,20,20));
 
-        //Maak het panel waar alle content in staat
         jpCurrentComponentsContent = new JPanel();
         jpCurrentComponentsContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         jpCurrentComponentsContent.setMaximumSize(new Dimension(450, 550));
 
-        //maak het hele linker kant panel aan
+        //Make panels left side
         jpCurrentComponents = new JPanel();
         add(jpCurrentComponents);
         jpCurrentComponents.setLayout(new BoxLayout(jpCurrentComponents, BoxLayout.PAGE_AXIS));
@@ -59,7 +60,7 @@ public class ComponentManagementPanel extends JPanel {
         jpCurrentComponents.add(jpCurrentComponentsContent);
         jpCurrentComponentsContent.setLayout(new BorderLayout());
 
-        //init Content linker panel
+        //init Content left panel
         tableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -75,10 +76,11 @@ public class ComponentManagementPanel extends JPanel {
         tableScrollPane = new JScrollPane(jTable);
         tableScrollPane.setSize(new Dimension(250, 450));
 
-        //Voeg content toe aan linker panel
+        //Add scrollpane
         jpCurrentComponentsContent.add(tableScrollPane);
 
-        //Maak het panel waar alle content in staat
+        //Make panels right side
+        jpAddComponents = new JPanel();
         jpAddComponentsContent = new JPanel();
         jpAddComponentsLayout = new JPanel();
         jpAddComponentsContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -87,7 +89,6 @@ public class ComponentManagementPanel extends JPanel {
         jpAddComponentsLayout.setLayout(new GridBagLayout());
 
         //Maak het hele rechter kant panel aan
-        jpAddComponents = new JPanel();
         add(jpAddComponents);
         jpAddComponents.add(jlAddComponents);
         jpAddComponents.add(jpAddComponentsContent);
@@ -103,9 +104,9 @@ public class ComponentManagementPanel extends JPanel {
         jcComponents = new JComboBox(components);
         jbAdd = new JButton("Voeg Toe");
 
-        //Voeg alle content toe
+        //Layout right panel
         GridBagConstraints gbc = new GridBagConstraints();
-
+        //Give locations of labels, textfields and buttons in gridbaglayout
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.NORTHWEST;
         gbc.weightx = 1;

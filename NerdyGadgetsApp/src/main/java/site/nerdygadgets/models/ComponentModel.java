@@ -5,7 +5,14 @@ import site.nerdygadgets.functions.Serialization;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+/**
+ * ComponentModel class
+ * Create component
+ *
+ * @author Tristan Scholten & Jordy Wielaard
+ * @version 1.0
+ * @since 14-05-2020
+ */
 public class ComponentModel {
     private String name;
     private double availability;
@@ -44,7 +51,7 @@ public class ComponentModel {
                 ", type=" + type +
                 '}';
     }
-
+// Get model from file
     public static ComponentModel getModel(String name, ComponentType type) {
         try {
             ArrayList<ComponentModel> l = Serialization.deserializeComponents();

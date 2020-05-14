@@ -12,7 +12,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-
+/**
+ * ComponentsController class
+ * Adds functionality to controller panel
+ *
+ * @author Tristan Scholten & Jordy Wielaard
+ * @version 1.0
+ * @since 14-05-2020
+ */
 public class ComponentsController implements ActionListener{
     private ComponentManagementPanel view;
     private ComponentsModel model;
@@ -25,7 +32,7 @@ public class ComponentsController implements ActionListener{
         initController();
 
     }
-
+    // init buttons and listeners
     public void initController(){
         view.getJbAdd().addActionListener(this);
         view.getJTable().addMouseListener(new MouseListener() {
@@ -59,7 +66,7 @@ public class ComponentsController implements ActionListener{
         });
         loadComponents();
     }
-
+    //Creates right click menu to delete components
     private JPopupMenu createYourPopUp(int rowindex)
     {
         JPopupMenu popup = new JPopupMenu();
@@ -77,7 +84,7 @@ public class ComponentsController implements ActionListener{
         popup.add(delete);
         return popup;
     }
-
+    // Load components into table
     private void loadComponents() {
         model.reloadComponentModel();
         ArrayList<ComponentModel> componenten = model.getComponentModels();

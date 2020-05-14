@@ -9,47 +9,17 @@ import javax.swing.*;
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
-
+/**
+ * Serialization class
+ * Save and open files
+ *
+ * @author Tristan Scholten & Jordy Wielaard
+ * @version 1.0
+ * @since 14-05-2020
+ */
 public class Serialization {
 
-    /*
-    public static void serialize(ArrayList<Object> obj, String path) throws IOException {
-        Gson g = new Gson();
-        String s = g.toJson(obj);
-
-        File f = new File(path);
-        //if (f.exists())
-        //    throw new FileAlreadyExistsException(path);
-        //f.createNewFile();
-        if (!f.exists())
-            f.createNewFile();
-        else
-        {
-            f.delete();
-            f.createNewFile();
-        }
-        FileWriter fw = new FileWriter(path);
-        fw.write(s);
-        fw.flush();
-        fw.close();
-    }*/
-    /*
-    public static ArrayList<Object> deserialize(String path) throws IOException {
-        Gson g = new Gson();
-        File f = new File(path);
-        if (!f.exists())
-            throw new FileNotFoundException();
-        BufferedReader br = new BufferedReader(new FileReader(path));
-        String Json = "";
-        String line;
-        while ((line = br.readLine()) != null) {
-            Json += line;
-        }
-
-        //return g.fromJson(Json, new TypeToken<ArrayList<Object>>(){}.getType());
-        return g.fromJson(Json, new TypeToken<Object>(){}.getType());
-    }*/
-
+    // Save models to file
     public static void serializeComponents(ArrayList<ComponentModel> components) throws IOException {
         Gson g = new Gson();
         String s = g.toJson(components);
@@ -66,7 +36,7 @@ public class Serialization {
         fw.flush();
         fw.close();
     }
-
+    // Save models to file
     public static void serializeComponents(ArrayList<ComponentModel> components, String path) throws IOException {
         Gson g = new Gson();
         String s = g.toJson(components);
@@ -80,7 +50,7 @@ public class Serialization {
         fw.flush();
         fw.close();
     }
-
+    // Save infrastructure models to file
     public static void serializeInfrastructuur(ArrayList<InfrastructureComponentModel> components) throws IOException {
 
         Gson g = new Gson();
@@ -98,7 +68,7 @@ public class Serialization {
         fw.flush();
         fw.close();
     }
-
+    // Save infrastructure models to file
     public static void serializeInfrastructure(ArrayList<InfrastructureComponentModel> components, String path) throws IOException {
         Gson g = new Gson();
         String s = g.toJson(components);
@@ -109,7 +79,6 @@ public class Serialization {
             if (result == JOptionPane.NO_OPTION) {
                 return;
             }
-            //throw new FileAlreadyExistsException(path); //Anders afhandelen? (Met een prompt?)
         }
         f.createNewFile();
         FileWriter fw = new FileWriter(path);
@@ -118,7 +87,7 @@ public class Serialization {
         fw.close();
     }
 
-
+    // Get model from file
     public static ArrayList<ComponentModel> deserializeComponents() throws IOException {
         Gson g = new Gson();
         String path = System.getProperty("user.dir") + "\\tmp.json";
@@ -134,6 +103,7 @@ public class Serialization {
         return g.fromJson(Json, new TypeToken<ArrayList<ComponentModel>>(){}.getType());
     }
 
+    // Get model from file
     public static ArrayList<ComponentModel> deserializeComponents(String path) throws IOException {
         Gson g = new Gson();
         File f = new File(path);
@@ -146,12 +116,10 @@ public class Serialization {
             Json += line;
         }
 
-        //ArrayList<ComponentModel> m = new ArrayList<ComponentModel>();
-        //ArrayList<ComponentModel> model = g.fromJson(Json, new TypeToken<ArrayList<ComponentModel>>(){}.getType());
         return g.fromJson(Json, new TypeToken<ArrayList<ComponentModel>>(){}.getType());
 
     }
-
+    // get infrastructuremodels from file
     public static ArrayList<InfrastructureComponentModel> deserializeInfrastructure() throws IOException {
         Gson g = new Gson();
         String path = System.getProperty("user.dir") + "\\tmp.json";
@@ -166,7 +134,7 @@ public class Serialization {
         }
         return g.fromJson(Json, new TypeToken<ArrayList<InfrastructureComponentModel>>(){}.getType());
     }
-
+    // get infrastructuremodels from file
     public static ArrayList<InfrastructureComponentModel> deserializeInfrastructure(String path) throws IOException {
         Gson g = new Gson();
         File f = new File(path);

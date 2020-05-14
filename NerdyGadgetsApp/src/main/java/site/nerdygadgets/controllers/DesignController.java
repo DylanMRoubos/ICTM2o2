@@ -6,10 +6,13 @@ import site.nerdygadgets.models.DesignModel;
 import site.nerdygadgets.models.InfrastructureComponentModel;
 import site.nerdygadgets.views.DesignPanel;
 import site.nerdygadgets.views.MainFrameView;
-import site.nerdygadgets.views.Views;
+
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -17,7 +20,14 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
+/**
+ * DesignController class
+ * Adds functionality to Design panel
+ *
+ * @author Tristan Scholten & Jordy Wielaard
+ * @version 1.0
+ * @since 14-05-2020
+ */
 public class DesignController implements ActionListener {
     private DesignPanel panel;
     private DesignModel model;
@@ -29,12 +39,12 @@ public class DesignController implements ActionListener {
         this.panel = panel;
         this.model = model;
         this.isUpdatingComboboxes = false;
-
+        //Adds buttons
         panel.getJTable().getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
         panel.getJTable().getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
         panel.getJTable().getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
 
-        //SET CUSTOM EDITOR TO TEAMS COLUMN
+        //SET CUSTOM EDITOR
         panel.getJTable().getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
         panel.getJTable().getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
         panel.getJTable().getColumnModel().getColumn(7).setCellEditor(new ButtonEditor(new JTextField(), panel, this));
@@ -42,9 +52,9 @@ public class DesignController implements ActionListener {
         panel.getJcDatabase().addActionListener(this);
         panel.getJcWeb().addActionListener(this);
         panel.getJcFirewall().addActionListener(this);
-
         panel.getSaveButton().addActionListener(this);
 
+        //Update combobox on click get new compents
         mfv.getHomePanel().getJpCreate().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -53,12 +63,11 @@ public class DesignController implements ActionListener {
             }
         });
 
-
+        // Open saved file
         mfv.getHomePanel().getJpOpen().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                // TODO: implement dialog
                 JFileChooser fc = new JFileChooser();
                 fc.setFileFilter(new FileFilter() {
                     @Override
@@ -67,14 +76,13 @@ public class DesignController implements ActionListener {
                             return true;
                         return false;
                     }
-
                     @Override
                     public String getDescription() {
                         return "(*.json) JSON Format";
                     }
                 });
 
-                System.out.println("open a dialog or something");
+                // Open file dialog
                 int returnVal = fc.showOpenDialog(mfv.getParent());
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -90,6 +98,7 @@ public class DesignController implements ActionListener {
         });
     }
 
+    //Reade file
     public void openFile(File f) {
         try {
             this.panel.getTableModel().setRowCount(0);
@@ -101,7 +110,7 @@ public class DesignController implements ActionListener {
             e.printStackTrace();
         }
     }
-
+    //Function for updating/reloading combobox components
     public void updateComboboxes() {
         this.isUpdatingComboboxes = true;
         panel.getJcDatabase().removeAllItems();
@@ -128,18 +137,19 @@ public class DesignController implements ActionListener {
         
         this.isUpdatingComboboxes = false;
     }
-
+    //Update price in design panel when component is added
     public void updatePrice() {
         ArrayList<InfrastructureComponentModel> l = getCurrentModels();
         double price = CalculateComponent.calculatePrice(l);
         panel.getJlPrice().setText("€" + String.valueOf(price));
     }
+    //Update availibility in design panel when component is added
     public void updateAvailability() {
         ArrayList<InfrastructureComponentModel> l = getCurrentModels();
         double beschikbaarheid = CalculateComponent.calculateAvailability(l);
         panel.getJlAvailability().setText(String.valueOf(beschikbaarheid) + "%");
     }
-
+    //Add component to table
     private void addModelToTable(InfrastructureComponentModel model) {
         panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAmount()), " + ", " - ", "Verwijder"});
     }
@@ -151,6 +161,7 @@ public class DesignController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Update table with combobox
         if (e.getSource() instanceof JComboBox && !isUpdatingComboboxes) {
             JComboBox cb = (JComboBox)e.getSource();
             String item = String.valueOf(cb.getSelectedItem());
@@ -230,7 +241,7 @@ public class DesignController implements ActionListener {
             updatePrice();
             updateAvailability();
         }
-
+        //Save table content to file
         if (e.getSource() == panel.getSaveButton()) {
             String filePath;
 
@@ -274,7 +285,7 @@ public class DesignController implements ActionListener {
             }
         }
     }
-
+    //Get components from table
     public ArrayList<InfrastructureComponentModel> getCurrentModels() {
         ArrayList<InfrastructureComponentModel> l = new ArrayList<InfrastructureComponentModel>();
         int count = panel.getTableModel().getRowCount();

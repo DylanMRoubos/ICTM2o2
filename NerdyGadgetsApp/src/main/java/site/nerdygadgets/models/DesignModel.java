@@ -5,14 +5,21 @@ import site.nerdygadgets.functions.Serialization;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+/**
+ * DesignModel class
+ * Get model for creating designs
+ *
+ * @author Tristan Scholten & Jordy Wielaard
+ * @version 1.0
+ * @since 14-05-2020
+ */
 public class DesignModel {
     private ArrayList<ComponentModel> list;
 
     public DesignModel(){
         reloadList();
     }
-
+// Updates list with file
     public void reloadList(){
         try {
             list = Serialization.deserializeComponents();
