@@ -7,7 +7,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * ButtonEditor class
+ * Creates buttons in tables
+ *
+ * @author Tristan Scholten & Jordy Wielaard
+ * @version 1.0
+ * @since 14-05-2020
+ */
 //BUTTON EDITOR CLASS
 public class ButtonEditor extends DefaultCellEditor
 {
@@ -35,26 +42,21 @@ public class ButtonEditor extends DefaultCellEditor
                 if (lbl.equals(" - ")) {
                     if (Integer.parseInt(panel.getTableModel().getValueAt(panel.getJTable().getSelectedRow(), 4).toString()) > 1)
                         panel.getTableModel().setValueAt(String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getJTable().getSelectedRow(), 4).toString())-1), panel.getJTable().getSelectedRow(), 4);
-                    else {
-                        //Misschien verwijderen als hij minder dan 1 word?
-                        //tableModel.removeRow(jTable.getSelectedRow());
-                    }
-
                 }
 
                 if (lbl.equals("Verwijder")) {
                     panel.getTableModel().removeRow(panel.getJTable().getSelectedRow());
                 }
-                //Update prijs & beschikbaarheid
-                controller.update();
+                //Update price & Availability
+                controller.updateAvailability();
+                controller.updatePrice();
             }
         });
     }
 
     //OVERRIDE A COUPLE OF METHODS
     @Override
-    public Component getTableCellEditorComponent(JTable table, Object obj,
-                                                 boolean selected, int row, int col) {
+    public Component getTableCellEditorComponent(JTable table, Object obj, boolean selected, int row, int col) {
 
         //SET TEXT TO BUTTON,SET CLICKED TO TRUE,THEN RETURN THE BTN OBJECT
         lbl=(obj==null) ? "":obj.toString();
@@ -80,7 +82,6 @@ public class ButtonEditor extends DefaultCellEditor
 
     @Override
     protected void fireEditingStopped() {
-        // TODO Auto-generated method stub
         super.fireEditingStopped();
     }
 }

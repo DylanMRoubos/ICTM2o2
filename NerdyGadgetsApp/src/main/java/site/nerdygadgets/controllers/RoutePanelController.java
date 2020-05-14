@@ -1,5 +1,6 @@
 package site.nerdygadgets.controllers;
 
+import site.nerdygadgets.views.DesignPanel;
 import site.nerdygadgets.views.MainFrameView;
 import site.nerdygadgets.views.Views;
 

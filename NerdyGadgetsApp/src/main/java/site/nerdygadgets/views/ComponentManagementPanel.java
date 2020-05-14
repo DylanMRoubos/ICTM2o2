@@ -1,21 +1,17 @@
 package site.nerdygadgets.views;
 
-import site.nerdygadgets.functions.ComponentType;
-import site.nerdygadgets.functions.Serialization;
-import site.nerdygadgets.models.ComponentModel;
-
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.util.ArrayList;
-
+/**
+ * ComponentManagementPanel class
+ * ComponentManagementPanel for creating and deleting components
+ *
+ * @author Tristan Scholten & Jordy Wielaard
+ * @version 1.0
+ * @since 14-05-2020
+ */
 public class ComponentManagementPanel extends JPanel {
     private JLabel jlCurrentComponents;
     private JPanel jpCurrentComponents;
@@ -23,14 +19,13 @@ public class ComponentManagementPanel extends JPanel {
 
     private JLabel jlAddComponents;
     private JPanel jpAddComponents;
+    private JPanel jpAddComponentsLayout;
     private JPanel jpAddComponentsContent;
 
-    //Huidigecomponents content
     private JTable jTable;
     private DefaultTableModel tableModel;
     private JScrollPane tableScrollPane;
 
-    //ComponentToevoegen content
     private JLabel jlName;
     private JTextField jtName;
     private JLabel jlPrice;
@@ -41,41 +36,32 @@ public class ComponentManagementPanel extends JPanel {
     private JComboBox jcComponents;
     private JButton jbAdd;
 
-//    private ArrayList<ComponentModel> currentComponents;
-
     public ComponentManagementPanel() {
-//        add(new JLabel("Dit moet het components paneel voorstellen."))
         setLayout(new GridLayout(0,2));
 
-//        currentComponents = new ArrayList<ComponentModel>();
-
-        //maak de label
         jlCurrentComponents = new JLabel("Huidige componenten:");
         jlCurrentComponents.setFont(new Font("Test", Font.BOLD, 15));
         jlCurrentComponents.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jlCurrentComponents.setBorder(new EmptyBorder(5, 20, 20,20));
+        jlCurrentComponents.setBorder(new EmptyBorder(10,20,20,20));
 
-        //Maak de label
         jlAddComponents = new JLabel("Component toevoegen:");
         jlAddComponents.setFont(new Font("Test", Font.BOLD, 15));
         jlAddComponents.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jlAddComponents.setBorder(new EmptyBorder(5,20,20,20));
+        jlAddComponents.setBorder(new EmptyBorder(0,20,20,20));
 
-        //Maak het panel waar alle content in staat
         jpCurrentComponentsContent = new JPanel();
         jpCurrentComponentsContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         jpCurrentComponentsContent.setMaximumSize(new Dimension(450, 550));
 
-        //maak het hele linker kant panel aan
+        //Make panels left side
         jpCurrentComponents = new JPanel();
         add(jpCurrentComponents);
-//        jpCurrentComponents.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        //jpCurrentComponents.setLayout(new BorderLayout());
         jpCurrentComponents.setLayout(new BoxLayout(jpCurrentComponents, BoxLayout.PAGE_AXIS));
         jpCurrentComponents.add(jlCurrentComponents);
         jpCurrentComponents.add(jpCurrentComponentsContent);
         jpCurrentComponentsContent.setLayout(new BorderLayout());
-        //init Content linker panel
+
+        //init Content left panel
         tableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -87,28 +73,27 @@ public class ComponentManagementPanel extends JPanel {
         tableModel.addColumn("Beschikbaarheid");
         tableModel.addColumn("Prijs");
 
-        //tableModel.addRow(new Object[]{"mep", "mep", "mep", "mep"});
-
         jTable = new JTable(tableModel);
         tableScrollPane = new JScrollPane(jTable);
         tableScrollPane.setSize(new Dimension(250, 450));
 
-        //Voeg content toe aan linker panel
-
+        //Add scrollpane
         jpCurrentComponentsContent.add(tableScrollPane);
 
-        //Maak het panel waar alle content in staat
+        //Make panels right side
+        jpAddComponents = new JPanel();
         jpAddComponentsContent = new JPanel();
+        jpAddComponentsLayout = new JPanel();
         jpAddComponentsContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpAddComponentsContent.setMaximumSize(new Dimension(450,550));
+        jpAddComponentsContent.setPreferredSize(new Dimension(450,550));
+        jpAddComponentsContent.setLayout(new GridLayout(3,0));
+        jpAddComponentsLayout.setLayout(new GridBagLayout());
 
         //Maak het hele rechter kant panel aan
-        jpAddComponents = new JPanel();
         add(jpAddComponents);
-//        jpComponentToevegoen.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpAddComponents.setLayout(new BoxLayout(jpAddComponents, BoxLayout.PAGE_AXIS));
         jpAddComponents.add(jlAddComponents);
         jpAddComponents.add(jpAddComponentsContent);
+        jpAddComponentsContent.add(jpAddComponentsLayout);
 
         //init Content rechter panel
         jlName = new JLabel("Naam: ");
@@ -120,17 +105,49 @@ public class ComponentManagementPanel extends JPanel {
         jcComponents = new JComboBox(components);
         jbAdd = new JButton("Voeg Toe");
 
-        //Voeg alle content toe
-        jpAddComponentsContent.setLayout(new FlowLayout());
-        jpAddComponentsContent.add(jlName);
-        jpAddComponentsContent.add(jtName);
-        jpAddComponentsContent.add(jlPrice);
-        jpAddComponentsContent.add(jtPrice);
-        jpAddComponentsContent.add(jlAvailability);
-        jpAddComponentsContent.add(jtAvailability);
-        jpAddComponentsContent.add(jcComponents);
-        jpAddComponentsContent.add(jbAdd);
-
+        //Layout right panel
+        GridBagConstraints gbc = new GridBagConstraints();
+        //Give locations of labels, textfields and buttons in gridbaglayout
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.insets = new Insets(10,10,0,10);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        jpAddComponentsLayout.add(jlName, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        jpAddComponentsLayout.add(jtName, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        jpAddComponentsLayout.add(jlPrice, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        jpAddComponentsLayout.add(jtPrice, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        jpAddComponentsLayout.add(jlAvailability, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        jpAddComponentsLayout.add(jtAvailability, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        jpAddComponentsLayout.add(jcComponents, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        jpAddComponentsLayout.add(jbAdd, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
     }
 
     public JTextField getJtName(){
