@@ -1,9 +1,15 @@
 package site.nerdygadgets;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * ProcedureJP class
@@ -18,7 +24,6 @@ public class ProcedureJP extends JPanel {
     private SSHManager w1, w2, db1, db2;
     private DbConnection sql1, sql2;
     private TestScriptFrame frame;
-    //TODO: knoppen toevoegen
     private JButton p1, p2, p3, p4;
     private JPanel north, south;
 
@@ -38,6 +43,8 @@ public class ProcedureJP extends JPanel {
         north.setPreferredSize(new Dimension(0, 40));
 
         south = new JPanel();
+        south.setLayout(new GridLayout(0, 1,0,10));
+        south.setBorder(BorderFactory.createEmptyBorder(0,20,550,20));
 
         p1 = new JButton("Test Site load balancing");
         p2 = new JButton("Test SQL synchroon op webservers");
@@ -75,7 +82,73 @@ public class ProcedureJP extends JPanel {
 
     public void testLoadBalancing() {
         //TODO: implement: webserver1 uit -> wachten (15 sec) -> verbinden met site -> webserver 1 aan -> wachten (10 sec) -> webserver 2 uit -> wachten (15 sec) -> verbinden met site (als dit succesvol is klaar). -> alles aan.
-        System.out.println("dit moet nog geïmplementeerd worden");
+        if(!App.scriptRunning) {
+            new Thread(() -> {
+                App.scriptRunning = true;
+                // clear gui console
+                frame.getConsoleJP().clearText();
+                frame.getConsoleJP().appendConsoleText("Start test: Load balancing\n");
+
+
+                // webserver 1 uitzetten (alleen apache)
+                frame.getConsoleJP().appendConsoleText("Stopping web1\n");
+                serviceApache("stop", w1);
+                frame.getConsoleJP().appendConsoleText("Stopped web1\n");
+
+                // wacht 20s
+                frame.getConsoleJP().appendConsoleText("Waiting for load balancer to catch up\n");
+                wait(20);
+
+                // verbind met site (status.php) > result wordt "webserver 2"
+                frame.getConsoleJP().appendConsoleText("Connect to site...\n");
+                String result1 = connectToSite();
+                if (result1.equals("")) {
+                    frame.getConsoleJP().appendConsoleText("Connection failed!\n");
+                } else {
+                    frame.getConsoleJP().appendConsoleText("Connected to: " + result1 + "\n");
+                }
+
+                // web server 1 aanzetten
+                frame.getConsoleJP().appendConsoleText("Starting web1\n");
+                serviceApache("start", w1);
+                frame.getConsoleJP().appendConsoleText("Started web1\n");
+
+                // wait 5s
+                wait(5);
+
+                // web server 2 uitzetten
+                frame.getConsoleJP().appendConsoleText("Stopping web2\n");
+                serviceApache("stop", w2);
+                frame.getConsoleJP().appendConsoleText("Stopped web2\n");
+
+                // wacht 20s
+                frame.getConsoleJP().appendConsoleText("Waiting for load balancer to catch up\n");
+                wait(20);
+
+                // verbind met site (status.php) > result wordt "webserver 1"
+                frame.getConsoleJP().appendConsoleText("Connect to site...\n");
+                String result2 = connectToSite();
+                if (result2.equals("")) {
+                    frame.getConsoleJP().appendConsoleText("Connection failed!\n");
+                } else {
+                    frame.getConsoleJP().appendConsoleText("Connected to: " + result2 + "\n");
+                }
+
+                // web server 2 aanzetten
+                frame.getConsoleJP().appendConsoleText("Starting web2\n");
+                serviceApache("start", w2);
+                frame.getConsoleJP().appendConsoleText("Started web2\n");
+
+                // done
+                if(!result1.equals("") && !result2.equals("")) {
+                    frame.getConsoleJP().appendConsoleText("Test Finished Successfully");
+                } else {
+                    frame.getConsoleJP().appendConsoleText("Test Failed");
+                }
+
+                App.scriptRunning = false;
+            }).start();
+        }
     }
 
     public void testReplicatieAndFailoverDb2toDb1() {
@@ -288,6 +361,47 @@ public class ProcedureJP extends JPanel {
             Thread.sleep(s*1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private String connectToSite() {
+        int tries = 0;
+        while (tries < 5) {
+            try {
+                URL url = new URL("https://www.nerdy-gadgets.site/status.php");
+                HttpsURLConnection con;
+                con = (HttpsURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+
+                int status = con.getResponseCode();
+
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer content = new StringBuffer();
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                in.close();
+
+                return content.toString();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("Can't connect");
+            }
+            tries++;
+            wait(2);
+        }
+
+        return "";
+    }
+
+    public void serviceApache(String option, SSHManager s) {
+        if (option.equals("stop")) {
+            s.runCommandSudo("systemctl stop apache2");
+        } else if (option.equals("start")) {
+            s.runCommandSudo("systemctl start apache2");
         }
     }
 
