@@ -46,6 +46,9 @@ public class DesignController implements ActionListener, TableModelListener {
         this.panel = panel;
         this.model = model;
         this.isUpdatingComboboxes = false;
+
+        list = new ArrayList<ComponentModel>();
+
         //Adds buttons
         panel.getJTable().getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
         panel.getJTable().getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());

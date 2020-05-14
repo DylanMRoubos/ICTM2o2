@@ -118,14 +118,13 @@ public class Algorithm {
         CombinationRepetition(webArr, k, l, web);
         System.out.println(Arrays.toString(webArr));
 
+
+
         // for the best solution
         Algoritm();
 
         // return arraylist with best solution
         createList();
-
-        System.out.println(bestSolution);
-
     }
 
     public void AddComponents() {
@@ -369,7 +368,7 @@ public class Algorithm {
                         bestSolutionPrice = totalPrice;
                         bestSolutionAvailabilty = totalPercentage;
                         System.out.println(websolution + dbsolution);
-                        bestSolution = websolution + dbsolution + algorithmComponents.size() + "-";
+                        bestSolution = websolution + dbsolution + (algorithmComponents.size()-1) + "-";
                     }
                 }
 
