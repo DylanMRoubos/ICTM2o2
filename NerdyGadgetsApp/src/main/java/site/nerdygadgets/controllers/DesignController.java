@@ -1,9 +1,12 @@
 package site.nerdygadgets.controllers;
 
+import com.sun.tools.javac.Main;
+import site.nerdygadgets.models.Algorithm;
 import site.nerdygadgets.functions.*;
 import site.nerdygadgets.models.ComponentModel;
 import site.nerdygadgets.models.DesignModel;
 import site.nerdygadgets.models.InfrastructureComponentModel;
+import site.nerdygadgets.views.AvailabiltyDialog;
 import site.nerdygadgets.views.DesignPanel;
 import site.nerdygadgets.views.MainFrameView;
 import javax.swing.*;
@@ -16,6 +19,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 /**
  * DesignController class
@@ -28,11 +32,17 @@ import java.util.ArrayList;
 public class DesignController implements ActionListener, TableModelListener {
     private DesignPanel panel;
     private DesignModel model;
+    private ArrayList<ComponentModel> list;
 
     private boolean isUpdatingComboboxes;
 
-    public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
+    // TODO : added algoritme
+    private Algorithm algorithm;
 
+    private MainFrameView mfv;
+
+    public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
+        this.mfv = mfv;
         this.panel = panel;
         this.model = model;
         this.isUpdatingComboboxes = false;
@@ -52,6 +62,7 @@ public class DesignController implements ActionListener, TableModelListener {
         panel.getSaveButton().addActionListener(this);
         panel.getTableModel().addTableModelListener(this);
 
+        panel.getJbOpt().addActionListener(this);
 
         //Update combobox on click get new compents
         mfv.getHomePanel().getJpCreate().addMouseListener(new MouseAdapter() {
@@ -109,6 +120,16 @@ public class DesignController implements ActionListener, TableModelListener {
             e.printStackTrace();
         }
     }
+
+
+    // TODO : used
+    private void fillArraylist() {
+        model.reloadList();
+        this.list.addAll(model.getDatabaseModels());
+        this.list.addAll(model.getWebModels());
+        this.list.addAll(model.getFirewallModels());
+    }
+
     //Function for updating/reloading combobox components
     public void updateComboboxes() {
         this.isUpdatingComboboxes = true;
@@ -285,6 +306,26 @@ public class DesignController implements ActionListener, TableModelListener {
                 Serialization.serializeInfrastructure(l, filePath);
             } catch (IOException ex) {
                 ex.printStackTrace();
+            }
+        }
+
+        // TODO : added
+        if (e.getSource() == panel.getJbOpt()) {
+            AvailabiltyDialog dia = new AvailabiltyDialog(mfv);
+
+            boolean yes = dia.isOk();
+            double availability = dia.getAvailability();
+            list.clear();
+            fillArraylist();
+
+            if (yes) {
+
+                algorithm = new Algorithm(availability, list);
+
+                addInfModelsToTable(algorithm.getList());
+
+                panel.getJlPrice().setText("€" + algorithm.getBestSolutionPrice());
+                panel.getJlAvailability().setText(algorithm.getBestSolutionAvailabilty() + "%");
             }
         }
     }
