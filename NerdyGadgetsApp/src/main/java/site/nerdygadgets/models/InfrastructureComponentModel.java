@@ -31,7 +31,7 @@ public class InfrastructureComponentModel {
     }
 
     public double getAvailability() {
-        return this.availability;
+        return this.availability/100;
     }
 
     public String getName() {
