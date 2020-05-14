@@ -1,5 +1,6 @@
 package site.nerdygadgets.controllers;
 
+import com.sun.tools.javac.Main;
 import site.nerdygadgets.models.Algorithm;
 import site.nerdygadgets.functions.*;
 import site.nerdygadgets.models.ComponentModel;
@@ -18,6 +19,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 /**
  * DesignController class
@@ -30,14 +32,17 @@ import java.util.ArrayList;
 public class DesignController implements ActionListener, TableModelListener {
     private DesignPanel panel;
     private DesignModel model;
+    private ArrayList<ComponentModel> list;
 
     private boolean isUpdatingComboboxes;
 
     // TODO : added algoritme
     private Algorithm algorithm;
 
-    public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
+    private MainFrameView mfv;
 
+    public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
+        this.mfv = mfv;
         this.panel = panel;
         this.model = model;
         this.isUpdatingComboboxes = false;
@@ -57,6 +62,7 @@ public class DesignController implements ActionListener, TableModelListener {
         panel.getSaveButton().addActionListener(this);
         panel.getTableModel().addTableModelListener(this);
 
+        panel.getJbOpt().addActionListener(this);
 
         //Update combobox on click get new compents
         mfv.getHomePanel().getJpCreate().addMouseListener(new MouseAdapter() {
@@ -305,7 +311,7 @@ public class DesignController implements ActionListener, TableModelListener {
 
         // TODO : added
         if (e.getSource() == panel.getJbOpt()) {
-            AvailabiltyDialog dia = new AvailabiltyDialog(this);
+            AvailabiltyDialog dia = new AvailabiltyDialog(mfv);
 
             boolean yes = dia.isOk();
             double availability = dia.getAvailability();
