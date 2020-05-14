@@ -15,7 +15,8 @@ public class AvailabiltyDialog extends JDialog implements ActionListener {
     public AvailabiltyDialog(JFrame f) {
         super(f, true);
         setTitle("Beschikbaarheiddialoog");
-        setSize(300,150);
+        setSize(260,130);
+        setLocationRelativeTo(null);
         setLayout(new FlowLayout());
 
         add(new JLabel("Beschikbaarheid: "));

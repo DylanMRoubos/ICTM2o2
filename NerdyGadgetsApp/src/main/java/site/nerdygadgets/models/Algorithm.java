@@ -3,6 +3,7 @@ package site.nerdygadgets.models;
 import site.nerdygadgets.functions.ComponentType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Algorithm {
@@ -11,12 +12,16 @@ public class Algorithm {
     private List<String> dbSolutions = new ArrayList<>();
     private List<String> webSolutions = new ArrayList<>();
 
+    private ArrayList<InfrastructureComponentModel> bestList = new ArrayList<>();
+
+    private String bestSolution;
+
     // temporary availabilty and amount of dbservers and webservers
     private double availabilty;
     private int amount = 5;
 
     // arraylist for components
-    private List<String[]> algorithmComponents = new ArrayList<>();
+    private List<String[]> algorithmComponents;
 
     // Null Components
     private String[] dbnull = {"Null", "0", "0", "Database", "0"};
@@ -46,8 +51,6 @@ public class Algorithm {
 
     private int dbCounter = 1;
     private int webCounter = 1;
-
-    private int algorithmCounter;
 
     private ArrayList<ComponentModel> components;
 
@@ -80,12 +83,17 @@ public class Algorithm {
         // for the best solution
         Algoritm();
 
+        // return arraylist with best solution
+        createList();
+
     }
 
     // constructor for given availabilty and all components
     public Algorithm(double availabilty, ArrayList<ComponentModel> components) {
         this.availabilty = availabilty;
         this.components = components;
+
+        algorithmComponents = new ArrayList<>();
 
         // Add components to arraylist components
         AddComponents();
@@ -101,17 +109,22 @@ public class Algorithm {
         int r = amount;
         int db = 0;
         CombinationRepetition(dbArr, n, r, db);
+        System.out.println(Arrays.toString(dbArr));
 
         // all solutions for webservers
         int l = amount;
         int k = webArr.length;
         int web = 1;
         CombinationRepetition(webArr, k, l, web);
-        System.out.println(dbSolutions);
-        System.out.println(webSolutions);
+        System.out.println(Arrays.toString(webArr));
 
         // for the best solution
         Algoritm();
+
+        // return arraylist with best solution
+        createList();
+
+        System.out.println(bestSolution);
 
     }
 
@@ -144,11 +157,6 @@ public class Algorithm {
             }
 
             componentCounter++;
-        }
-        if (componentCounter < 10) {
-            algorithmCounter = (dbCounter + webCounter) * 2;
-        }else{
-            algorithmCounter = (dbCounter + webCounter) * 2 + (componentCounter - 9);
         }
     }
 
@@ -360,9 +368,8 @@ public class Algorithm {
                     } else if (totalPrice < bestSolutionPrice) {
                         bestSolutionPrice = totalPrice;
                         bestSolutionAvailabilty = totalPercentage;
-                        System.out.println(bestSolutionPrice);
-                        System.out.println(totalPercentage);
-                        System.out.println("weboplossing en dboplossing = " + websolution + "/" + dbsolution);
+                        System.out.println(websolution + dbsolution);
+                        bestSolution = websolution + dbsolution + algorithmComponents.size() + "-";
                     }
                 }
 
@@ -370,6 +377,41 @@ public class Algorithm {
                 webPrice = 0;
                 dbPrice = 0;
                 dbPercentage = 1;
+            }
+        }
+    }
+
+    public void createList() {
+        
+        int bestSolutionNumber;
+        int componentNumber;
+        InfrastructureComponentModel bestInfrastructure;
+        
+        for (int p = 0; p < bestSolution.length(); p++) {
+            if (bestSolution.charAt(p) == '-' || (bestSolution.charAt(p) == '0' && bestSolution.charAt(p + 1) == '-') || ( bestSolution.charAt(p) == '1' && bestSolution.charAt(p + 1) == '-' )){
+                continue;
+            }else if (!(bestSolution.charAt(p + 1) == '-')){
+                bestSolutionNumber = Character.getNumericValue(bestSolution.charAt(p)) + Character.getNumericValue(bestSolution.charAt(p + 1));
+                p++;
+                for (String[] strInt : algorithmComponents) {
+                    componentNumber = Integer.parseInt(strInt[4]);
+
+                    if (bestSolutionNumber == componentNumber) {
+                        bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
+                        bestList.add(bestInfrastructure);
+                    }
+                }
+
+            }else{
+                bestSolutionNumber = Character.getNumericValue(bestSolution.charAt(p));
+
+                for (String[] strInt : algorithmComponents) {
+                    componentNumber = Integer.parseInt(strInt[4]);
+                    if (bestSolutionNumber == componentNumber) {
+                        bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
+                        bestList.add(bestInfrastructure);
+                    }
+                }
             }
         }
     }
@@ -382,6 +424,10 @@ public class Algorithm {
 
     public double getBestSolutionPrice() {
         return bestSolutionPrice;
+    }
+
+    public ArrayList<InfrastructureComponentModel> getList() {
+        return bestList;
     }
 }
 

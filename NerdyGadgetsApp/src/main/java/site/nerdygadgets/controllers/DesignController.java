@@ -106,6 +106,8 @@ public class DesignController extends JFrame implements ActionListener {
         }
     }
 
+
+    // TODO : used
     private void fillArraylist() {
         model.reloadList();
         this.list.addAll(model.getDatabaseModels());
@@ -255,17 +257,20 @@ public class DesignController extends JFrame implements ActionListener {
             }
         }
 
-        // ! added !
+        // TODO : added
         if (e.getSource() == panel.getJbOpt()) {
             AvailabiltyDialog dia = new AvailabiltyDialog(this);
 
             boolean yes = dia.isOk();
             double availability = dia.getAvailability();
+            list.clear();
             fillArraylist();
 
             if (yes) {
 
                 algorithm = new Algorithm(availability, list);
+
+                addInfModelsToTable(algorithm.getList());
 
                 panel.getJlPrice().setText("€" + algorithm.getBestSolutionPrice());
                 panel.getJlAvailability().setText(algorithm.getBestSolutionAvailabilty() + "%");
