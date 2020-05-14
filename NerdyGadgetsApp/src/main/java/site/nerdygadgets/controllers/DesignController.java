@@ -121,6 +121,11 @@ public class DesignController implements ActionListener {
         l = model.getFirewallModels();
         for (ComponentModel m : l)
             panel.getJcFirewall().addItem(m.getName());
+
+        panel.getJcFirewall().setSelectedIndex(-1);
+        panel.getJcWeb().setSelectedIndex(-1);
+        panel.getJcDatabase().setSelectedIndex(-1);
+        
         this.isUpdatingComboboxes = false;
     }
 
