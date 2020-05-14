@@ -1,10 +1,11 @@
 package site.nerdygadgets.controllers;
 
-import site.nerdygadgets.models.Algoritme;
+import site.nerdygadgets.models.Algorithm;
 import site.nerdygadgets.functions.*;
 import site.nerdygadgets.models.ComponentModel;
 import site.nerdygadgets.models.DesignModel;
 import site.nerdygadgets.models.InfrastructureComponentModel;
+import site.nerdygadgets.views.AvailabiltyDialog;
 import site.nerdygadgets.views.DesignPanel;
 import site.nerdygadgets.views.MainFrameView;
 
@@ -18,13 +19,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class DesignController implements ActionListener {
+// TODO : extends JFrame
+
+public class DesignController extends JFrame implements ActionListener {
     private DesignPanel panel;
     private DesignModel model;
     private ArrayList<ComponentModel> list;
 
-    // ! added !
-    private Algoritme algoritme;
+    // TODO : added algoritme
+    private Algorithm algorithm;
 
     public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
         this.panel = panel;
@@ -254,14 +257,19 @@ public class DesignController implements ActionListener {
 
         // ! added !
         if (e.getSource() == panel.getJbOpt()) {
+            AvailabiltyDialog dia = new AvailabiltyDialog(this);
 
-            // TODO : dialog om beschikbaarheid in te vullen
-
+            boolean yes = dia.isOk();
+            double availability = dia.getAvailability();
             fillArraylist();
-            algoritme = new Algoritme(99.99, list);
 
-            panel.getJlPrice().setText("€" + algoritme.getBestSolutionPrice());
-            panel.getJlAvailability().setText(algoritme.getBestSolutionAvailabilty() + "%");
+            if (yes) {
+
+                algorithm = new Algorithm(availability, list);
+
+                panel.getJlPrice().setText("€" + algorithm.getBestSolutionPrice());
+                panel.getJlAvailability().setText(algorithm.getBestSolutionAvailabilty() + "%");
+            }
         }
     }
 

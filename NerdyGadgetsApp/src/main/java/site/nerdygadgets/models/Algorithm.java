@@ -5,7 +5,7 @@ import site.nerdygadgets.functions.ComponentType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Algoritme {
+public class Algorithm {
 
     // arraylist for db solutions and web solutions
     private List<String> dbSolutions = new ArrayList<>();
@@ -52,7 +52,7 @@ public class Algoritme {
     private ArrayList<ComponentModel> components;
 
     // TODO: constructor for given availabilty and given components / all components
-    public Algoritme(double availabilty, ArrayList<ComponentModel> chosenComponents, ArrayList<ComponentModel> components ) {
+    public Algorithm(double availabilty, ArrayList<ComponentModel> chosenComponents, ArrayList<ComponentModel> components ) {
         this.availabilty = availabilty;
         this.components = components;
 
@@ -83,7 +83,7 @@ public class Algoritme {
     }
 
     // constructor for given availabilty and all components
-    public Algoritme(double availabilty, ArrayList<ComponentModel> components) {
+    public Algorithm(double availabilty, ArrayList<ComponentModel> components) {
         this.availabilty = availabilty;
         this.components = components;
 
@@ -101,7 +101,6 @@ public class Algoritme {
         int r = amount;
         int db = 0;
         CombinationRepetition(dbArr, n, r, db);
-        System.out.println(dbSolutions);
 
         // all solutions for webservers
         int l = amount;
@@ -199,7 +198,6 @@ public class Algoritme {
             if (q == 1) {
                 webSolutions.add(tijdelijke);
             } else if (q == 0) {
-                System.out.println("database tijdelijke");
                 dbSolutions.add(tijdelijke);
             }
             return;
