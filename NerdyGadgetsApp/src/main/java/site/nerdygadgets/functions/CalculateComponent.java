@@ -32,7 +32,7 @@ public class CalculateComponent {
 
         for (InfrastructureComponentModel model : components) {
             for (int i = 0; i < model.getAmount(); i++) {
-                System.out.println(model.getAvailability()/100);
+//                System.out.println(model.getAvailability()/100);
                 switch (model.getType()) {
                     case Firewall:
                         //Als het nog niet gezet is, dan is dit de eerste dus die hoef je niet te vermedigvuldigen met de oude waarde (ander krijg je 0xiets = 0)
@@ -56,7 +56,7 @@ public class CalculateComponent {
         //Om er weer een normal percentage van te maken, het weer keer 100 doen.
         double systemAvailabilityPercentage = finalCalculation * 100;
 
-        System.out.println("Final percentage: " + systemAvailabilityPercentage + "%");
+//        System.out.println("Final percentage: " + systemAvailabilityPercentage + "%");
         if(components.size() == 0){
             return 0.0;
         }else{

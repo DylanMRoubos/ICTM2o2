@@ -6,13 +6,10 @@ import site.nerdygadgets.models.DesignModel;
 import site.nerdygadgets.models.InfrastructureComponentModel;
 import site.nerdygadgets.views.DesignPanel;
 import site.nerdygadgets.views.MainFrameView;
-
-
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -91,7 +88,7 @@ public class DesignController implements ActionListener, TableModelListener {
                     File file = fc.getSelectedFile();
                     //This is where a real application would open the file.
                     openFile(file);
-                    System.out.println("Opening: " + file.getName());
+//                    System.out.println("Opening: " + file.getName());
 
                 } else {
                     System.out.println("Open command cancelled by user.");
@@ -118,7 +115,7 @@ public class DesignController implements ActionListener, TableModelListener {
         panel.getJcDatabase().removeAllItems();
         panel.getJcWeb().removeAllItems();
         panel.getJcFirewall().removeAllItems();
-        System.out.println("Items removed");
+//        System.out.println("Items removed");
         model.reloadList();
 
         ArrayList<ComponentModel> l = model.getDatabaseModels();
@@ -286,8 +283,8 @@ public class DesignController implements ActionListener, TableModelListener {
             ArrayList<InfrastructureComponentModel> l = getCurrentModels();
             try {
                 Serialization.serializeInfrastructure(l, filePath);
-                System.out.println(l);
-                System.out.println("Gelukt jawelll");
+//                System.out.println(l);
+//                System.out.println("Gelukt jawelll");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

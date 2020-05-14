@@ -129,11 +129,11 @@ public class ComponentsController implements ActionListener{
             ComponentModel m = new ComponentModel(view.getJtName().getText(), this.getAvailability(), this.getPrice(),this.getType());
             if (this.model.addComponentModel(m)) {
                 view.getTableModel().addRow(new Object[]{getType().name(), view.getJtName().getText(), String.valueOf(this.getAvailability()), String.valueOf(this.getPrice())});
-                this.model.printComponents();
-                System.out.println("Component added! <3");
+//                this.model.printComponents();
+//                System.out.println("Component added");
             } else {
                 JOptionPane.showMessageDialog(null, "Component bestaat al, zorg dat naam & type uniek zijn.", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
-                System.out.println("Component bestaat al :(");
+//                System.out.println("Component bestaat al");
             }
         }
     }
@@ -163,7 +163,8 @@ public class ComponentsController implements ActionListener{
                 return availability;
             }
         }
-        catch (NumberFormatException e) { System.out.println("Invalid input"); }
+        catch (NumberFormatException e) {
+            System.out.println("Invalid input"); }
         return -2;
     }
 
@@ -178,7 +179,7 @@ public class ComponentsController implements ActionListener{
             default:
                 System.out.println("Type Unavailable");
         }
-        System.out.println("String.valueOf(jcComponenten.getSelectedItem())");
+//        System.out.println("String.valueOf(jcComponenten.getSelectedItem())");
         return null;
     }
 
