@@ -283,8 +283,6 @@ public class DesignController implements ActionListener, TableModelListener {
             ArrayList<InfrastructureComponentModel> l = getCurrentModels();
             try {
                 Serialization.serializeInfrastructure(l, filePath);
-//                System.out.println(l);
-//                System.out.println("Gelukt jawelll");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
