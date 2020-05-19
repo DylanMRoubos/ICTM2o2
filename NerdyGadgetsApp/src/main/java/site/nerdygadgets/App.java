@@ -19,19 +19,6 @@ public class App {
 
     public static void main(String[] args) throws InterruptedException {
 
-        new ServerManager(); // start data scraper.
-
-        //Create database instance to get data for the current infrastrucutre models
-        Database db = new Database("mongodb+srv://admin:admin@cluster0-gzerr.mongodb.net/test?retryWrites=true&w=majority");
-
-        //Create current infrastructure models to save data from a currentComponent in a object
-
-       CurrentInfrastructureComponentModel web1Model  = new CurrentInfrastructureComponentModel(1, db, "Web1");
-       CurrentInfrastructureComponentModel web2Model  = new CurrentInfrastructureComponentModel(2, db, "Web2");
-       CurrentInfrastructureComponentModel db1Model  = new CurrentInfrastructureComponentModel(3, db, "DB1");
-       CurrentInfrastructureComponentModel db2Model  = new CurrentInfrastructureComponentModel(4, db, "DB2");
-       CurrentInfrastructureComponentModel pfSenseModel  = new CurrentInfrastructureComponentModel(5, db, "PFsense");
-
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(() -> {
             try {
@@ -45,6 +32,18 @@ public class App {
             DesignController dc = new DesignController(mainFrameView.getDesignPanel(), new DesignModel(), mainFrameView);
             RoutePanelController rpc = new RoutePanelController(mainFrameView);
 
+            new ServerManager(); // start data scraper.
+
+            //Create database instance to get data for the current infrastrucutre models
+            Database db = new Database("mongodb+srv://admin:admin@cluster0-gzerr.mongodb.net/test?retryWrites=true&w=majority");
+
+            //Create current infrastructure models to save data from a currentComponent in a object
+
+            CurrentInfrastructureComponentModel web1Model  = new CurrentInfrastructureComponentModel(1, db, "Web1");
+            CurrentInfrastructureComponentModel web2Model  = new CurrentInfrastructureComponentModel(2, db, "Web2");
+            CurrentInfrastructureComponentModel db1Model  = new CurrentInfrastructureComponentModel(3, db, "DB1");
+            CurrentInfrastructureComponentModel db2Model  = new CurrentInfrastructureComponentModel(4, db, "DB2");
+            CurrentInfrastructureComponentModel pfSenseModel  = new CurrentInfrastructureComponentModel(5, db, "PFsense");
 
             //Create current infrastructure controllers to add the panels to the JFrame filled with data from the model.
            CurrentInfrastructureController web1Controller = new CurrentInfrastructureController(web1Model, mainFrameView.getCurrentInfrastructurePanel());
