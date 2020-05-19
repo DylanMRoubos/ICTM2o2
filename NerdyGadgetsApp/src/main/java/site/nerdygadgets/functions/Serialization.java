@@ -19,6 +19,7 @@ import java.util.ArrayList;
  */
 public class Serialization {
 
+    // create db connection file if it does not exist
     public static void serializeConnection(ArrayList<String> connection) {
         Gson g = new Gson();
         String s = g.toJson(connection);
@@ -41,6 +42,7 @@ public class Serialization {
         }
     }
 
+    // get data from db.json and give it back as an Arryalist of strings
     public static ArrayList<String> deserializeConnection() {
         Gson g = new Gson();
         String path = System.getProperty("user.dir") + "\\db.json";
