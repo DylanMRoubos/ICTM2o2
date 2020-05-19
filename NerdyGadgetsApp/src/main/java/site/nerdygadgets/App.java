@@ -5,6 +5,7 @@ import site.nerdygadgets.controllers.ComponentsController;
 import site.nerdygadgets.controllers.CurrentInfrastructureController;
 import site.nerdygadgets.controllers.DesignController;
 import site.nerdygadgets.controllers.RoutePanelController;
+import site.nerdygadgets.functions.Serialization;
 import site.nerdygadgets.models.ComponentsModel;
 import site.nerdygadgets.models.CurrentInfrastructureComponentModel;
 import site.nerdygadgets.models.DesignModel;
@@ -13,12 +14,12 @@ import site.nerdygadgets.scraper.ServerManager;
 import site.nerdygadgets.views.MainFrameView;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class App {
     static MainFrameView mainFrameView;
 
     public static void main(String[] args) throws InterruptedException {
-
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(() -> {
             try {
@@ -32,11 +33,18 @@ public class App {
             DesignController dc = new DesignController(mainFrameView.getDesignPanel(), new DesignModel(), mainFrameView);
             RoutePanelController rpc = new RoutePanelController(mainFrameView);
 
-            new ServerManager(); // start data scraper.
+            ArrayList<String> defaultConnection = new ArrayList<String>();
+            defaultConnection.add("mongodb+srv://admin:admin@cluster0-gzerr.mongodb.net/test?retryWrites=true&w=majority");
+            defaultConnection.add("nerdyGadgets");
+            defaultConnection.add("serverStatus");
+            Serialization.serializeConnection(defaultConnection);
+
+            Database db = new Database(Serialization.deserializeConnection());
+
+            new ServerManager(db); // start data scraper.
 
             //Create database instance to get data for the current infrastrucutre models
-            Database db = new Database("mongodb+srv://admin:admin@cluster0-gzerr.mongodb.net/test?retryWrites=true&w=majority");
-
+            //Database db = new Database("mongodb+srv://admin:admin@cluster0-gzerr.mongodb.net/test?retryWrites=true&w=majority");
             //Create current infrastructure models to save data from a currentComponent in a object
 
             CurrentInfrastructureComponentModel web1Model  = new CurrentInfrastructureComponentModel(1, db, "Web1");
