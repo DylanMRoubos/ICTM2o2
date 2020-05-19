@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -46,6 +47,17 @@ public class DesignController implements ActionListener, TableModelListener {
         this.panel = panel;
         this.model = model;
         this.isUpdatingComboboxes = false;
+
+        JPanel test = new JPanel(){
+          @Override
+          public void paintComponent(Graphics g){
+              super.paintComponent(g);
+              setBackground(Color.black);
+          }
+        };
+        test.setPreferredSize(new Dimension(540,580));
+        panel.getJpDisplayPanel().add(test);
+
 
         list = new ArrayList<ComponentModel>();
 

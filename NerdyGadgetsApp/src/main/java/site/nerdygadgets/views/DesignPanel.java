@@ -126,16 +126,17 @@ public class DesignPanel extends JPanel {
         jlAvailability = new JLabel("0.0%");
 
         //Panels right side
-        jpDisplayPanel = new JPanel();
-        jpDisplayPanel.setPreferredSize(new Dimension(550, 590));
-
+        //jpDisplayPanel is for graphics
         jpDisplay = new JPanel();
         add(jpDisplay);
+        jpDisplay.setLayout(new FlowLayout());
+
+        jpDisplayPanel = new JPanel();
+        jpDisplayPanel.setPreferredSize(new Dimension(550,590));
+        jpDisplayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+
         jpDisplayControls = new JPanel();
         jpDisplayControls.setPreferredSize(new Dimension(600, 650));
-
-        jpDisplay.setLayout(new FlowLayout());
-        jpDisplayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         jpDisplayControls.setBorder(BorderFactory.createEmptyBorder(0,50,0,50));
 
         //init Content right panel
@@ -187,4 +188,7 @@ public class DesignPanel extends JPanel {
         return tableModel;
     }
 
+    public JPanel getJpDisplayPanel() {
+        return jpDisplayPanel;
+    }
 }
