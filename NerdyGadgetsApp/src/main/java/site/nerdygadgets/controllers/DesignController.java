@@ -157,7 +157,7 @@ public class DesignController implements ActionListener, TableModelListener {
         panel.getJcFirewall().setSelectedIndex(-1);
         panel.getJcWeb().setSelectedIndex(-1);
         panel.getJcDatabase().setSelectedIndex(-1);
-        
+
         this.isUpdatingComboboxes = false;
     }
     //Update price in design panel when component is added
@@ -180,6 +180,9 @@ public class DesignController implements ActionListener, TableModelListener {
     private void addInfModelsToTable(ArrayList<InfrastructureComponentModel> l) {
         for (InfrastructureComponentModel model : l)
             panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAmount()), " + ", " - ", "Verwijder"});
+    }
+    private void clearTable() {
+        panel.getTableModel().setRowCount(0);
     }
 
     @Override
@@ -316,17 +319,17 @@ public class DesignController implements ActionListener, TableModelListener {
         if (e.getSource() == panel.getJbOpt()) {
             AvailabiltyDialog dia = new AvailabiltyDialog(mfv);
 
-            boolean yes = dia.isOk();
+
+
+            boolean isDialogClosed = dia.isOk();
             double availability = dia.getAvailability();
+            clearTable();
             list.clear();
             fillArraylist();
 
-            if (yes) {
-
+            if (isDialogClosed) {
                 algorithm = new Algorithm(availability, list);
-
                 addInfModelsToTable(algorithm.getList());
-
                 panel.getJlPrice().setText("€" + algorithm.getBestSolutionPrice());
                 panel.getJlAvailability().setText(algorithm.getBestSolutionAvailabilty() + "%");
             }

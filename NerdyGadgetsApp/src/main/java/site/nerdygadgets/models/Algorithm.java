@@ -8,12 +8,14 @@ import java.util.List;
 
 public class Algorithm {
 
-    // arraylist for db solutions and web solutions
+    // arraylist for db solutions and web solutions formatted in ArrayString for easy acces
     private List<String> dbSolutions = new ArrayList<>();
     private List<String> webSolutions = new ArrayList<>();
 
+    // Arraylist filled by algorithm method returns best possible solution
     private ArrayList<InfrastructureComponentModel> bestList = new ArrayList<>();
 
+    //Best solution displayed with numbers
     private String bestSolution;
 
     // temporary availabilty and amount of dbservers and webservers
@@ -54,40 +56,6 @@ public class Algorithm {
 
     private ArrayList<ComponentModel> components;
 
-    // TODO: constructor for given availabilty and given components / all components
-    public Algorithm(double availabilty, ArrayList<ComponentModel> chosenComponents, ArrayList<ComponentModel> components ) {
-        this.availabilty = availabilty;
-        this.components = components;
-
-        // Add components to arraylist components
-        AddComponents();
-
-        // Add servers to array
-        AddServers();
-
-        // current highest webserver
-        HighestWebServer();
-
-        // all solutions for dbservers
-        int n = dbArr.length;
-        int r = amount;
-        int db = 0;
-        CombinationRepetition(dbArr, n, r, db);
-
-        // all solutions for webservers
-        int l = amount;
-        int k = webArr.length;
-        int web = 1;
-        CombinationRepetition(webArr, k, l, web);
-
-        // for the best solution
-        Algoritm();
-
-        // return arraylist with best solution
-        createList();
-
-    }
-
     // constructor for given availabilty and all components
     public Algorithm(double availabilty, ArrayList<ComponentModel> components) {
         this.availabilty = availabilty;
@@ -95,38 +63,30 @@ public class Algorithm {
 
         algorithmComponents = new ArrayList<>();
 
-        // Add components to arraylist components
+        // Add components to arraylist components as String
         AddComponents();
 
-        // Add servers to array
+        // Add Webservers and DBservers to indivual arrays
         AddServers();
 
         // current highest webserver
         HighestWebServer();
 
         // all solutions for dbservers
-        int n = dbArr.length;
-        int r = amount;
-        int db = 0;
-        CombinationRepetition(dbArr, n, r, db);
-        System.out.println(Arrays.toString(dbArr));
+        CombinationRepetition(dbArr, dbArr.length, amount, 0);
 
         // all solutions for webservers
-        int l = amount;
-        int k = webArr.length;
-        int web = 1;
-        CombinationRepetition(webArr, k, l, web);
-        System.out.println(Arrays.toString(webArr));
-
-
+        CombinationRepetition(webArr, webArr.length, amount, 1);
 
         // for the best solution
         Algoritm();
 
+        System.out.println(bestSolution);
         // return arraylist with best solution
         createList();
     }
 
+    //Transfer ComponentModel araylist components into String arralist with index
     public void AddComponents() {
         int componentCounter = 2;
 
@@ -150,7 +110,7 @@ public class Algorithm {
                 algorithmComponents.add(add);
                 webCounter++;
 
-            } else if (test.getType().equals(ComponentType.Firewall)){
+            } else if (test.getType().equals(ComponentType.Firewall)) {
                 String[] add = {test.getName(), String.valueOf(test.getAvailability()), String.valueOf(test.getPrice()), String.valueOf(test.getType()), String.valueOf(componentCounter)};
                 algorithmComponents.add(add);
             }
@@ -159,6 +119,7 @@ public class Algorithm {
         }
     }
 
+    //Create 2 arraylists 1 for webservers and 1 for dbservers
     public void AddServers() {
         webArr = new int[webCounter];
         dbArr = new int[dbCounter];
@@ -191,13 +152,13 @@ public class Algorithm {
         if (index == r) {
             String tijdelijke = "";
 
-            for (int i = 0; i <= r-1; i++) {
+            for (int i = 0; i <= r - 1; i++) {
                 String test = Integer.toString(arr[chosen[i]]);
                 if (tijdelijke.equals("")) {
                     tijdelijke = tijdelijke + test;
-                }else if(i == r-1) {
+                } else if (i == r - 1) {
                     tijdelijke = tijdelijke + "-" + test + "-";
-                }else{
+                } else {
                     tijdelijke = tijdelijke + "-" + test;
                 }
             }
@@ -231,13 +192,13 @@ public class Algorithm {
                 }
             }
         }
-        int z ;
+        int z;
 
         for (z = 0; z < amount; z++) {
             highestWebServer = highestWebServer * (1 - (tijdelijk / 100));
         }
 
-        highestWebServer = ( 1 - highestWebServer);
+        highestWebServer = (1 - highestWebServer);
     }
 
     public void Algoritm() {
@@ -250,10 +211,10 @@ public class Algorithm {
             int x;
 
             for (x = 0; x < dbsolution.length(); x++) {
-                if (dbsolution.charAt(x) == '-'){
+                if (dbsolution.charAt(x) == '-') {
                     continue;
-                }else if (!(dbsolution.charAt(x+1) == '-')){
-                    dbServerNumber = Character.getNumericValue(dbsolution.charAt(x)) + Character.getNumericValue(dbsolution.charAt(x+1));
+                } else if (!(dbsolution.charAt(x + 1) == '-')) {
+                    dbServerNumber = Character.getNumericValue(dbsolution.charAt(x)) + Character.getNumericValue(dbsolution.charAt(x + 1));
                     x++;
 
                     for (String[] strInt : algorithmComponents) {
@@ -264,7 +225,7 @@ public class Algorithm {
                         }
                     }
 
-                }else{
+                } else {
                     dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
 
                     for (String[] strInt : algorithmComponents) {
@@ -291,10 +252,10 @@ public class Algorithm {
                 }
 
                 for (x = 0; x < dbsolution.length(); x++) {
-                    if (dbsolution.charAt(x) == '-'){
+                    if (dbsolution.charAt(x) == '-') {
                         continue;
-                    }else if (!(dbsolution.charAt(x+1) == '-')){
-                        dbServerNumber = Character.getNumericValue(dbsolution.charAt(x)) + Character.getNumericValue(dbsolution.charAt(x+1));
+                    } else if (!(dbsolution.charAt(x + 1) == '-')) {
+                        dbServerNumber = Character.getNumericValue(dbsolution.charAt(x)) + Character.getNumericValue(dbsolution.charAt(x + 1));
                         x++;
 
                         for (String[] strInt : algorithmComponents) {
@@ -306,7 +267,7 @@ public class Algorithm {
                             }
                         }
 
-                    }else{
+                    } else {
                         dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
 
                         for (String[] strInt : algorithmComponents) {
@@ -322,9 +283,9 @@ public class Algorithm {
                 }
 
                 for (x = 0; x < websolution.length(); x++) {
-                    if (websolution.charAt(x) == '-'){
+                    if (websolution.charAt(x) == '-') {
                         continue;
-                    }else if (!(websolution.charAt(x+1) == '-')){
+                    } else if (!(websolution.charAt(x + 1) == '-')) {
                         webServerNumber = Character.getNumericValue(websolution.charAt(x)) + Character.getNumericValue(websolution.charAt(x + 1));
                         x++;
 
@@ -337,7 +298,7 @@ public class Algorithm {
                             }
                         }
 
-                    }else{
+                    } else {
                         webServerNumber = Character.getNumericValue(websolution.charAt(x));
 
                         for (String[] strInt : algorithmComponents) {
@@ -364,11 +325,13 @@ public class Algorithm {
                     // TODO: arraylist with the best solution
                     if (bestSolutionPrice == 0) {
                         bestSolutionPrice = totalPrice;
+                        bestSolutionAvailabilty = totalPercentage;
+                        bestSolution = websolution + dbsolution + getPfSenseFromArray() + "-";
                     } else if (totalPrice < bestSolutionPrice) {
                         bestSolutionPrice = totalPrice;
                         bestSolutionAvailabilty = totalPercentage;
                         System.out.println(websolution + dbsolution);
-                        bestSolution = websolution + dbsolution + (algorithmComponents.size()-1) + "-";
+                        bestSolution = websolution + dbsolution + getPfSenseFromArray() + "-";
                     }
                 }
 
@@ -380,40 +343,110 @@ public class Algorithm {
         }
     }
 
+    public int getPfSenseFromArray() {
+
+        for (String[] strInt : algorithmComponents) {
+
+            if (strInt[3].equals("Firewall")) {
+//                System.out.println(Arrays.toString(strInt));
+                return Integer.parseInt(strInt[4]);
+            }
+        }
+        return 0;
+    }
+
     public void createList() {
-        
+
         int bestSolutionNumber;
         int componentNumber;
         InfrastructureComponentModel bestInfrastructure;
-        
+
         for (int p = 0; p < bestSolution.length(); p++) {
-            if (bestSolution.charAt(p) == '-' || (bestSolution.charAt(p) == '0' && bestSolution.charAt(p + 1) == '-') || ( bestSolution.charAt(p) == '1' && bestSolution.charAt(p + 1) == '-' )){
+            if (bestSolution.charAt(p) == '-' || (bestSolution.charAt(p) == '0' && bestSolution.charAt(p + 1) == '-') || (bestSolution.charAt(p) == '1' && bestSolution.charAt(p + 1) == '-')) {
                 continue;
-            }else if (!(bestSolution.charAt(p + 1) == '-')){
-                bestSolutionNumber = Character.getNumericValue(bestSolution.charAt(p)) + Character.getNumericValue(bestSolution.charAt(p + 1));
-                p++;
+            } else if (!(bestSolution.charAt(p + 1) == '-')) {
+                bestSolutionNumber = Character.getNumericValue(bestSolution.charAt(p) + bestSolution.charAt(p + 1));
+
                 for (String[] strInt : algorithmComponents) {
                     componentNumber = Integer.parseInt(strInt[4]);
 
                     if (bestSolutionNumber == componentNumber) {
-                        bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
-                        bestList.add(bestInfrastructure);
+                        if (bestList.isEmpty()) {
+                            bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
+                            bestList.add(bestInfrastructure);
+                        } else {
+                            // checken of element al bestaat
+                            boolean newCompoment = false;
+                            int objectPosition = 0;
+                            int currentAmount = 0;
+                            for (InfrastructureComponentModel icm : bestList) {
+                                // zoja verhoog amount
+                                if (icm.getName().equals(strInt[0]) && icm.getType().equals(ComponentType.valueOf(strInt[3]))) {
+
+                                    newCompoment = false;
+                                    currentAmount = icm.getAmount();
+                                    break;
+                                    //zo nee maak nieuw element aan
+                                } else {
+                                    newCompoment = true;
+                                }
+                                objectPosition++;
+                            }
+                            if(newCompoment) {
+                                bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
+                                bestList.add(bestInfrastructure);
+                                System.out.println("new component");
+                            } else {
+                                bestList.set(objectPosition, new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), currentAmount + 1));
+                                System.out.println(bestList.get(objectPosition));
+                            }
+                        }
                     }
                 }
+                p++;
 
-            }else{
+            } else {
                 bestSolutionNumber = Character.getNumericValue(bestSolution.charAt(p));
 
                 for (String[] strInt : algorithmComponents) {
                     componentNumber = Integer.parseInt(strInt[4]);
                     if (bestSolutionNumber == componentNumber) {
-                        bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
-                        bestList.add(bestInfrastructure);
+                        if (bestList.isEmpty()) {
+                            bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
+                            bestList.add(bestInfrastructure);
+                        } else {
+                            // checken of element al bestaat
+                            boolean newCompoment = false;
+                            int objectPosition = 0;
+                            int currentAmount = 0;
+                            for (InfrastructureComponentModel icm : bestList) {
+                                // zoja verhoog amount
+                                if (icm.getName().equals(strInt[0]) && icm.getType().equals(ComponentType.valueOf(strInt[3]))) {
+
+                                    newCompoment = false;
+                                    currentAmount = icm.getAmount();
+                                    break;
+                                    //zo nee maak nieuw element aan
+                                } else {
+                                    newCompoment = true;
+                                }
+                                objectPosition++;
+                            }
+                            if(newCompoment) {
+                                bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
+                                bestList.add(bestInfrastructure);
+                                System.out.println("new component");
+                            } else {
+                                bestList.set(objectPosition, new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), currentAmount + 1));
+                                System.out.println(bestList.get(objectPosition));
+                            }
+                        }
                     }
                 }
             }
         }
     }
+
 
     // TODO : return a arraylist with the solution naam beschikbaarheid prijs type (nummer) amount
     // TODO : + totale beschikbaarheid totale prijs
