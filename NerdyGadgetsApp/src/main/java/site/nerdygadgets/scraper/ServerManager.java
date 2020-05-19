@@ -15,9 +15,7 @@ import java.util.TimerTask;
 public class ServerManager extends TimerTask {
     private ArrayList<Server> servers;
 
-    public ServerManager() {
-        // instantiate database connection with a connectionstring to test database.
-        Database database = new Database("mongodb+srv://admin:admin@cluster0-gzerr.mongodb.net/test?retryWrites=true&w=majority");
+    public ServerManager(Database database) {
 
         // instantiate arraylist and instantiate servers inside list
         servers = new ArrayList<>();

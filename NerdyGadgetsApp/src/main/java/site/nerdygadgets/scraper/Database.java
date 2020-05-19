@@ -7,6 +7,7 @@ import static com.mongodb.client.model.Filters.*;
 import org.bson.Document;
 
 import java.time.Instant;
+import java.util.ArrayList;
 
 /**
  * Database class
@@ -21,6 +22,12 @@ public class Database {
     private MongoClient mongoClient;
     private MongoDatabase database;
     private MongoCollection<Document> collection;
+
+    public Database(ArrayList<String> connection) {
+        mongoClient = MongoClients.create(connection.get(0));
+        database = mongoClient.getDatabase(connection.get(1));
+        collection = database.getCollection(connection.get(2));
+    }
 
     public Database(String connectionString) {
         mongoClient = MongoClients.create(connectionString);
