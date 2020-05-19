@@ -2,10 +2,17 @@ package site.nerdygadgets.models;
 
 import site.nerdygadgets.functions.ComponentType;
 
+import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
+/**
+ * Algorithm class
+ * Class to calculate the best solution for the given components
+ *
+ * @author Ade Wattimena & Ruben Oosting & Dylan Roubos
+ * @version 1.0
+ * @since 19-05-2020
+ */
 public class Algorithm {
 
     // arraylist for db solutions and web solutions formatted in ArrayString for easy acces
@@ -56,81 +63,76 @@ public class Algorithm {
 
     private ArrayList<ComponentModel> components;
 
-    // constructor for given availabilty and all components
+    // Set default values
     public Algorithm(double availabilty, ArrayList<ComponentModel> components) {
         this.availabilty = availabilty;
         this.components = components;
-
         algorithmComponents = new ArrayList<>();
 
         // Add components to arraylist components as String
-        AddComponents();
-
+        addComponentsToArrayListAsString();
         // Add Webservers and DBservers to indivual arrays
-        AddServers();
-
+        addServersToIndividualArrays();
         // current highest webserver
-        HighestWebServer();
-
+        calculateHighestAvailableWebServer();
         // all solutions for dbservers
-        CombinationRepetition(dbArr, dbArr.length, amount, 0);
-
+        createPossibilitiesArray(dbArr, amount, ComponentType.Database);
         // all solutions for webservers
-        CombinationRepetition(webArr, webArr.length, amount, 1);
+        createPossibilitiesArray(webArr, amount, ComponentType.Webserver);
 
-        // for the best solution
-        Algoritm();
+        try {
+            // for the best solution
+            calculateBestSolution();
+            // return arraylist with best solution
+            createList();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Geen oplossing mogelijk");
+        }
 
-        System.out.println(bestSolution);
-        // return arraylist with best solution
-        createList();
     }
 
     //Transfer ComponentModel araylist components into String arralist with index
-    public void AddComponents() {
+    public void addComponentsToArrayListAsString() {
         int componentCounter = 2;
 
-        // 0
+        // add dbnull components to componentlist
         algorithmComponents.add(dbnull);
-
-        // 1
+        // add webnull components to componentlist
         algorithmComponents.add(webnull);
 
-        // TODO : if chosenComponents exist
+        //Loop through component and add to list with the correct data based on type
+        for (ComponentModel component : components) {
 
-        for (ComponentModel test : components) {
+            //Add component to list
+            String[] add = {component.getName(), String.valueOf(component.getAvailability()), String.valueOf(component.getPrice()), String.valueOf(component.getType()), String.valueOf(componentCounter)};
+            algorithmComponents.add(add);
 
-            if (test.getType().equals(ComponentType.Database)) {
-                String[] add = {test.getName(), String.valueOf(test.getAvailability()), String.valueOf(test.getPrice()), String.valueOf(test.getType()), String.valueOf(componentCounter)};
-                algorithmComponents.add(add);
-                dbCounter++;
-
-            } else if (test.getType().equals(ComponentType.Webserver)) {
-                String[] add = {test.getName(), String.valueOf(test.getAvailability()), String.valueOf(test.getPrice()), String.valueOf(test.getType()), String.valueOf(componentCounter)};
-                algorithmComponents.add(add);
-                webCounter++;
-
-            } else if (test.getType().equals(ComponentType.Firewall)) {
-                String[] add = {test.getName(), String.valueOf(test.getAvailability()), String.valueOf(test.getPrice()), String.valueOf(test.getType()), String.valueOf(componentCounter)};
-                algorithmComponents.add(add);
+            //Check the component type
+            switch (component.getType()) {
+                case Webserver:
+                    webCounter++;
+                    break;
+                case Database:
+                    dbCounter++;
+                    break;
             }
-
             componentCounter++;
         }
     }
 
     //Create 2 arraylists 1 for webservers and 1 for dbservers
-    public void AddServers() {
+    public void addServersToIndividualArrays() {
         webArr = new int[webCounter];
         dbArr = new int[dbCounter];
 
         // check if component is a webserver or a dbserver and then adds the componentnumber to the array
         for (String[] strInt : algorithmComponents) {
 
+            //add dbarray components
             if (strInt[3].equals("Database")) {
                 dbArr[x] = Integer.parseInt(strInt[4]);
                 x++;
-
+                //add webarray components
             } else if (strInt[3].equals("Webserver")) {
                 webArr[y] = Integer.parseInt(strInt[4]);
                 y++;
@@ -138,36 +140,38 @@ public class Algorithm {
         }
     }
 
-    public void CombinationRepetition(int[] arr, int n, int r, int q) {
+    public void createPossibilitiesArray(int[] componentArray, int amount, ComponentType componentType) {
         // Allocate memory
-        int[] chosen = new int[r + 1];
+        int[] possibilityArray = new int[amount];
 
         // Call the recursice function
-        CombinationRepetitionUtil(chosen, arr, 0, r, 0, n - 1, q);
+        fillPossibilietsArray(possibilityArray, componentArray, 0, amount, 0, componentArray.length - 1, componentType);
     }
 
-    public void CombinationRepetitionUtil(int[] chosen, int[] arr, int index, int r, int start, int end, int q) {
-        // Since index has become r, current combination is
-        // ready to be printed, print
-        if (index == r) {
-            String tijdelijke = "";
+    public void fillPossibilietsArray(int[] possibilityArray, int[] componentArray, int index, int amount, int start, int end, ComponentType componentType) {
 
-            for (int i = 0; i <= r - 1; i++) {
-                String test = Integer.toString(arr[chosen[i]]);
-                if (tijdelijke.equals("")) {
-                    tijdelijke = tijdelijke + test;
-                } else if (i == r - 1) {
-                    tijdelijke = tijdelijke + "-" + test + "-";
+        //Check if array is full
+        if (index == amount) {
+            String serverCombination = "";
+
+            for (int i = 0; i < amount; i++) {
+                String serverNumber = Integer.toString(componentArray[possibilityArray[i]]);
+                if (serverCombination.equals("")) {
+                    serverCombination += serverNumber;
+                } else if (i == amount - 1) {
+                    serverCombination += "-" + serverNumber + "-";
                 } else {
-                    tijdelijke = tijdelijke + "-" + test;
+                    serverCombination += "-" + serverNumber;
                 }
             }
 
-            if (q == 1) {
-                webSolutions.add(tijdelijke);
-            } else if (q == 0) {
-                dbSolutions.add(tijdelijke);
+            if (componentType.equals(ComponentType.Webserver)) {
+                webSolutions.add(serverCombination);
+            } else if (componentType.equals(ComponentType.Database)) {
+                dbSolutions.add(serverCombination);
             }
+
+            System.out.println(serverCombination);
             return;
         }
 
@@ -175,67 +179,66 @@ public class Algorithm {
         // the fact whether element is already chosen or not)
         // and recur
         for (int i = start; i <= end; i++) {
-            chosen[index] = i;
-            CombinationRepetitionUtil(chosen, arr, index + 1, r, i, end, q);
+            possibilityArray[index] = i;
+            fillPossibilietsArray(possibilityArray, componentArray, index + 1, amount, i, end, componentType);
         }
 
     }
 
-    public void HighestWebServer() {
-        double tijdelijk = 1;
+    public void calculateHighestAvailableWebServer() {
+        boolean firstServer = true;
+        double serverPercentage = 0.0;
+
+        //Loop through components for webservers and find the webserver with the highest availability and save the availability percentage in the variable
         for (String[] strInt : algorithmComponents) {
             if (strInt[3].equals("Webserver") && !strInt[4].equals("1")) {
-                if (tijdelijk == 1) {
-                    tijdelijk = Double.parseDouble(strInt[1]);
-                } else if (tijdelijk < Double.parseDouble(strInt[1])) {
-                    tijdelijk = Double.parseDouble(strInt[1]);
+                if (firstServer) {
+                    serverPercentage = Double.parseDouble(strInt[1]);
+                    firstServer = false;
+                } else if (serverPercentage < Double.parseDouble(strInt[1])) {
+                    serverPercentage = Double.parseDouble(strInt[1]);
                 }
             }
         }
-        int z;
 
-        for (z = 0; z < amount; z++) {
-            highestWebServer = highestWebServer * (1 - (tijdelijk / 100));
+
+        //Calculate the best possibilitie with the maximun number of the highest percentage webserver.
+        for (int z = 0; z < amount; z++) {
+            highestWebServer *= (1 - (serverPercentage / 100));
         }
 
         highestWebServer = (1 - highestWebServer);
     }
 
-    public void Algoritm() {
+    //Calculate the best possible solution with the given percentage and components
+    public void calculateBestSolution() {
 
         // foreach dbsolotion try (almost) all websolutions
         for (String dbsolution : dbSolutions) {
             int dbServerNumber;
             int componentNumber;
             int webServerNumber;
-            int x;
 
-            for (x = 0; x < dbsolution.length(); x++) {
+            for (int x = 0; x < dbsolution.length(); x++) {
                 if (dbsolution.charAt(x) == '-') {
                     continue;
+                    //Double digit in String
                 } else if (!(dbsolution.charAt(x + 1) == '-')) {
-                    dbServerNumber = Character.getNumericValue(dbsolution.charAt(x)) + Character.getNumericValue(dbsolution.charAt(x + 1));
+                    //Get both digits
+                    dbServerNumber = Character.getNumericValue(dbsolution.charAt(x) + dbsolution.charAt(x + 1));
                     x++;
-
-                    for (String[] strInt : algorithmComponents) {
-                        componentNumber = Integer.parseInt(strInt[4]);
-
-                        if (dbServerNumber == componentNumber) {
-                            dbTestPercentage = dbTestPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
-                        }
-                    }
-
+                    //Single digit in String
                 } else {
+                    //get digit
                     dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
+                }
+                //Calculate db webpercentage
+                for (String[] strInt : algorithmComponents) {
+                    componentNumber = Integer.parseInt(strInt[4]);
 
-                    for (String[] strInt : algorithmComponents) {
-                        componentNumber = Integer.parseInt(strInt[4]);
-
-                        if (dbServerNumber == componentNumber) {
-                            dbTestPercentage = dbTestPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
-                        }
+                    if (dbServerNumber == componentNumber) {
+                        dbTestPercentage = dbTestPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
                     }
-
                 }
             }
 
@@ -254,31 +257,22 @@ public class Algorithm {
                 for (x = 0; x < dbsolution.length(); x++) {
                     if (dbsolution.charAt(x) == '-') {
                         continue;
+                        //2 characters
                     } else if (!(dbsolution.charAt(x + 1) == '-')) {
-                        dbServerNumber = Character.getNumericValue(dbsolution.charAt(x)) + Character.getNumericValue(dbsolution.charAt(x + 1));
+                        dbServerNumber = Character.getNumericValue(dbsolution.charAt(x) + dbsolution.charAt(x + 1));
                         x++;
-
-                        for (String[] strInt : algorithmComponents) {
-                            componentNumber = Integer.parseInt(strInt[4]);
-
-                            if (dbServerNumber == componentNumber) {
-                                dbPrice += Double.parseDouble(strInt[2]);
-                                dbPercentage = dbPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
-                            }
-                        }
-
+                        //1 character
                     } else {
                         dbServerNumber = Character.getNumericValue(dbsolution.charAt(x));
+                    }
+                    //calculate db percentage + price
+                    for (String[] strInt : algorithmComponents) {
+                        componentNumber = Integer.parseInt(strInt[4]);
 
-                        for (String[] strInt : algorithmComponents) {
-                            componentNumber = Integer.parseInt(strInt[4]);
-
-                            if (dbServerNumber == componentNumber) {
-                                dbPrice += Double.parseDouble(strInt[2]);
-                                dbPercentage = dbPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
-                            }
+                        if (dbServerNumber == componentNumber) {
+                            dbPrice += Double.parseDouble(strInt[2]);
+                            dbPercentage = dbPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
                         }
-
                     }
                 }
 
@@ -286,30 +280,21 @@ public class Algorithm {
                     if (websolution.charAt(x) == '-') {
                         continue;
                     } else if (!(websolution.charAt(x + 1) == '-')) {
-                        webServerNumber = Character.getNumericValue(websolution.charAt(x)) + Character.getNumericValue(websolution.charAt(x + 1));
+                        webServerNumber = Character.getNumericValue(websolution.charAt(x) + websolution.charAt(x + 1));
+
                         x++;
-
-                        for (String[] strInt : algorithmComponents) {
-                            componentNumber = Integer.parseInt(strInt[4]);
-
-                            if (webServerNumber == componentNumber) {
-                                webPrice += Double.parseDouble(strInt[2]);
-                                webPercentage = webPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
-                            }
-                        }
 
                     } else {
                         webServerNumber = Character.getNumericValue(websolution.charAt(x));
 
-                        for (String[] strInt : algorithmComponents) {
-                            componentNumber = Integer.parseInt(strInt[4]);
+                    }
+                    for (String[] strInt : algorithmComponents) {
+                        componentNumber = Integer.parseInt(strInt[4]);
 
-                            if (webServerNumber == componentNumber) {
-                                webPrice += Double.parseDouble(strInt[2]);
-                                webPercentage = webPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
-                            }
+                        if (webServerNumber == componentNumber) {
+                            webPrice += Double.parseDouble(strInt[2]);
+                            webPercentage = webPercentage * (1 - (Double.parseDouble(strInt[1]) / 100));
                         }
-
                     }
                 }
 
@@ -317,12 +302,14 @@ public class Algorithm {
                 webPercentage = (1 - webPercentage);
                 dbPercentage = (1 - dbPercentage);
 
-                // TODO : pfsene beschikbaarheid en prijs fixxen
+                //hardcoded default PFsense
                 double totalPercentage = (webPercentage * dbPercentage * 0.99998) * 100;
                 double totalPrice = webPrice + dbPrice + 4000;
 
+                System.out.println(totalPercentage);
+                System.out.println(availabilty);
+
                 if (totalPercentage >= availabilty) {
-                    // TODO: arraylist with the best solution
                     if (bestSolutionPrice == 0) {
                         bestSolutionPrice = totalPrice;
                         bestSolutionAvailabilty = totalPercentage;
@@ -343,12 +330,12 @@ public class Algorithm {
         }
     }
 
+    //Get the first PFsense from the arraylist
     public int getPfSenseFromArray() {
 
         for (String[] strInt : algorithmComponents) {
 
             if (strInt[3].equals("Firewall")) {
-//                System.out.println(Arrays.toString(strInt));
                 return Integer.parseInt(strInt[4]);
             }
         }
@@ -392,7 +379,7 @@ public class Algorithm {
                                 }
                                 objectPosition++;
                             }
-                            if(newCompoment) {
+                            if (newCompoment) {
                                 bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
                                 bestList.add(bestInfrastructure);
                                 System.out.println("new component");
@@ -432,7 +419,7 @@ public class Algorithm {
                                 }
                                 objectPosition++;
                             }
-                            if(newCompoment) {
+                            if (newCompoment) {
                                 bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
                                 bestList.add(bestInfrastructure);
                                 System.out.println("new component");
@@ -448,8 +435,6 @@ public class Algorithm {
     }
 
 
-    // TODO : return a arraylist with the solution naam beschikbaarheid prijs type (nummer) amount
-    // TODO : + totale beschikbaarheid totale prijs
     public double getBestSolutionAvailabilty() {
         return bestSolutionAvailabilty;
     }
