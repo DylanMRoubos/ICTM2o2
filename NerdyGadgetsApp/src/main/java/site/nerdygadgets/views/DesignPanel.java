@@ -56,8 +56,11 @@ public class DesignPanel extends JPanel {
 
         //init Content left panel
         jcDatabase = new JComboBox(new String[]{""});
+        jcDatabase.setPreferredSize(new Dimension(120,17));
         jcWeb = new JComboBox(new String[]{""});
+        jcWeb.setPreferredSize(new Dimension(120,17));
         jcFirewall = new JComboBox(new String[]{""});
+        jcFirewall.setPreferredSize(new Dimension(120,17));
 
         jcDatabase.setRenderer(new ComboRenderer("Databaseservers"));
         jcDatabase.setSelectedIndex(-1);
