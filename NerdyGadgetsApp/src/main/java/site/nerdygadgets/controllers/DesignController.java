@@ -1,6 +1,5 @@
 package site.nerdygadgets.controllers;
 
-import com.sun.tools.javac.Main;
 import site.nerdygadgets.models.Algorithm;
 import site.nerdygadgets.functions.*;
 import site.nerdygadgets.models.ComponentModel;
@@ -13,13 +12,13 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 /**
  * DesignController class
@@ -33,6 +32,7 @@ public class DesignController implements ActionListener, TableModelListener {
     private DesignPanel panel;
     private DesignModel model;
     private ArrayList<ComponentModel> list;
+    private JPanel graphicsPanel;
 
     private boolean isUpdatingComboboxes;
 
@@ -46,6 +46,135 @@ public class DesignController implements ActionListener, TableModelListener {
         this.panel = panel;
         this.model = model;
         this.isUpdatingComboboxes = false;
+
+        graphicsPanel = new JPanel(){
+          @Override
+          public void paintComponent(Graphics g){
+              super.paintComponent(g);
+              ArrayList<InfrastructureComponentModel> components = getCurrentModels();
+              int xOffset = 20; // start x offset
+              int yOffset = 20; // start y offset
+              int rectX = 80; // rectangle size
+              int rectY = 30;
+              int counter = 0; // couter for vertical line
+
+              // draw firewalls
+              for (InfrastructureComponentModel component : components) {
+                  if (component.getType() == ComponentType.Firewall) {
+                      for (int i = 0; i < component.getAmount(); i++) {
+                          g.setColor(Color.black);
+                          // draw vertical line if counter above 0
+                          if (counter > 0) {
+                              int x = xOffset+rectX/2;
+                              g.drawLine(x, yOffset, x, yOffset-20);
+                          }
+                          g.drawRect(xOffset, yOffset, rectX, rectY);
+                          g.drawString(component.getName(), xOffset + 10, yOffset + 20); // set name of server in rectangle
+                          yOffset += rectY+20; // up the y offset for the next component
+                          counter++; // up the counter for vertical line
+                      }
+                  }
+              }
+
+              // set offsets for next column of servers
+              xOffset += 180;
+              yOffset = 20;
+              counter = 0;
+
+              // draw webservers
+              for (InfrastructureComponentModel component : components) {
+                  if (component.getType() == ComponentType.Webserver) {
+                      for (int i = 0; i < component.getAmount(); i++) {
+                          g.setColor(Color.black);
+                          // draw vertical line if counter above 0
+                          if (counter > 0) {
+                              int x = xOffset+rectX/2;
+                              g.drawLine(x, yOffset, x, yOffset-20);
+                          }
+                          g.drawRect(xOffset, yOffset, rectX, rectY);
+                          g.drawString(component.getName(), xOffset + 10, yOffset + 20); // set name of server in rectangle
+                          yOffset += rectY+20; // up the y offset for the next component
+                          counter++; // up the counter for vertical line
+                      }
+                  }
+              }
+
+              // set offsets for next column of servers
+              xOffset += 180;
+              yOffset = 20;
+              counter = 0;
+
+              // draw databaseservers
+              for (InfrastructureComponentModel component : components) {
+                  if (component.getType() == ComponentType.Database) {
+                      for (int i = 0; i < component.getAmount(); i++) {
+                          g.setColor(Color.black);
+                          // draw vertical line if counter above 0
+                          if (counter > 0) {
+                              int x = xOffset+rectX/2;
+                              g.drawLine(x, yOffset, x, yOffset-20);
+                          }
+                          g.drawRect(xOffset, yOffset, rectX, rectY);
+                          g.drawString(component.getName(), xOffset + 10, yOffset + 20); // set name of server in rectangle
+                          yOffset += rectY+20; // up the y offset for the next component
+                          counter++; // up the counter for vertical line
+                      }
+                  }
+              }
+
+              // reset offsets for line drawing
+              xOffset = 20;
+              yOffset = 20;
+              int startX = xOffset+rectX;
+              int startY = yOffset+rectY/2;
+
+              // draw lines from firewalls to webservers
+              for (InfrastructureComponentModel component : components) {
+                  if (component.getType() == ComponentType.Firewall) {
+                      for (int i = 0; i < component.getAmount(); i++) {
+                          int endY = yOffset;
+                          for (InfrastructureComponentModel componentInner : components) {
+                              if (componentInner.getType() == ComponentType.Webserver) {
+                                  for (int j = 0; j < componentInner.getAmount(); j++) {
+                                      int endX = xOffset+180;
+                                      g.drawLine(startX, startY, endX, endY+rectY/2);
+                                      endY += rectY+20;
+                                  }
+                              }
+                          }
+                          startY += rectY+20;
+                      }
+                  }
+              }
+
+              // set offsets for next set of lines
+              xOffset += 180;
+              startX = xOffset+rectX;
+              startY = yOffset+rectY/2;
+
+              // draw lines from webservers to database servers
+              for (InfrastructureComponentModel component : components) {
+                  if (component.getType() == ComponentType.Webserver) {
+                      for (int i = 0; i < component.getAmount(); i++) {
+                          int endY = yOffset;
+                          for (InfrastructureComponentModel componentInner : components) {
+                              if (componentInner.getType() == ComponentType.Database) {
+                                  for (int j = 0; j < componentInner.getAmount(); j++) {
+                                      int endX = xOffset+180;
+                                      g.drawLine(startX, startY, endX, endY+rectY/2);
+                                      endY += rectY+20;
+                                  }
+                              }
+                          }
+                          startY += rectY+20;
+                      }
+                  }
+              }
+          }
+        };
+        graphicsPanel.setPreferredSize(new Dimension(540,580));
+        panel.getJpDisplayPanel().add(graphicsPanel);
+
 
         list = new ArrayList<ComponentModel>();
 
@@ -186,6 +315,7 @@ public class DesignController implements ActionListener, TableModelListener {
     public void tableChanged(TableModelEvent tableModelEvent) {
         updateAvailability();
         updatePrice();
+        graphicsPanel.repaint();
     }
 
     @Override
