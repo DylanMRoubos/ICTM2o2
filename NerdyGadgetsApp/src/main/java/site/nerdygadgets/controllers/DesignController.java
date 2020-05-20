@@ -1,6 +1,5 @@
 package site.nerdygadgets.controllers;
 
-import com.sun.tools.javac.Main;
 import site.nerdygadgets.models.Algorithm;
 import site.nerdygadgets.functions.*;
 import site.nerdygadgets.models.ComponentModel;
@@ -20,7 +19,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 /**
  * DesignController class
@@ -34,6 +32,7 @@ public class DesignController implements ActionListener, TableModelListener {
     private DesignPanel panel;
     private DesignModel model;
     private ArrayList<ComponentModel> list;
+    private JPanel graphicsPanel;
 
     private boolean isUpdatingComboboxes;
 
@@ -48,15 +47,96 @@ public class DesignController implements ActionListener, TableModelListener {
         this.model = model;
         this.isUpdatingComboboxes = false;
 
-        JPanel test = new JPanel(){
+        graphicsPanel = new JPanel(){
           @Override
           public void paintComponent(Graphics g){
               super.paintComponent(g);
-              setBackground(Color.black);
+              ArrayList<InfrastructureComponentModel> components = getCurrentModels();
+              int xOffset = 20;
+              int yOffset = 20;
+              int rectX = 80;
+              int rectY = 30;
+
+              for (InfrastructureComponentModel component : components) {
+                  if (component.getType() == ComponentType.Firewall) {
+                      for (int i = 0; i < component.getAmount(); i++) {
+                          g.setColor(Color.black);
+                          g.drawRect(xOffset, yOffset, rectX, rectY);
+                          g.drawString(component.getName(), xOffset + 10, yOffset + 20);
+                          yOffset += rectY+20;
+                      }
+                  }
+              }
+              xOffset += 180;
+              yOffset = 20;
+              for (InfrastructureComponentModel component : components) {
+                  if (component.getType() == ComponentType.Webserver) {
+                      for (int i = 0; i < component.getAmount(); i++) {
+                          g.setColor(Color.black);
+                          g.drawRect(xOffset, yOffset, rectX, rectY);
+                          g.drawString(component.getName(), xOffset + 10, yOffset + 20);
+                          yOffset += rectY+20;
+                      }
+                  }
+              }
+              xOffset += 180;
+              yOffset = 20;
+              for (InfrastructureComponentModel component : components) {
+                  if (component.getType() == ComponentType.Database) {
+                      for (int i = 0; i < component.getAmount(); i++) {
+                          g.setColor(Color.black);
+                          g.drawRect(xOffset, yOffset, rectX, rectY);
+                          g.drawString(component.getName(), xOffset + 10, yOffset + 20);
+                          yOffset += rectY+20;
+                      }
+                  }
+              }
+
+              xOffset = 20;
+              yOffset = 20;
+              for (InfrastructureComponentModel component : components) {
+                  int startX = xOffset+rectX;
+                  int startY = yOffset+rectY/2;
+                  if (component.getType() == ComponentType.Firewall) {
+                      for (int i = 0; i < component.getAmount(); i++) {
+                          int endY = yOffset;
+                          for (InfrastructureComponentModel componentInner : components) {
+                              if (componentInner.getType() == ComponentType.Webserver) {
+                                  for (int j = 0; j < componentInner.getAmount(); j++) {
+                                      int endX = xOffset+180;
+                                      g.drawLine(startX, startY, endX, endY+rectY/2);
+                                      endY += rectY+20;
+                                  }
+                              }
+                          }
+                          startY += rectY+20;
+                      }
+                  }
+              }
+              xOffset += 180;
+              for (InfrastructureComponentModel component : components) {
+                  int startX = xOffset+rectX;
+                  int startY = yOffset+rectY/2;
+                  if (component.getType() == ComponentType.Webserver) {
+                      for (int i = 0; i < component.getAmount(); i++) {
+                          int endY = yOffset;
+                          for (InfrastructureComponentModel componentInner : components) {
+                              if (componentInner.getType() == ComponentType.Database) {
+                                  for (int j = 0; j < componentInner.getAmount(); j++) {
+                                      int endX = xOffset+180;
+                                      g.drawLine(startX, startY, endX, endY+rectY/2);
+                                      endY += rectY+20;
+                                  }
+                              }
+                          }
+                          startY += rectY+20;
+                      }
+                  }
+              }
           }
         };
-        test.setPreferredSize(new Dimension(540,580));
-        panel.getJpDisplayPanel().add(test);
+        graphicsPanel.setPreferredSize(new Dimension(540,580));
+        panel.getJpDisplayPanel().add(graphicsPanel);
 
 
         list = new ArrayList<ComponentModel>();
@@ -198,6 +278,7 @@ public class DesignController implements ActionListener, TableModelListener {
     public void tableChanged(TableModelEvent tableModelEvent) {
         updateAvailability();
         updatePrice();
+        graphicsPanel.repaint();
     }
 
     @Override
