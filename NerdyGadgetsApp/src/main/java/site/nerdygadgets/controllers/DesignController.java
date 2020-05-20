@@ -9,6 +9,7 @@ import site.nerdygadgets.models.InfrastructureComponentModel;
 import site.nerdygadgets.views.AvailabiltyDialog;
 import site.nerdygadgets.views.DesignPanel;
 import site.nerdygadgets.views.MainFrameView;
+
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -21,6 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * DesignController class
  * Adds functionality to Design panel
@@ -35,13 +38,11 @@ public class DesignController implements ActionListener, TableModelListener {
     private ArrayList<ComponentModel> list;
 
     private boolean isUpdatingComboboxes;
-
-    // TODO : added algoritme
     private Algorithm algorithm;
 
     private MainFrameView mfv;
 
-    public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv){
+    public DesignController(DesignPanel panel, DesignModel model, MainFrameView mfv) {
         this.mfv = mfv;
         this.panel = panel;
         this.model = model;
@@ -89,6 +90,7 @@ public class DesignController implements ActionListener, TableModelListener {
                             return true;
                         return false;
                     }
+
                     @Override
                     public String getDescription() {
                         return "(*.json) JSON Format";
@@ -124,8 +126,6 @@ public class DesignController implements ActionListener, TableModelListener {
         }
     }
 
-
-    // TODO : used
     private void fillArraylist() {
         model.reloadList();
         this.list.addAll(model.getDatabaseModels());
@@ -160,18 +160,21 @@ public class DesignController implements ActionListener, TableModelListener {
 
         this.isUpdatingComboboxes = false;
     }
+
     //Update price in design panel when component is added
     public void updatePrice() {
         ArrayList<InfrastructureComponentModel> l = getCurrentModels();
         double price = CalculateComponent.calculatePrice(l);
         panel.getJlPrice().setText("€" + String.valueOf(price));
     }
+
     //Update availibility in design panel when component is added
     public void updateAvailability() {
         ArrayList<InfrastructureComponentModel> l = getCurrentModels();
         double beschikbaarheid = CalculateComponent.calculateAvailability(l);
         panel.getJlAvailability().setText(String.valueOf(beschikbaarheid) + "%");
     }
+
     //Add component to table
     private void addModelToTable(InfrastructureComponentModel model) {
         panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAmount()), " + ", " - ", "Verwijder"});
@@ -181,6 +184,7 @@ public class DesignController implements ActionListener, TableModelListener {
         for (InfrastructureComponentModel model : l)
             panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), String.valueOf(model.getAmount()), " + ", " - ", "Verwijder"});
     }
+
     private void clearTable() {
         panel.getTableModel().setRowCount(0);
     }
@@ -195,76 +199,73 @@ public class DesignController implements ActionListener, TableModelListener {
     public void actionPerformed(ActionEvent e) {
         // Update table with combobox
         if (e.getSource() instanceof JComboBox && !isUpdatingComboboxes) {
-            JComboBox cb = (JComboBox)e.getSource();
+            JComboBox cb = (JComboBox) e.getSource();
             String item = String.valueOf(cb.getSelectedItem());
             cb.setSelectedIndex(-1);
             ComponentModel model;
             if (e.getSource() == panel.getJcDatabase()) {
                 // naam en componenttype is unique
                 model = ComponentModel.getModel(item, ComponentType.Database);
-                if(model == null)
-                {
+                if (model == null) {
                     System.out.println("Unable to convert component TO DATABASE");
                     return;
                 }
 
                 boolean hasItem = false;
                 int r = 0;
-                for(int i = 0; i < panel.getTableModel().getRowCount(); i++){
-                    if(panel.getJTable().getValueAt(i,0).toString().equals(model.getType().name()) && panel.getJTable().getValueAt(i,1).toString().equals(model.getName())){
+                for (int i = 0; i < panel.getTableModel().getRowCount(); i++) {
+                    if (panel.getJTable().getValueAt(i, 0).toString().equals(model.getType().name()) && panel.getJTable().getValueAt(i, 1).toString().equals(model.getName())) {
                         hasItem = true;
                         r = i;
                     }
                 }
                 if (!hasItem) {
                     panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
-                }else {
+                } else {
                     panel.getTableModel().setValueAt(Integer.parseInt(panel.getJTable().getValueAt(r, 4).toString()) + 1, r, 4);
                 }
             }
 
             if (e.getSource() == panel.getJcWeb()) {
                 model = ComponentModel.getModel(item, ComponentType.Webserver);
-                if(model == null)
-                {
+                if (model == null) {
                     System.out.println("Unable to convert component TO WEBSERVER");
                     return;
                 }
 
                 boolean hasItem = false;
                 int r = 0;
-                for(int i = 0; i < panel.getTableModel().getRowCount(); i++){
-                    if(panel.getJTable().getValueAt(i,0).toString().equals(model.getType().name()) && panel.getJTable().getValueAt(i,1).toString().equals(model.getName())){
+                for (int i = 0; i < panel.getTableModel().getRowCount(); i++) {
+                    if (panel.getJTable().getValueAt(i, 0).toString().equals(model.getType().name()) && panel.getJTable().getValueAt(i, 1).toString().equals(model.getName())) {
                         hasItem = true;
                         r = i;
                     }
                 }
                 if (!hasItem) {
                     panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
-                }else {
+                } else {
                     panel.getTableModel().setValueAt(Integer.parseInt(panel.getJTable().getValueAt(r, 4).toString()) + 1, r, 4);
                 }
             }
 
             if (e.getSource() == panel.getJcFirewall()) {
                 model = ComponentModel.getModel(item, ComponentType.Firewall);
-                if(model == null)
-                {
+                if (model == null) {
                     System.out.println("Unable to convert component TO FIREWALL");
                     return;
                 }
 
                 boolean hasItem = false;
                 int r = 0;
-                for(int i = 0; i < panel.getTableModel().getRowCount(); i++){
-                    if(panel.getJTable().getValueAt(i,0).toString().equals(model.getType().name()) && panel.getJTable().getValueAt(i,1).toString().equals(model.getName())){
+                for (int i = 0; i < panel.getTableModel().getRowCount(); i++) {
+                    if (panel.getJTable().getValueAt(i, 0).toString().equals(model.getType().name()) && panel.getJTable().getValueAt(i, 1).toString().equals(model.getName())) {
                         hasItem = true;
                         r = i;
                     }
                 }
                 if (!hasItem) {
                     panel.getTableModel().addRow(new Object[]{model.getType().name(), model.getName(), String.valueOf(model.getAvailability()), String.valueOf(model.getPrice()), "1", " + ", " - ", "Verwijder"});
-                }else {
+                } else {
                     panel.getTableModel().setValueAt(Integer.parseInt(panel.getJTable().getValueAt(r, 4).toString()) + 1, r, 4);
                 }
             }
@@ -282,7 +283,7 @@ public class DesignController implements ActionListener, TableModelListener {
             fileChooser.setFileFilter(new FileFilter() {
                 @Override
                 public boolean accept(File f) {
-                    if (f.isDirectory()){
+                    if (f.isDirectory()) {
                         return true;
                     }
                     return (f.getName().toLowerCase().endsWith(".json"));
@@ -298,7 +299,7 @@ public class DesignController implements ActionListener, TableModelListener {
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
                 filePath = fileToSave.getAbsolutePath();
-                if (!filePath.endsWith(".json")){
+                if (!filePath.endsWith(".json")) {
                     filePath = filePath + ".json";
                 }
                 System.out.println("Save as file: " + filePath);
@@ -315,26 +316,43 @@ public class DesignController implements ActionListener, TableModelListener {
             }
         }
 
-        // TODO : added
         if (e.getSource() == panel.getJbOpt()) {
             AvailabiltyDialog dia = new AvailabiltyDialog(mfv);
 
-
-
             boolean isDialogClosed = dia.isOk();
             double availability = dia.getAvailability();
-            clearTable();
+
             list.clear();
-            fillArraylist();
+
+            if (dia.isAllcomponents()) {
+                fillArraylist();
+            } else {
+                list = convertInfraComponentToComponent(getCurrentModels());
+            }
+
+            clearTable();
+
+            System.out.println(Arrays.toString(list.toArray()));
 
             if (isDialogClosed) {
-                algorithm = new Algorithm(availability, list);
+                algorithm = new Algorithm(availability, list, dia.getServerCount());
                 addInfModelsToTable(algorithm.getList());
                 panel.getJlPrice().setText("€" + algorithm.getBestSolutionPrice());
                 panel.getJlAvailability().setText(algorithm.getBestSolutionAvailabilty() + "%");
             }
         }
     }
+    //Convert a arraylist of Infrastructurecomponents into an arraylist of components
+    public ArrayList<ComponentModel> convertInfraComponentToComponent(ArrayList<InfrastructureComponentModel> infraComponents) {
+        ArrayList<ComponentModel> componentModelList = new ArrayList<>();
+
+        for (InfrastructureComponentModel infraComponent : infraComponents) {
+            componentModelList.add(new ComponentModel(infraComponent.getName(), infraComponent.getAvailability(), infraComponent.getPrice(), infraComponent.getType()));
+        }
+        return componentModelList;
+    }
+
+
     //Get components from table
     public ArrayList<InfrastructureComponentModel> getCurrentModels() {
         ArrayList<InfrastructureComponentModel> l = new ArrayList<InfrastructureComponentModel>();

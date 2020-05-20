@@ -27,7 +27,7 @@ public class Algorithm {
 
     // temporary availabilty and amount of dbservers and webservers
     private double availabilty;
-    private int amount = 12;
+    private int amount;
 
     // arraylist for components
     private List<String[]> algorithmComponents;
@@ -35,6 +35,7 @@ public class Algorithm {
     // Null Components
     private String[] dbnull = {"Null", "0", "0", "Database", "0"};
     private String[] webnull = {"Null", "0", "0", "Webserver", "1"};
+    private String[] pfSense = {"PFsense", "99.998", "4000", "Firewall", "2"};
 
     // array for dbservers, dbserver null + amount dbservers
     private int[] dbArr;
@@ -64,10 +65,13 @@ public class Algorithm {
     private ArrayList<ComponentModel> components;
 
     // Set default values
-    public Algorithm(double availabilty, ArrayList<ComponentModel> components) {
+    public Algorithm(double availabilty, ArrayList<ComponentModel> components, int componentAmounts) {
+        this.amount = componentAmounts;
         this.availabilty = availabilty;
         this.components = components;
         algorithmComponents = new ArrayList<>();
+
+        System.out.println(amount);
 
         // Add components to arraylist components as String
         addComponentsToArrayListAsString();
@@ -93,13 +97,14 @@ public class Algorithm {
 
     //Transfer ComponentModel araylist components into String arralist with index
     public void addComponentsToArrayListAsString() {
-        int componentCounter = 2;
+        int componentCounter = 3;
 
         // add dbnull components to componentlist
         algorithmComponents.add(dbnull);
         // add webnull components to componentlist
         algorithmComponents.add(webnull);
-
+        // add pfsense component to componentlist
+        algorithmComponents.add(pfSense);
         //Loop through component and add to list with the correct data based on type
         for (ComponentModel component : components) {
 
@@ -171,7 +176,7 @@ public class Algorithm {
                 dbSolutions.add(serverCombination);
             }
 
-            System.out.println(serverCombination);
+//            System.out.println(serverCombination);
             return;
         }
 
@@ -306,19 +311,19 @@ public class Algorithm {
                 double totalPercentage = (webPercentage * dbPercentage * 0.99998) * 100;
                 double totalPrice = webPrice + dbPrice + 4000;
 
-                System.out.println(totalPercentage);
-                System.out.println(availabilty);
+//                System.out.println(totalPercentage);
+//                System.out.println(availabilty);
 
                 if (totalPercentage >= availabilty) {
                     if (bestSolutionPrice == 0) {
                         bestSolutionPrice = totalPrice;
                         bestSolutionAvailabilty = totalPercentage;
-                        bestSolution = websolution + dbsolution + getPfSenseFromArray() + "-";
+                        bestSolution = websolution + dbsolution + 2 + "-";
                     } else if (totalPrice < bestSolutionPrice) {
                         bestSolutionPrice = totalPrice;
                         bestSolutionAvailabilty = totalPercentage;
-                        System.out.println(websolution + dbsolution);
-                        bestSolution = websolution + dbsolution + getPfSenseFromArray() + "-";
+//                        System.out.println(websolution + dbsolution);
+                        bestSolution = websolution + dbsolution + 2 + "-";
                     }
                 }
 
@@ -341,6 +346,7 @@ public class Algorithm {
         }
         return 0;
     }
+
 
     public void createList() {
 
@@ -382,10 +388,10 @@ public class Algorithm {
                             if (newCompoment) {
                                 bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
                                 bestList.add(bestInfrastructure);
-                                System.out.println("new component");
+//                                System.out.println("new component");
                             } else {
                                 bestList.set(objectPosition, new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), currentAmount + 1));
-                                System.out.println(bestList.get(objectPosition));
+//                                System.out.println(bestList.get(objectPosition));
                             }
                         }
                     }
@@ -422,10 +428,10 @@ public class Algorithm {
                             if (newCompoment) {
                                 bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
                                 bestList.add(bestInfrastructure);
-                                System.out.println("new component");
+//                                System.out.println("new component");
                             } else {
                                 bestList.set(objectPosition, new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), currentAmount + 1));
-                                System.out.println(bestList.get(objectPosition));
+//                                System.out.println(bestList.get(objectPosition));
                             }
                         }
                     }

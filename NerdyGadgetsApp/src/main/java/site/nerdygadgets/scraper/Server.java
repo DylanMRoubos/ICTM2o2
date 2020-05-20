@@ -80,7 +80,7 @@ public class Server {
             System.out.println("Host is reachable");
             return true;
         } catch (IOException ex) {
-            System.out.println("Sorry ! We can't reach to this host");
+//            System.out.println("Sorry ! We can't reach to this host");
             return false;
         }
     }

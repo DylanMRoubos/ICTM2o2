@@ -39,7 +39,7 @@ public class ServerManager extends TimerTask {
             System.out.println(server);
 
             server.writeToDatabase();
-            System.out.println("wrote to database");
+//            System.out.println("wrote to database");
         }
     }
 }
