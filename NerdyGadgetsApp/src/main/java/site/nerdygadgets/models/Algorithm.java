@@ -150,10 +150,10 @@ public class Algorithm {
         int[] possibilityArray = new int[amount];
 
         // Call the recursice function
-        fillPossibilietsArray(possibilityArray, componentArray, 0, amount, 0, componentArray.length - 1, componentType);
+        fillPossibilitiesArray(possibilityArray, componentArray, 0, amount, 0, componentArray.length - 1, componentType);
     }
 
-    public void fillPossibilietsArray(int[] possibilityArray, int[] componentArray, int index, int amount, int start, int end, ComponentType componentType) {
+    public void fillPossibilitiesArray(int[] possibilityArray, int[] componentArray, int index, int amount, int start, int end, ComponentType componentType) {
 
         //Check if array is full
         if (index == amount) {
@@ -185,7 +185,7 @@ public class Algorithm {
         // and recur
         for (int i = start; i <= end; i++) {
             possibilityArray[index] = i;
-            fillPossibilietsArray(possibilityArray, componentArray, index + 1, amount, i, end, componentType);
+            fillPossibilitiesArray(possibilityArray, componentArray, index + 1, amount, i, end, componentType);
         }
 
     }
