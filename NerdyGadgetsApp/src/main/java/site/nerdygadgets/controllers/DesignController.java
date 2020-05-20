@@ -70,7 +70,12 @@ public class DesignController implements ActionListener, TableModelListener {
                               g.drawLine(x, yOffset, x, yOffset-20);
                           }
                           g.drawRect(xOffset, yOffset, rectX, rectY);
-                          g.drawString(component.getName(), xOffset + 10, yOffset + 20); // set name of server in rectangle
+                          // formatting of component name
+                          String name = component.getName();
+                          if (name.length() > 11) {
+                              name = name.substring(0, 11) + "..";
+                          }
+                          g.drawString(name, xOffset + 10, yOffset + 20); // set name of server in rectangle
                           yOffset += rectY+20; // up the y offset for the next component
                           counter++; // up the counter for vertical line
                       }
@@ -93,7 +98,12 @@ public class DesignController implements ActionListener, TableModelListener {
                               g.drawLine(x, yOffset, x, yOffset-20);
                           }
                           g.drawRect(xOffset, yOffset, rectX, rectY);
-                          g.drawString(component.getName(), xOffset + 10, yOffset + 20); // set name of server in rectangle
+                          // formatting of component name
+                          String name = component.getName();
+                          if (name.length() > 11) {
+                              name = name.substring(0, 11) + "..";
+                          }
+                          g.drawString(name, xOffset + 10, yOffset + 20); // set name of server in rectangle
                           yOffset += rectY+20; // up the y offset for the next component
                           counter++; // up the counter for vertical line
                       }
@@ -116,7 +126,12 @@ public class DesignController implements ActionListener, TableModelListener {
                               g.drawLine(x, yOffset, x, yOffset-20);
                           }
                           g.drawRect(xOffset, yOffset, rectX, rectY);
-                          g.drawString(component.getName(), xOffset + 10, yOffset + 20); // set name of server in rectangle
+                          // formatting of component name
+                          String name = component.getName();
+                          if (name.length() > 11) {
+                              name = name.substring(0, 11) + "..";
+                          }
+                          g.drawString(name, xOffset + 10, yOffset + 20); // set name of server in rectangle
                           yOffset += rectY+20; // up the y offset for the next component
                           counter++; // up the counter for vertical line
                       }
