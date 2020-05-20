@@ -27,7 +27,7 @@ public class Algorithm {
 
     // temporary availabilty and amount of dbservers and webservers
     private double availabilty;
-    private int amount = 5;
+    private int amount = 12;
 
     // arraylist for components
     private List<String[]> algorithmComponents;
@@ -86,7 +86,7 @@ public class Algorithm {
             // return arraylist with best solution
             createList();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Geen oplossing mogelijk");
+                JOptionPane.showMessageDialog(null, "Geen oplossing mogelijk");
         }
 
     }
@@ -433,7 +433,6 @@ public class Algorithm {
             }
         }
     }
-
 
     public double getBestSolutionAvailabilty() {
         return bestSolutionAvailabilty;
