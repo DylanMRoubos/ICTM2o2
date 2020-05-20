@@ -1,34 +1,45 @@
 package site.nerdygadgets.views;
 
-import site.nerdygadgets.controllers.DesignController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * AvailabilityDialog class
+ * Class create a dialog which let's you configure settings for the algorithm to use
+ *
+ * @author Ade Wattimena & Ruben Oosting & Dylan Roubos
+ * @version 1.0
+ * @since 20-05-2020
+ */
 public class AvailabiltyDialog extends JDialog implements ActionListener {
 
+    private int serverCount;
+    private boolean allcomponents, AvailabilityDialogOk;
+    private double availability;
     private JButton okButton;
+    private ButtonGroup componentsBG;
     private JTextField availabilityJTF, amountJTF;
     private JLabel amountJL;
-    private int serverCount;
-    private boolean allcomponents;
     private JRadioButton allComponentsJR, chosenComponentsJR;
-    private ButtonGroup componentsBG;
-
 
     public AvailabiltyDialog(JFrame f) {
         super(f, true);
         setTitle("Beschikbaarheid");
         setSize(500, 150);
         setLocationRelativeTo(null);
+
+        //Create gridbaglayout to set different size buttons
         setLayout(new GridBagLayout());
 
+        //Create gridbag settings
         GridBagConstraints c = new GridBagConstraints();
 
+        //Add padding around gribdag
         c.insets = new Insets(3, 3, 3, 3);
 
+
+        //initialise and set all components to the gridbaglayout
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         c.gridx = 0;
@@ -53,7 +64,7 @@ public class AvailabiltyDialog extends JDialog implements ActionListener {
         c.weightx = 0.5;
         c.gridx = 1;
         c.gridy = 1;
-        amountJTF = new JTextField(5);
+        amountJTF = new JTextField("10", 5);
         add(amountJTF, c);
 
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -79,15 +90,14 @@ public class AvailabiltyDialog extends JDialog implements ActionListener {
         okButton.addActionListener(this);
         add(okButton, c);
 
+
+        //Create a button group for the radio buttons
         componentsBG = new ButtonGroup();
         componentsBG.add(allComponentsJR);
         componentsBG.add(chosenComponentsJR);
 
         setVisible(true);
     }
-
-    private double availability;
-    private boolean ok;
 
     public double getAvailability() {
         return availability;
@@ -97,10 +107,11 @@ public class AvailabiltyDialog extends JDialog implements ActionListener {
         return allcomponents;
     }
 
-    public boolean isOk() {
-        return ok;
+    public boolean isAvailabilityDialogOk() {
+        return AvailabilityDialogOk;
     }
 
+    //Simple method to display error message
     private void showError(String errorMessage) {
         JOptionPane.showMessageDialog(null, errorMessage);
     }
@@ -111,18 +122,23 @@ public class AvailabiltyDialog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        //check if button pressed is the ok button
         if (e.getSource() == okButton) {
+            //Try to get data from the jtextfields. If failed throw numberformat if data could not be formatted. If something else fails throw default exception
             try {
+                //Get the data from JTextfield and put it in variables
                 availability = Double.parseDouble(availabilityJTF.getText());
                 serverCount = Integer.parseInt(amountJTF.getText());
-                if (availability > 0 && availability < 100) {
+                //Check if wished availability percentage is within the possible range
+                if (availability > 0 && availability <= 100) {
+                    //Check if all components should be used or only the selected
                     if (chosenComponentsJR.isSelected()) {
                         allcomponents = false;
                     } else {
                         allcomponents = true;
                     }
-
-                    ok = true;
+                    //set dialog to ok and close
+                    AvailabilityDialogOk = true;
                     dispose();
                 } else {
                     showError("Percentage moet tussen 0 en 100");

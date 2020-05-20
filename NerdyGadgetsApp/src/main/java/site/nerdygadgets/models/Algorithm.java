@@ -4,6 +4,7 @@ import site.nerdygadgets.functions.ComponentType;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 /**
  * Algorithm class
@@ -71,8 +72,6 @@ public class Algorithm {
         this.components = components;
         algorithmComponents = new ArrayList<>();
 
-        System.out.println(amount);
-
         // Add components to arraylist components as String
         addComponentsToArrayListAsString();
         // Add Webservers and DBservers to indivual arrays
@@ -83,6 +82,14 @@ public class Algorithm {
         createPossibilitiesArray(dbArr, amount, ComponentType.Database);
         // all solutions for webservers
         createPossibilitiesArray(webArr, amount, ComponentType.Webserver);
+
+
+//        for (String[] joe : algorithmComponents) {
+//            System.out.println(Arrays.toString(joe));
+//        }
+//
+//        System.out.println(getHighestFirewallFromArray());
+
 
         try {
             // for the best solution
@@ -103,7 +110,7 @@ public class Algorithm {
         algorithmComponents.add(dbnull);
         // add webnull components to componentlist
         algorithmComponents.add(webnull);
-        // add pfsense component to componentlist
+//        // add pfsense component to componentlist
         algorithmComponents.add(pfSense);
         //Loop through component and add to list with the correct data based on type
         for (ComponentModel component : components) {
@@ -206,7 +213,6 @@ public class Algorithm {
             }
         }
 
-
         //Calculate the best possibilitie with the maximun number of the highest percentage webserver.
         for (int z = 0; z < amount; z++) {
             highestWebServer *= (1 - (serverPercentage / 100));
@@ -307,23 +313,23 @@ public class Algorithm {
                 webPercentage = (1 - webPercentage);
                 dbPercentage = (1 - dbPercentage);
 
-                //hardcoded default PFsense
-                double totalPercentage = (webPercentage * dbPercentage * 0.99998) * 100;
-                double totalPrice = webPrice + dbPrice + 4000;
+                //use highest Firewall from list to calculate and show
+                System.out.println(Arrays.toString(algorithmComponents.get(getHighestFirewallFromArray())));
+                String[] highestFirewall = algorithmComponents.get(getHighestFirewallFromArray());
 
-//                System.out.println(totalPercentage);
-//                System.out.println(availabilty);
+                //Set the values for the firewall
+                double totalPercentage = (webPercentage * dbPercentage * (Double.valueOf(highestFirewall[1]) / 100)) * 100;
+                double totalPrice = webPrice + dbPrice + Double.valueOf(highestFirewall[2]);
 
                 if (totalPercentage >= availabilty) {
                     if (bestSolutionPrice == 0) {
                         bestSolutionPrice = totalPrice;
                         bestSolutionAvailabilty = totalPercentage;
-                        bestSolution = websolution + dbsolution + 2 + "-";
+                        bestSolution = websolution + dbsolution + highestFirewall[4] + "-";
                     } else if (totalPrice < bestSolutionPrice) {
                         bestSolutionPrice = totalPrice;
                         bestSolutionAvailabilty = totalPercentage;
-//                        System.out.println(websolution + dbsolution);
-                        bestSolution = websolution + dbsolution + 2 + "-";
+                        bestSolution = websolution + dbsolution + highestFirewall[4] + "-";
                     }
                 }
 
@@ -345,6 +351,23 @@ public class Algorithm {
             }
         }
         return 0;
+    }
+
+//    Get the highest Firewall from the arraylist
+    public int getHighestFirewallFromArray() {
+
+        int firewall = 2;
+        double highestAvailablePercentage = 0;
+
+        for (String[] component : algorithmComponents) {
+
+            //Check if component is firewall & higher than current best firewall based on availability
+            if (component[3].equals("Firewall") && Double.valueOf(component[1]) > highestAvailablePercentage ) {
+                firewall = Integer.valueOf(component[4]);
+                highestAvailablePercentage = Double.valueOf(component[1]);
+            }
+        }
+        return firewall;
     }
 
 

@@ -465,7 +465,7 @@ public class DesignController implements ActionListener, TableModelListener {
         if (e.getSource() == panel.getJbOpt()) {
             AvailabiltyDialog dia = new AvailabiltyDialog(mfv);
 
-            boolean isDialogClosed = dia.isOk();
+            boolean isDialogClosed = dia.isAvailabilityDialogOk();
             double availability = dia.getAvailability();
 
             list.clear();
@@ -476,9 +476,9 @@ public class DesignController implements ActionListener, TableModelListener {
                 list = convertInfraComponentToComponent(getCurrentModels());
             }
 
-            clearTable();
+//            System.out.println(Arrays.toString(list.toArray()));
 
-            System.out.println(Arrays.toString(list.toArray()));
+            clearTable();
 
             if (isDialogClosed) {
                 algorithm = new Algorithm(availability, list, dia.getServerCount());
