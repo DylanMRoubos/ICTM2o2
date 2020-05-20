@@ -63,4 +63,8 @@ public class DesignModel {
         }
         return firewall;
     }
+
+    public ArrayList<ComponentModel> getList() {
+        return list;
+    }
 }
