@@ -2,6 +2,7 @@ package site.nerdygadgets.views;
 
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -36,7 +37,7 @@ public class CurrentInfrastructureComponentPanel extends JPanel {
         diskValue = new JLabel("");
 
         southContent = new JPanel();
-        southContent.setBorder(BorderFactory.createEmptyBorder(0,10,10,10));
+        southContent.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         southContent.setBackground(SubstanceCortex.GlobalScope.getCurrentSkin().getColorScheme(southContent, ComponentState.DEFAULT).getLightColor());
 
         southContent.setLayout(new GridBagLayout());

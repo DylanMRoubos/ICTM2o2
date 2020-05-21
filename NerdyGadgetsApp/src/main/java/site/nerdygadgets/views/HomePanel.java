@@ -2,6 +2,7 @@ package site.nerdygadgets.views;
 
 import javax.swing.*;
 import java.awt.*;
+
 /**
  * HomePanel class
  * Displays the homepanel with four JPanels in it
@@ -20,7 +21,7 @@ public class HomePanel extends JPanel {
 
     public HomePanel() {
         setLayout(new GridLayout(2, 2, 40, 40));
-        setBorder(BorderFactory.createEmptyBorder(40,200,40, 200));
+        setBorder(BorderFactory.createEmptyBorder(40, 200, 40, 200));
         jpCurrentInfra = new HomePanelComponent("Huidige infrastructuur", "servers.png");
         jpOpen = new HomePanelComponent("Open", "open.png");
         jpCreate = new HomePanelComponent("Nieuw", "plus.png");

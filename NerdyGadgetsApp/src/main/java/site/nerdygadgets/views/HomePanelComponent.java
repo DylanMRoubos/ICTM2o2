@@ -2,11 +2,13 @@ package site.nerdygadgets.views;
 
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 /**
  * HomePanelComponent class
  * Displays the image for the Jpanels used in HomePanel
@@ -22,7 +24,7 @@ public class HomePanelComponent extends JPanel {
     public HomePanelComponent(String name, String filename) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-        setBorder(BorderFactory.createEmptyBorder(60,0,0,0));
+        setBorder(BorderFactory.createEmptyBorder(60, 0, 0, 0));
         setBackground(SubstanceCortex.GlobalScope.getCurrentSkin().getColorScheme(this, ComponentState.DEFAULT).getLightColor());
 
         java.net.URL imageURL = this.getClass().getClassLoader().getResource(String.format("home/%s", filename));

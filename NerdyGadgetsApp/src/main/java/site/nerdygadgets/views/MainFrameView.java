@@ -2,6 +2,7 @@ package site.nerdygadgets.views;
 
 import javax.swing.*;
 import java.awt.*;
+
 /**
  * MainFrameView class
  * Displays the main frame
@@ -20,7 +21,7 @@ public class MainFrameView extends JFrame {
     private JPanel content;
 
     public MainFrameView() throws HeadlessException {
-        setSize(1200,800);
+        setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setTitle("NerdyGadgets Infrastructuur");

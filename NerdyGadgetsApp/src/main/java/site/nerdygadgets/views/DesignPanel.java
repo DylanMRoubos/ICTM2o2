@@ -1,9 +1,11 @@
 package site.nerdygadgets.views;
 
 import site.nerdygadgets.functions.ComboRenderer;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+
 /**
  * DesignPanel class
  * DesignPanel for infrastructures
@@ -37,7 +39,7 @@ public class DesignPanel extends JPanel {
         setLayout(new GridLayout(0, 2));
         jpMakeDesign = new JPanel();
         jpMakeDesign.setPreferredSize(new Dimension(600, 650));
-        jpMakeDesign.setBorder(BorderFactory.createEmptyBorder(5,0,0,0));
+        jpMakeDesign.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
         //Make panel left side
         jpDesign = new JPanel();
@@ -47,11 +49,11 @@ public class DesignPanel extends JPanel {
 
         //init Content left panel
         jcDatabase = new JComboBox(new String[]{""});
-        jcDatabase.setPreferredSize(new Dimension(120,17));
+        jcDatabase.setPreferredSize(new Dimension(120, 17));
         jcWeb = new JComboBox(new String[]{""});
-        jcWeb.setPreferredSize(new Dimension(120,17));
+        jcWeb.setPreferredSize(new Dimension(120, 17));
         jcFirewall = new JComboBox(new String[]{""});
-        jcFirewall.setPreferredSize(new Dimension(120,17));
+        jcFirewall.setPreferredSize(new Dimension(120, 17));
 
         jcDatabase.setRenderer(new ComboRenderer("Databaseservers"));
         jcDatabase.setSelectedIndex(-1);
@@ -128,12 +130,12 @@ public class DesignPanel extends JPanel {
         jpDisplay.setLayout(new FlowLayout());
 
         jpDisplayPanel = new JPanel();
-        jpDisplayPanel.setPreferredSize(new Dimension(550,590));
+        jpDisplayPanel.setPreferredSize(new Dimension(550, 590));
         jpDisplayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
         jpDisplayControls = new JPanel();
         jpDisplayControls.setPreferredSize(new Dimension(600, 650));
-        jpDisplayControls.setBorder(BorderFactory.createEmptyBorder(0,50,0,50));
+        jpDisplayControls.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
 
         //init Content right panel
         jbOpt = new JButton("Optimaliseer");
