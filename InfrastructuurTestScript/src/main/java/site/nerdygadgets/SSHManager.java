@@ -4,7 +4,6 @@ import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Objects;
@@ -65,7 +64,6 @@ public class SSHManager {
                     result += (new String(tmp, 0, i));
                 }
                 if (channel.isClosed()) {
-                    // System.out.println("exit-status: " + channel.getExitStatus()); // debug logging if command was successfully executed
                     break;
                 }
             }
@@ -77,6 +75,7 @@ public class SSHManager {
             return null;
         }
     }
+
     //Run a command on the server in Sudo mode
     public String runCommandSudo(String command) {
         try {
@@ -100,7 +99,6 @@ public class SSHManager {
                     result += (new String(tmp, 0, i));
                 }
                 if (channel.isClosed()) {
-                    // System.out.println("exit-status: " + channel.getExitStatus()); // debug logging if command was successfully executed
                     break;
                 }
             }

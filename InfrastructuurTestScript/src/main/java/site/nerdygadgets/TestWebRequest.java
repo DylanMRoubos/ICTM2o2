@@ -7,6 +7,15 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * TestWebRequest class
+ * Sends a request to the website to see if its available
+ *
+ * @author Mike Thomas & Dylan Roubos
+ * @version 1.0
+ * @since 12-05-2020
+ */
+
 public class TestWebRequest {
     public static void main(String[] args) {
         try {

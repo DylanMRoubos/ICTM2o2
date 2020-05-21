@@ -5,6 +5,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * ServerPanel class
+ * Lets you switch between servers
+ *
+ * @author Mike Thomas & Dylan Roubos
+ * @version 1.0
+ * @since 12-05-2020
+ */
+
 public class ServerPanel extends JPanel implements ActionListener {
     private SSHManager sshManager;
     private String type;
@@ -22,7 +31,7 @@ public class ServerPanel extends JPanel implements ActionListener {
         sshManager.startSession();
 
         if (type.equals("web")) {
-            // buttons voor web
+            // buttons for web
             ndbsJB = new JButton("ndb_mgm status");
             ndbssJB = new JButton("service status ndb"); // ndb mgm and mysql
             sassJB = new JButton("service status apache2");
@@ -47,7 +56,7 @@ public class ServerPanel extends JPanel implements ActionListener {
             setBorder(BorderFactory.createEmptyBorder(0,20,300,20));
 
         } else if (type.equals("db")) {
-            // buttons voor db
+            // buttons for db
             stopdbsJB = new JButton("stop services");
             startdbsJB = new JButton("start services");
             ndbdsJB = new JButton("service status ndbd");
@@ -69,7 +78,7 @@ public class ServerPanel extends JPanel implements ActionListener {
             webSSH.startSession();
         }
 
-        // buttons algemeen
+        // buttons general
         shutdownJB = new JButton("shutdown server");
         rebootJB = new JButton("reboot server");
 

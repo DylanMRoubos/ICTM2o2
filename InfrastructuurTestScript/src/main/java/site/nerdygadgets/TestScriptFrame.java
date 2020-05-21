@@ -1,6 +1,5 @@
 package site.nerdygadgets;
 
-import javax.naming.ldap.Control;
 import javax.swing.*;
 import java.awt.*;
 /**
@@ -28,7 +27,6 @@ public class TestScriptFrame extends JFrame {
         add(procedureJP);
         add(serverJP);
         add(consoleJP);
-
 
         setVisible(true);
     }
