@@ -21,7 +21,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * DesignController class
@@ -470,7 +469,7 @@ public class DesignController implements ActionListener, TableModelListener {
 
             list.clear();
 
-            if (dia.isAllcomponents()) {
+            if (dia.isAllComponents()) {
                 fillArraylist();
             } else {
                 list = convertInfraComponentToComponent(getCurrentModels());

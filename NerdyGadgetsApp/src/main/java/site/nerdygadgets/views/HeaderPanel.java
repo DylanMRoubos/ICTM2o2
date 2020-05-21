@@ -2,10 +2,17 @@ package site.nerdygadgets.views;
 
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
-
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+/**
+ * HeaderPanel class
+ * Displays the header
+ *
+ * @author Mike Thomas & Dylan Roubos & Ruben Oosting
+ * @version 1.0
+ * @since 01-05-2020
+ */
 
 public class HeaderPanel extends JPanel {
     private JLabel headerText;

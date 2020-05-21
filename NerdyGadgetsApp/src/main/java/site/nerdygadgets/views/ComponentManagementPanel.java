@@ -89,13 +89,13 @@ public class ComponentManagementPanel extends JPanel {
         jpAddComponentsContent.setLayout(new GridLayout(3,0));
         jpAddComponentsLayout.setLayout(new GridBagLayout());
 
-        //Maak het hele rechter kant panel aan
+        //Makes the right panel
         add(jpAddComponents);
         jpAddComponents.add(jlAddComponents);
         jpAddComponents.add(jpAddComponentsContent);
         jpAddComponentsContent.add(jpAddComponentsLayout);
 
-        //init Content rechter panel
+        //init Content right panel
         jlName = new JLabel("Naam: ");
         jlPrice = new JLabel("Prijs: ");
         jlAvailability = new JLabel("Beschikbaarheid:");
@@ -107,6 +107,7 @@ public class ComponentManagementPanel extends JPanel {
 
         //Layout right panel
         GridBagConstraints gbc = new GridBagConstraints();
+
         //Give locations of labels, textfields and buttons in gridbaglayout
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.NORTHWEST;
@@ -116,34 +117,42 @@ public class ComponentManagementPanel extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         jpAddComponentsLayout.add(jlName, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
         gbc.gridy = 0;
         jpAddComponentsLayout.add(jtName, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 1;
         jpAddComponentsLayout.add(jlPrice, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
         gbc.gridy = 1;
         jpAddComponentsLayout.add(jtPrice, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 2;
         jpAddComponentsLayout.add(jlAvailability, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
         gbc.gridy = 2;
         jpAddComponentsLayout.add(jtAvailability, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 3;
         jpAddComponentsLayout.add(jcComponents, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
         gbc.gridy = 3;
         jpAddComponentsLayout.add(jbAdd, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 4;

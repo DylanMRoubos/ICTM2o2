@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 public class AvailabiltyDialog extends JDialog implements ActionListener {
 
     private int serverCount;
-    private boolean allcomponents, AvailabilityDialogOk;
+    private boolean allComponents, availabilityDialogOk;
     private double availability;
     private JButton okButton;
     private ButtonGroup componentsBG;
@@ -37,7 +37,6 @@ public class AvailabiltyDialog extends JDialog implements ActionListener {
 
         //Add padding around gribdag
         c.insets = new Insets(3, 3, 3, 3);
-
 
         //initialise and set all components to the gridbaglayout
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -90,7 +89,6 @@ public class AvailabiltyDialog extends JDialog implements ActionListener {
         okButton.addActionListener(this);
         add(okButton, c);
 
-
         //Create a button group for the radio buttons
         componentsBG = new ButtonGroup();
         componentsBG.add(allComponentsJR);
@@ -103,12 +101,12 @@ public class AvailabiltyDialog extends JDialog implements ActionListener {
         return availability;
     }
 
-    public boolean isAllcomponents() {
-        return allcomponents;
+    public boolean isAllComponents() {
+        return allComponents;
     }
 
     public boolean isAvailabilityDialogOk() {
-        return AvailabilityDialogOk;
+        return availabilityDialogOk;
     }
 
     //Simple method to display error message
@@ -133,12 +131,12 @@ public class AvailabiltyDialog extends JDialog implements ActionListener {
                 if (availability > 0 && availability <= 100) {
                     //Check if all components should be used or only the selected
                     if (chosenComponentsJR.isSelected()) {
-                        allcomponents = false;
+                        allComponents = false;
                     } else {
-                        allcomponents = true;
+                        allComponents = true;
                     }
                     //set dialog to ok and close
-                    AvailabilityDialogOk = true;
+                    availabilityDialogOk = true;
                     dispose();
                 } else {
                     showError("Percentage moet tussen 0 en 100");

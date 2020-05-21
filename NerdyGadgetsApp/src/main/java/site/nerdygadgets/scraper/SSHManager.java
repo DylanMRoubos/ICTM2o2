@@ -1,8 +1,6 @@
 package site.nerdygadgets.scraper;
 
 import com.jcraft.jsch.*;
-
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -60,7 +58,6 @@ public class SSHManager {
                     result += (new String(tmp, 0, i));
                 }
                 if (channel.isClosed()) {
-                    // System.out.println("exit-status: " + channel.getExitStatus()); // debug logging if command was successfully executed
                     break;
                 }
             }
