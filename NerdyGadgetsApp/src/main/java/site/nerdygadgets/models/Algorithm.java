@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 /**
  * Algorithm class
  * Class to calculate the best solution for the given components
@@ -83,21 +84,13 @@ public class Algorithm {
         // all solutions for webservers
         createPossibilitiesArray(webArr, amount, ComponentType.Webserver);
 
-
-//        for (String[] joe : algorithmComponents) {
-//            System.out.println(Arrays.toString(joe));
-//        }
-//
-//        System.out.println(getHighestFirewallFromArray());
-
-
         try {
             // for the best solution
             calculateBestSolution();
             // return arraylist with best solution
             createList();
         } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Geen oplossing mogelijk");
+            JOptionPane.showMessageDialog(null, "Geen oplossing mogelijk");
         }
 
     }
@@ -110,7 +103,7 @@ public class Algorithm {
         algorithmComponents.add(dbnull);
         // add webnull components to componentlist
         algorithmComponents.add(webnull);
-//        // add pfsense component to componentlist
+        // add pfsense component to componentlist
         algorithmComponents.add(pfSense);
         //Loop through component and add to list with the correct data based on type
         for (ComponentModel component : components) {
@@ -183,7 +176,6 @@ public class Algorithm {
                 dbSolutions.add(serverCombination);
             }
 
-//            System.out.println(serverCombination);
             return;
         }
 
@@ -353,7 +345,7 @@ public class Algorithm {
         return 0;
     }
 
-//    Get the highest Firewall from the arraylist
+    //    Get the highest Firewall from the arraylist
     public int getHighestFirewallFromArray() {
 
         int firewall = 2;
@@ -362,7 +354,7 @@ public class Algorithm {
         for (String[] component : algorithmComponents) {
 
             //Check if component is firewall & higher than current best firewall based on availability
-            if (component[3].equals("Firewall") && Double.valueOf(component[1]) > highestAvailablePercentage ) {
+            if (component[3].equals("Firewall") && Double.valueOf(component[1]) > highestAvailablePercentage) {
                 firewall = Integer.valueOf(component[4]);
                 highestAvailablePercentage = Double.valueOf(component[1]);
             }
@@ -391,18 +383,18 @@ public class Algorithm {
                             bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
                             bestList.add(bestInfrastructure);
                         } else {
-                            // checken of element al bestaat
+                            // checken if element exists
                             boolean newCompoment = false;
                             int objectPosition = 0;
                             int currentAmount = 0;
                             for (InfrastructureComponentModel icm : bestList) {
-                                // zoja verhoog amount
+                                // if yes change current
                                 if (icm.getName().equals(strInt[0]) && icm.getType().equals(ComponentType.valueOf(strInt[3]))) {
 
                                     newCompoment = false;
                                     currentAmount = icm.getAmount();
                                     break;
-                                    //zo nee maak nieuw element aan
+                                    //if no create new element
                                 } else {
                                     newCompoment = true;
                                 }
@@ -411,10 +403,8 @@ public class Algorithm {
                             if (newCompoment) {
                                 bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
                                 bestList.add(bestInfrastructure);
-//                                System.out.println("new component");
                             } else {
                                 bestList.set(objectPosition, new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), currentAmount + 1));
-//                                System.out.println(bestList.get(objectPosition));
                             }
                         }
                     }
@@ -451,10 +441,8 @@ public class Algorithm {
                             if (newCompoment) {
                                 bestInfrastructure = new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), 1);
                                 bestList.add(bestInfrastructure);
-//                                System.out.println("new component");
                             } else {
                                 bestList.set(objectPosition, new InfrastructureComponentModel(strInt[0], Double.parseDouble(strInt[1]), Double.parseDouble(strInt[2]), ComponentType.valueOf(strInt[3]), currentAmount + 1));
-//                                System.out.println(bestList.get(objectPosition));
                             }
                         }
                     }

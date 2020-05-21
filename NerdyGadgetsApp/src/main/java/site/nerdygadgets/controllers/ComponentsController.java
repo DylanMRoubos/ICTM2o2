@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+
 /**
  * ComponentsController class
  * Adds functionality to controller panel
@@ -20,26 +21,31 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 14-05-2020
  */
-public class ComponentsController implements ActionListener{
+public class ComponentsController implements ActionListener {
     private ComponentManagementPanel view;
     private ComponentsModel model;
     private MainFrameView mainFrameView;
 
-    public ComponentsController(ComponentManagementPanel view, ComponentsModel model, MainFrameView mainFrameView){
+    public ComponentsController(ComponentManagementPanel view, ComponentsModel model, MainFrameView mainFrameView) {
         this.mainFrameView = mainFrameView;
         this.model = model;
         this.view = view;
         initController();
 
     }
+
     // init buttons and listeners
-    public void initController(){
+    public void initController() {
         view.getJbAdd().addActionListener(this);
         view.getJTable().addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent e) { }
+            public void mouseClicked(MouseEvent e) {
+            }
+
             @Override
-            public void mousePressed(MouseEvent e) { }
+            public void mousePressed(MouseEvent e) {
+            }
+
             @Override
             public void mouseReleased(MouseEvent e) {
                 int row = view.getJTable().rowAtPoint(e.getPoint());
@@ -51,7 +57,7 @@ public class ComponentsController implements ActionListener{
 
                 //Row index is found
                 int rowIndex = view.getJTable().getSelectedRow();
-                if (rowIndex < 0){
+                if (rowIndex < 0) {
                     return;
                 }
                 if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
@@ -59,16 +65,20 @@ public class ComponentsController implements ActionListener{
                     popup.show(e.getComponent(), e.getX(), e.getY());
                 }
             }
+
             @Override
-            public void mouseEntered(MouseEvent e) { }
+            public void mouseEntered(MouseEvent e) {
+            }
+
             @Override
-            public void mouseExited(MouseEvent e) { }
+            public void mouseExited(MouseEvent e) {
+            }
         });
         loadComponents();
     }
+
     //Creates right click menu to delete components
-    private JPopupMenu createYourPopUp(int rowindex)
-    {
+    private JPopupMenu createYourPopUp(int rowindex) {
         JPopupMenu popup = new JPopupMenu();
         JMenuItem delete = new JMenuItem("Delete Component");
         delete.addActionListener(new ActionListener() {
@@ -84,6 +94,7 @@ public class ComponentsController implements ActionListener{
         popup.add(delete);
         return popup;
     }
+
     // Load components into table
     private void loadComponents() {
         model.reloadComponentModel();
@@ -98,49 +109,45 @@ public class ComponentsController implements ActionListener{
             }
         }
     }
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.getJbAdd()) {
-            //Voeg toe gedrukt
+            //Voeg toe pressed
             double availability = this.getAvailability();
-            if(availability > 100.0){
+            if (availability > 100.0) {
                 JOptionPane.showMessageDialog(null, "Beschikbaarheid hoger dan 100%", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
                 return;
-            }else if (availability == -1) {
+            } else if (availability == -1) {
                 //invalid availability (0>)
-                JOptionPane.showMessageDialog(null, "Invalid availability input", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Invalide beschikbaarheid", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (availability == -2) {
                 //invalid input (text etc..)
-                JOptionPane.showMessageDialog(null, "Invalid availability input", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Invalide beschikbaarheid", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             double price = this.getPrice();
             if (price == -1) {
                 //invalid price (0>)
-                //Error afhandelen
-                JOptionPane.showMessageDialog(null, "Invalid price input", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
+                //Error handling
+                JOptionPane.showMessageDialog(null, "Invalide prijs", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (price == -2) {
                 //invalid input (text etc..)
-                //Error afhandelen?
-                JOptionPane.showMessageDialog(null, "Invalid price input", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
+                //Error handling?
+                JOptionPane.showMessageDialog(null, "Invalide prijs", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            ComponentModel m = new ComponentModel(view.getJtName().getText(), this.getAvailability(), this.getPrice(),this.getType());
+            ComponentModel m = new ComponentModel(view.getJtName().getText(), this.getAvailability(), this.getPrice(), this.getType());
             if (this.model.addComponentModel(m)) {
                 view.getTableModel().addRow(new Object[]{getType().name(), view.getJtName().getText(), String.valueOf(this.getAvailability()), String.valueOf(this.getPrice())});
-//                this.model.printComponents();
-//                System.out.println("Component added");
             } else {
                 JOptionPane.showMessageDialog(null, "Component bestaat al, zorg dat naam & type uniek zijn.", "ErrorInformation", JOptionPane.ERROR_MESSAGE);
-//                System.out.println("Component bestaat al");
             }
         }
     }
-
-
 
 
     public double getPrice() {
@@ -151,8 +158,9 @@ public class ComponentsController implements ActionListener{
             } else {
                 return price;
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input");
         }
-        catch (NumberFormatException e) { System.out.println("Invalid input"); }
         return -2;
     }
 
@@ -164,9 +172,9 @@ public class ComponentsController implements ActionListener{
             } else {
                 return availability;
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input");
         }
-        catch (NumberFormatException e) {
-            System.out.println("Invalid input"); }
         return -2;
     }
 
@@ -181,7 +189,6 @@ public class ComponentsController implements ActionListener{
             default:
                 System.out.println("Type Unavailable");
         }
-//        System.out.println("String.valueOf(jcComponenten.getSelectedItem())");
         return null;
     }
 

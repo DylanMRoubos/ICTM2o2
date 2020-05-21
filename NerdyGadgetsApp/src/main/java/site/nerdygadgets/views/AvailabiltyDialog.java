@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 /**
  * AvailabilityDialog class
  * Class create a dialog which let's you configure settings for the algorithm to use

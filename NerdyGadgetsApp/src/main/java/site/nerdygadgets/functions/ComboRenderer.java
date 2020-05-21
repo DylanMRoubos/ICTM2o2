@@ -11,16 +11,16 @@ import java.awt.*;
  * @since 14-05-2020
  */
 public class ComboRenderer extends JLabel implements ListCellRenderer {
-    private String _title;
+    private String title;
 
     public ComboRenderer(String title) {
-        _title = title;
+        this.title = title;
     }
 
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
         if (index == -1 && value == null)
-            setText(_title);
+            setText(title);
         else
             setText(value.toString());
         return this;

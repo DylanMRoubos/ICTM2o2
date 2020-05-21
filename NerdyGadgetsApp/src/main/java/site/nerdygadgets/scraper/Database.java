@@ -57,12 +57,11 @@ public class Database {
                         .append("uptime", uptime));
         collection.insertOne(doc);
     }
-
+    // get latest document from mongoDB
     public Document getLastDocument() {
-        // get latest document
         return collection.find().sort(new Document("_id", -1)).first();
     }
-
+    // get document from mongoDB by serverID
     public Document getDocumentByServerId(int id) {
         return collection.find(eq("serverId", id)).sort(new Document("_id", -1)).first();
     }

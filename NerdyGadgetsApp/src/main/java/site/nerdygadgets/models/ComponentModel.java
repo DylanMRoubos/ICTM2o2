@@ -5,6 +5,7 @@ import site.nerdygadgets.functions.Serialization;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 /**
  * ComponentModel class
  * Create component
@@ -51,7 +52,8 @@ public class ComponentModel {
                 ", type=" + type +
                 '}';
     }
-// Get model from file
+
+    // Get model from file
     public static ComponentModel getModel(String name, ComponentType type) {
         try {
             ArrayList<ComponentModel> l = Serialization.deserializeComponents();
@@ -60,8 +62,8 @@ public class ComponentModel {
                     return m;
                 }
             }
+        } catch (IOException e) {
         }
-        catch (IOException e) { }
         return null;
     }
 }

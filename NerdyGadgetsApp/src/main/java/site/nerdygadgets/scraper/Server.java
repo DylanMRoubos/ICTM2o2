@@ -1,10 +1,8 @@
 package site.nerdygadgets.scraper;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  * Server class
@@ -85,8 +83,8 @@ public class Server {
         }
     }
 
+    // write current metrics to MongoDB.
     public void writeToDatabase() {
-        // write current metrics to MongoDB.
         database.createDocument(id, type, ip, online, cpu, memory, disk, uptime);
     }
 

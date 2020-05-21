@@ -2,7 +2,6 @@ package site.nerdygadgets.models;
 
 import org.bson.Document;
 import site.nerdygadgets.scraper.Database;
-import site.nerdygadgets.views.CurrentInfrastructureComponentPanel;
 
 
 /**
@@ -38,12 +37,12 @@ public class CurrentInfrastructureComponentModel {
     public void getData() {
         Document document = db.getDocumentByServerId(serverId);
 
-        ip  = document.getString("ip");
-        online = (boolean) ((Document)document.get("status")).get("online");
-        cpu = (String) ((Document)document.get("status")).get("cpu");
-        memory = (String) ((Document)document.get("status")).get("memory");
-        disk = (String) ((Document)document.get("status")).get("disk");
-        uptime = (String) ((Document)document.get("status")).get("uptime");
+        ip = document.getString("ip");
+        online = (boolean) ((Document) document.get("status")).get("online");
+        cpu = (String) ((Document) document.get("status")).get("cpu");
+        memory = (String) ((Document) document.get("status")).get("memory");
+        disk = (String) ((Document) document.get("status")).get("disk");
+        uptime = (String) ((Document) document.get("status")).get("uptime");
         type = document.getString("serverType");
     }
 
