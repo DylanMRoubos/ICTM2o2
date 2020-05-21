@@ -2,14 +2,8 @@ package site.nerdygadgets.views;
 
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
 
 /**
  * CurrentInfrastructureComponentPanel class
@@ -26,7 +20,6 @@ public class CurrentInfrastructureComponentPanel extends JPanel {
     public CurrentInfrastructureComponentPanel(String name) {
 
         setLayout(new BorderLayout());
-//        setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         setBackground(SubstanceCortex.GlobalScope.getCurrentSkin().getColorScheme(this, ComponentState.DEFAULT).getLightColor());
 
         this.name = new JLabel("naam: ");
@@ -35,8 +28,6 @@ public class CurrentInfrastructureComponentPanel extends JPanel {
         cpu = new JLabel("CPU: ");
         memory = new JLabel("Geheugen: ");
         disk = new JLabel("Ruimte: ");
-
-
         nameValue = new JLabel("");
         onlineValue = new JLabel("");
         uptimeValue = new JLabel("");
@@ -79,7 +70,6 @@ public class CurrentInfrastructureComponentPanel extends JPanel {
         c.gridy = 1;
         c.gridwidth = 2;
         southContent.add(onlineValue, c);
-
 
         // uptime
         c.gridx = 0;

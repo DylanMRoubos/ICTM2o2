@@ -1,18 +1,9 @@
 package site.nerdygadgets.views;
 
 import site.nerdygadgets.functions.ComboRenderer;
-
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.CellEditorListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.EventObject;
 /**
  * DesignPanel class
  * DesignPanel for infrastructures
@@ -81,6 +72,7 @@ public class DesignPanel extends JPanel {
                     return true;
                 return false;
             }
+
             //Only able to enter integer in amount column
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -102,7 +94,8 @@ public class DesignPanel extends JPanel {
                 super.fireTableCellUpdated(row, column);
             }
         };
-        //
+
+        //adds the columnnames
         tableModel.addColumn("Type");
         tableModel.addColumn("Naam");
         tableModel.addColumn("Beschikbaarheid");
@@ -145,7 +138,7 @@ public class DesignPanel extends JPanel {
         //init Content right panel
         jbOpt = new JButton("Optimaliseer");
 
-        //Voeg alle content toe
+        //Add all content
         jpDisplay.add(jpDisplayControls);
         jpDisplayControls.add(jbOpt);
         jpDisplayControls.add(jpDisplayPanel);

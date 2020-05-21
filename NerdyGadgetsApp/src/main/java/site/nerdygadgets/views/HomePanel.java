@@ -1,8 +1,15 @@
 package site.nerdygadgets.views;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
+/**
+ * HomePanel class
+ * Displays the homepanel with four JPanels in it
+ *
+ * @author Mike Thomas & Dylan Roubos
+ * @version 1.0
+ * @since 01-05-2020
+ */
 
 public class HomePanel extends JPanel {
     // panels

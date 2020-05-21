@@ -2,19 +2,22 @@ package site.nerdygadgets.views;
 
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
-import org.pushingpixels.substance.internal.utils.SubstanceColorResource;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+/**
+ * HomePanelComponent class
+ * Displays the image for the Jpanels used in HomePanel
+ *
+ * @author Mike Thomas & Dylan Roubos
+ * @version 1.0
+ * @since 10-05-2020
+ */
 
 public class HomePanelComponent extends JPanel {
     private JLabel text;
-    // private "image";
-
 
     public HomePanelComponent(String name, String filename) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

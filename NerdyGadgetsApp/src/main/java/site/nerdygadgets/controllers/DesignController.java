@@ -463,7 +463,7 @@ public class DesignController implements ActionListener, TableModelListener {
 
             list.clear();
 
-            if (dia.isAllcomponents()) {
+            if (dia.isAllComponents()) {
                 fillArraylist();
             } else {
                 list = convertInfraComponentToComponent(getCurrentModels());
