@@ -306,7 +306,6 @@ public class Algorithm {
                 dbPercentage = (1 - dbPercentage);
 
                 //use highest Firewall from list to calculate and show
-                System.out.println(Arrays.toString(algorithmComponents.get(getHighestFirewallFromArray())));
                 String[] highestFirewall = algorithmComponents.get(getHighestFirewallFromArray());
 
                 //Set the values for the firewall

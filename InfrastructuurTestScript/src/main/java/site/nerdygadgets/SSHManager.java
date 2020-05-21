@@ -4,6 +4,7 @@ import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Objects;
@@ -81,12 +82,12 @@ public class SSHManager {
         try {
             Channel channel = session.openChannel("exec");
             ((ChannelExec) channel).setCommand("sudo -S -p '' " + command);
-            InputStream outputCommand =channel.getInputStream();
-            OutputStream out=channel.getOutputStream();
-            ((ChannelExec)channel).setErrStream(System.err);
+            InputStream outputCommand = channel.getInputStream();
+            OutputStream out = channel.getOutputStream();
+            ((ChannelExec) channel).setErrStream(System.err);
             channel.connect();
 
-            out.write((password+"\n").getBytes());
+            out.write((password + "\n").getBytes());
             out.flush();
 
             //Put results in a String

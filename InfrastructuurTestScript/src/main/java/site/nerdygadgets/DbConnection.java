@@ -3,11 +3,21 @@ package site.nerdygadgets;
 import java.sql.*;
 import java.time.Instant;
 
+
+/**
+ * DbConnection class
+ * Connection class to connect to datanode
+ *
+ * @author Mike Thomas & Dylan Roubos
+ * @version 1.0
+ * @since 12-05-2020
+ */
 public class DbConnection {
     Connection conn;
     Statement stmt;
     int id;
     String testTable = "ProcedureTest";
+
     public DbConnection(int id, String ip, String user, String password, String database) {
         this.id = id;
         try {

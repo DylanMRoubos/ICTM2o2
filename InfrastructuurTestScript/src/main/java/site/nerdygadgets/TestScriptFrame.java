@@ -2,6 +2,7 @@ package site.nerdygadgets;
 
 import javax.swing.*;
 import java.awt.*;
+
 /**
  * TestScriptFrame class
  * JFrame with the 3 three main components in a gridlayout

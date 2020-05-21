@@ -25,7 +25,7 @@ public class ServerPanel extends JPanel implements ActionListener {
     public ServerPanel(TestScriptFrame frame, String type, String host, String user, String password) {
         this.host = host;
         this.frame = frame;
-        setLayout(new GridLayout(0, 1, 0 ,10));
+        setLayout(new GridLayout(0, 1, 0, 10));
 
         sshManager = new SSHManager(user, password, host);
         sshManager.startSession();
@@ -53,7 +53,7 @@ public class ServerPanel extends JPanel implements ActionListener {
             add(startwsJB);
             add(restartwsJB);
 
-            setBorder(BorderFactory.createEmptyBorder(0,20,300,20));
+            setBorder(BorderFactory.createEmptyBorder(0, 20, 300, 20));
 
         } else if (type.equals("db")) {
             // buttons for db
@@ -72,7 +72,7 @@ public class ServerPanel extends JPanel implements ActionListener {
             add(startdbsJB);
             add(restartdbsJB);
 
-            setBorder(BorderFactory.createEmptyBorder(0,20,390,20));
+            setBorder(BorderFactory.createEmptyBorder(0, 20, 390, 20));
 
             webSSH = new SSHManager("student", "KHxd4gu7", "172.16.0.190");
             webSSH.startSession();
