@@ -33,3 +33,7 @@
  **Haproxy:**<br/>
  - username: admin
  - password: Zh4wLX2y
+ 
+  **Win10 client:**<br/>
+ - username: student
+ - password: 2kppFJ`-"LWQhWt{
