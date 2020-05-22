@@ -5,6 +5,7 @@ import site.nerdygadgets.functions.Serialization;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 /**
  * InfrastructureComponentModel class
  * Create components and set the amount
@@ -71,8 +72,8 @@ public class InfrastructureComponentModel {
                     return m;
                 }
             }
+        } catch (IOException e) {
         }
-        catch (IOException e) { }
         return null;
     }
 }

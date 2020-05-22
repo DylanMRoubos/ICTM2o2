@@ -1,8 +1,8 @@
 package site.nerdygadgets;
 
-import javax.naming.ldap.Control;
 import javax.swing.*;
 import java.awt.*;
+
 /**
  * TestScriptFrame class
  * JFrame with the 3 three main components in a gridlayout
@@ -28,7 +28,6 @@ public class TestScriptFrame extends JFrame {
         add(procedureJP);
         add(serverJP);
         add(consoleJP);
-
 
         setVisible(true);
     }

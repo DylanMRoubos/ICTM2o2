@@ -14,16 +14,6 @@ public class App {
 
     public static void main(String[] args) {
 
-        //Set SubstanceBusinessBlackSteel look and feel tot the JFrame
-//        JFrame.setDefaultLookAndFeelDecorated(true);
-//        SwingUtilities.invokeLater(() -> {
-//            try {
-////                UIManager.setLookAndFeel(new SubstanceBusinessBlackSteelLookAndFeel());
-//            } catch (Exception e) {
-//                System.out.println("Substance failed to initialize");
-//            }
-//        });
-
         testScriptFrame = new TestScriptFrame();
 
     }

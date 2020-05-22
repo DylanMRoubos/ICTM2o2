@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 /**
  * ButtonEditor class
  * Creates buttons in tables
@@ -15,9 +16,7 @@ import java.awt.event.ActionListener;
  * @version 1.0
  * @since 14-05-2020
  */
-//BUTTON EDITOR CLASS
-public class ButtonEditor extends DefaultCellEditor
-{
+public class ButtonEditor extends DefaultCellEditor {
     protected JButton btn;
     private String lbl;
     private Boolean clicked;
@@ -25,7 +24,7 @@ public class ButtonEditor extends DefaultCellEditor
     public ButtonEditor(JTextField txt, DesignPanel panel, DesignController controller) {
         super(txt);
 
-        btn=new JButton();
+        btn = new JButton();
         btn.setOpaque(true);
 
         //WHEN BUTTON IS CLICKED
@@ -35,13 +34,13 @@ public class ButtonEditor extends DefaultCellEditor
                 fireEditingStopped();
                 if (lbl.equals(" + ")) {
                     panel.getTableModel().setValueAt(
-                            String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getJTable().getSelectedRow(), 4).toString())+1),
+                            String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getJTable().getSelectedRow(), 4).toString()) + 1),
                             panel.getJTable().getSelectedRow(), 4);
                 }
 
                 if (lbl.equals(" - ")) {
                     if (Integer.parseInt(panel.getTableModel().getValueAt(panel.getJTable().getSelectedRow(), 4).toString()) > 1)
-                        panel.getTableModel().setValueAt(String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getJTable().getSelectedRow(), 4).toString())-1), panel.getJTable().getSelectedRow(), 4);
+                        panel.getTableModel().setValueAt(String.valueOf(Integer.parseInt(panel.getTableModel().getValueAt(panel.getJTable().getSelectedRow(), 4).toString()) - 1), panel.getJTable().getSelectedRow(), 4);
                 }
 
                 if (lbl.equals("Verwijder")) {
@@ -59,9 +58,9 @@ public class ButtonEditor extends DefaultCellEditor
     public Component getTableCellEditorComponent(JTable table, Object obj, boolean selected, int row, int col) {
 
         //SET TEXT TO BUTTON,SET CLICKED TO TRUE,THEN RETURN THE BTN OBJECT
-        lbl=(obj==null) ? "":obj.toString();
+        lbl = (obj == null) ? "" : obj.toString();
         btn.setText(lbl);
-        clicked=true;
+        clicked = true;
         return btn;
     }
 
@@ -69,14 +68,14 @@ public class ButtonEditor extends DefaultCellEditor
     @Override
     public Object getCellEditorValue() {
         //SET IT TO FALSE NOW THAT ITS CLICKED
-        clicked=false;
+        clicked = false;
         return new String(lbl);
     }
 
     @Override
     public boolean stopCellEditing() {
         //SET CLICKED TO FALSE FIRST
-        clicked=false;
+        clicked = false;
         return super.stopCellEditing();
     }
 

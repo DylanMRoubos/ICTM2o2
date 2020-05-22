@@ -4,6 +4,7 @@ import site.nerdygadgets.functions.Serialization;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 /**
  * ComponentsModel class
  * Edit compnent model
@@ -16,7 +17,7 @@ public class ComponentsModel {
 
     private ArrayList<ComponentModel> componentModels;
 
-    public ComponentsModel(){
+    public ComponentsModel() {
         componentModels = new ArrayList<ComponentModel>();
     }
 
@@ -28,7 +29,7 @@ public class ComponentsModel {
         this.componentModels = componentModels;
     }
 
-// Adds component to ArrayList and file
+    // Adds component to ArrayList and file
     public boolean addComponentModel(ComponentModel model) {
         try {
             ArrayList<ComponentModel> l = Serialization.deserializeComponents();
@@ -39,15 +40,16 @@ public class ComponentsModel {
                     return false;
                 }
             }
-            componentModels.add(model); // componentModels is null???? maar word in contructor aangemaakt?
+            componentModels.add(model);
             Serialization.serializeComponents(componentModels);
             return true;
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error");
             return false;
         }
     }
-// Reload ArrayList
+
+    // Reload ArrayList
     public void reloadComponentModel() {
         try {
             this.componentModels = Serialization.deserializeComponents();
@@ -55,7 +57,8 @@ public class ComponentsModel {
             e.printStackTrace();
         }
     }
-// Remove component from ArrayList and file
+
+    // Remove component from ArrayList and file
     public void removeAt(int index) {
         componentModels.remove(index);
         try {
@@ -65,8 +68,8 @@ public class ComponentsModel {
         }
     }
 
-    public void printComponents(){
-        for(ComponentModel m: componentModels){
+    public void printComponents() {
+        for (ComponentModel m : componentModels) {
             System.out.println(m);
         }
     }

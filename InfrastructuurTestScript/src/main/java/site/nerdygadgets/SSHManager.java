@@ -65,7 +65,6 @@ public class SSHManager {
                     result += (new String(tmp, 0, i));
                 }
                 if (channel.isClosed()) {
-                    // System.out.println("exit-status: " + channel.getExitStatus()); // debug logging if command was successfully executed
                     break;
                 }
             }
@@ -77,17 +76,18 @@ public class SSHManager {
             return null;
         }
     }
+
     //Run a command on the server in Sudo mode
     public String runCommandSudo(String command) {
         try {
             Channel channel = session.openChannel("exec");
             ((ChannelExec) channel).setCommand("sudo -S -p '' " + command);
-            InputStream outputCommand =channel.getInputStream();
-            OutputStream out=channel.getOutputStream();
-            ((ChannelExec)channel).setErrStream(System.err);
+            InputStream outputCommand = channel.getInputStream();
+            OutputStream out = channel.getOutputStream();
+            ((ChannelExec) channel).setErrStream(System.err);
             channel.connect();
 
-            out.write((password+"\n").getBytes());
+            out.write((password + "\n").getBytes());
             out.flush();
 
             //Put results in a String
@@ -100,7 +100,6 @@ public class SSHManager {
                     result += (new String(tmp, 0, i));
                 }
                 if (channel.isClosed()) {
-                    // System.out.println("exit-status: " + channel.getExitStatus()); // debug logging if command was successfully executed
                     break;
                 }
             }

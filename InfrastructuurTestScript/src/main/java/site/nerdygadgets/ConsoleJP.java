@@ -2,6 +2,7 @@ package site.nerdygadgets;
 
 import javax.swing.*;
 import java.awt.*;
+
 /**
  * ConsoleJP class
  * JPanel with the console to display command output from SSH
@@ -32,10 +33,12 @@ public class ConsoleJP extends JPanel {
 
         setVisible(true);
     }
+
     //Append text to console
     public void appendConsoleText(String Text) {
         console.setText(console.getText() + Text);
     }
+
     //Clear consoleText
     public void clearText() {
         console.setText("");

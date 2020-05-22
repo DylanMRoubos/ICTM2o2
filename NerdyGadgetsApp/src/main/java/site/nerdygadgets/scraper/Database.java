@@ -7,6 +7,7 @@ import static com.mongodb.client.model.Filters.*;
 import org.bson.Document;
 
 import java.time.Instant;
+import java.util.ArrayList;
 
 /**
  * Database class
@@ -21,6 +22,12 @@ public class Database {
     private MongoClient mongoClient;
     private MongoDatabase database;
     private MongoCollection<Document> collection;
+
+    public Database(ArrayList<String> connection) {
+        mongoClient = MongoClients.create(connection.get(0));
+        database = mongoClient.getDatabase(connection.get(1));
+        collection = database.getCollection(connection.get(2));
+    }
 
     public Database(String connectionString) {
         mongoClient = MongoClients.create(connectionString);
@@ -50,12 +57,11 @@ public class Database {
                         .append("uptime", uptime));
         collection.insertOne(doc);
     }
-
+    // get latest document from mongoDB
     public Document getLastDocument() {
-        // get latest document
         return collection.find().sort(new Document("_id", -1)).first();
     }
-
+    // get document from mongoDB by serverID
     public Document getDocumentByServerId(int id) {
         return collection.find(eq("serverId", id)).sort(new Document("_id", -1)).first();
     }

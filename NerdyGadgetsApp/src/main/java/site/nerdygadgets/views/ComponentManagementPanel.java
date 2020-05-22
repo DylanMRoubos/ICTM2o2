@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+
 /**
  * ComponentManagementPanel class
  * ComponentManagementPanel for creating and deleting components
@@ -37,17 +38,17 @@ public class ComponentManagementPanel extends JPanel {
     private JButton jbAdd;
 
     public ComponentManagementPanel() {
-        setLayout(new GridLayout(0,2));
+        setLayout(new GridLayout(0, 2));
 
         jlCurrentComponents = new JLabel("Huidige componenten:");
         jlCurrentComponents.setFont(new Font("Test", Font.BOLD, 15));
         jlCurrentComponents.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jlCurrentComponents.setBorder(new EmptyBorder(10,20,20,20));
+        jlCurrentComponents.setBorder(new EmptyBorder(10, 20, 20, 20));
 
         jlAddComponents = new JLabel("Component toevoegen:");
         jlAddComponents.setFont(new Font("Test", Font.BOLD, 15));
         jlAddComponents.setAlignmentX(Component.CENTER_ALIGNMENT);
-        jlAddComponents.setBorder(new EmptyBorder(0,20,20,20));
+        jlAddComponents.setBorder(new EmptyBorder(0, 20, 20, 20));
 
         jpCurrentComponentsContent = new JPanel();
         jpCurrentComponentsContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -85,17 +86,17 @@ public class ComponentManagementPanel extends JPanel {
         jpAddComponentsContent = new JPanel();
         jpAddComponentsLayout = new JPanel();
         jpAddComponentsContent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        jpAddComponentsContent.setPreferredSize(new Dimension(450,550));
-        jpAddComponentsContent.setLayout(new GridLayout(3,0));
+        jpAddComponentsContent.setPreferredSize(new Dimension(450, 550));
+        jpAddComponentsContent.setLayout(new GridLayout(3, 0));
         jpAddComponentsLayout.setLayout(new GridBagLayout());
 
-        //Maak het hele rechter kant panel aan
+        //Makes the right panel
         add(jpAddComponents);
         jpAddComponents.add(jlAddComponents);
         jpAddComponents.add(jpAddComponentsContent);
         jpAddComponentsContent.add(jpAddComponentsLayout);
 
-        //init Content rechter panel
+        //init Content right panel
         jlName = new JLabel("Naam: ");
         jlPrice = new JLabel("Prijs: ");
         jlAvailability = new JLabel("Beschikbaarheid:");
@@ -107,50 +108,59 @@ public class ComponentManagementPanel extends JPanel {
 
         //Layout right panel
         GridBagConstraints gbc = new GridBagConstraints();
+
         //Give locations of labels, textfields and buttons in gridbaglayout
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.NORTHWEST;
         gbc.weightx = 1;
         gbc.weighty = 1;
-        gbc.insets = new Insets(10,10,0,10);
+        gbc.insets = new Insets(10, 10, 0, 10);
         gbc.gridx = 0;
         gbc.gridy = 0;
         jpAddComponentsLayout.add(jlName, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
         gbc.gridy = 0;
         jpAddComponentsLayout.add(jtName, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 1;
         jpAddComponentsLayout.add(jlPrice, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
         gbc.gridy = 1;
         jpAddComponentsLayout.add(jtPrice, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 2;
         jpAddComponentsLayout.add(jlAvailability, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
         gbc.gridy = 2;
         jpAddComponentsLayout.add(jtAvailability, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 3;
         jpAddComponentsLayout.add(jcComponents, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
         gbc.gridy = 3;
         jpAddComponentsLayout.add(jbAdd, gbc);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 2;
     }
 
-    public JTextField getJtName(){
+    public JTextField getJtName() {
         return jtName;
     }
 

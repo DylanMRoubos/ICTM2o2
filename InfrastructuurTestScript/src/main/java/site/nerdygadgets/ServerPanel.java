@@ -5,6 +5,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * ServerPanel class
+ * Lets you switch between servers
+ *
+ * @author Mike Thomas & Dylan Roubos
+ * @version 1.0
+ * @since 12-05-2020
+ */
+
 public class ServerPanel extends JPanel implements ActionListener {
     private SSHManager sshManager;
     private String type;
@@ -16,13 +25,13 @@ public class ServerPanel extends JPanel implements ActionListener {
     public ServerPanel(TestScriptFrame frame, String type, String host, String user, String password) {
         this.host = host;
         this.frame = frame;
-        setLayout(new GridLayout(0, 1, 0 ,10));
+        setLayout(new GridLayout(0, 1, 0, 10));
 
         sshManager = new SSHManager(user, password, host);
         sshManager.startSession();
 
         if (type.equals("web")) {
-            // buttons voor web
+            // buttons for web
             ndbsJB = new JButton("ndb_mgm status");
             ndbssJB = new JButton("service status ndb"); // ndb mgm and mysql
             sassJB = new JButton("service status apache2");
@@ -44,10 +53,10 @@ public class ServerPanel extends JPanel implements ActionListener {
             add(startwsJB);
             add(restartwsJB);
 
-            setBorder(BorderFactory.createEmptyBorder(0,20,300,20));
+            setBorder(BorderFactory.createEmptyBorder(0, 20, 300, 20));
 
         } else if (type.equals("db")) {
-            // buttons voor db
+            // buttons for db
             stopdbsJB = new JButton("stop services");
             startdbsJB = new JButton("start services");
             ndbdsJB = new JButton("service status ndbd");
@@ -63,13 +72,13 @@ public class ServerPanel extends JPanel implements ActionListener {
             add(startdbsJB);
             add(restartdbsJB);
 
-            setBorder(BorderFactory.createEmptyBorder(0,20,390,20));
+            setBorder(BorderFactory.createEmptyBorder(0, 20, 390, 20));
 
             webSSH = new SSHManager("student", "KHxd4gu7", "172.16.0.190");
             webSSH.startSession();
         }
 
-        // buttons algemeen
+        // buttons general
         shutdownJB = new JButton("shutdown server");
         rebootJB = new JButton("reboot server");
 

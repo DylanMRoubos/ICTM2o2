@@ -3,16 +3,9 @@ package site.nerdygadgets.views;
 import site.nerdygadgets.functions.ComboRenderer;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.CellEditorListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.EventObject;
+
 /**
  * DesignPanel class
  * DesignPanel for infrastructures
@@ -46,7 +39,7 @@ public class DesignPanel extends JPanel {
         setLayout(new GridLayout(0, 2));
         jpMakeDesign = new JPanel();
         jpMakeDesign.setPreferredSize(new Dimension(600, 650));
-        jpMakeDesign.setBorder(BorderFactory.createEmptyBorder(5,0,0,0));
+        jpMakeDesign.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
         //Make panel left side
         jpDesign = new JPanel();
@@ -56,8 +49,11 @@ public class DesignPanel extends JPanel {
 
         //init Content left panel
         jcDatabase = new JComboBox(new String[]{""});
+        jcDatabase.setPreferredSize(new Dimension(120, 17));
         jcWeb = new JComboBox(new String[]{""});
+        jcWeb.setPreferredSize(new Dimension(120, 17));
         jcFirewall = new JComboBox(new String[]{""});
+        jcFirewall.setPreferredSize(new Dimension(120, 17));
 
         jcDatabase.setRenderer(new ComboRenderer("Databaseservers"));
         jcDatabase.setSelectedIndex(-1);
@@ -78,6 +74,7 @@ public class DesignPanel extends JPanel {
                     return true;
                 return false;
             }
+
             //Only able to enter integer in amount column
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -99,7 +96,8 @@ public class DesignPanel extends JPanel {
                 super.fireTableCellUpdated(row, column);
             }
         };
-        //
+
+        //adds the columnnames
         tableModel.addColumn("Type");
         tableModel.addColumn("Naam");
         tableModel.addColumn("Beschikbaarheid");
@@ -126,22 +124,23 @@ public class DesignPanel extends JPanel {
         jlAvailability = new JLabel("0.0%");
 
         //Panels right side
-        jpDisplayPanel = new JPanel();
-        jpDisplayPanel.setPreferredSize(new Dimension(550, 590));
-
+        //jpDisplayPanel is for graphics
         jpDisplay = new JPanel();
         add(jpDisplay);
+        jpDisplay.setLayout(new FlowLayout());
+
+        jpDisplayPanel = new JPanel();
+        jpDisplayPanel.setPreferredSize(new Dimension(550, 590));
+        jpDisplayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+
         jpDisplayControls = new JPanel();
         jpDisplayControls.setPreferredSize(new Dimension(600, 650));
-
-        jpDisplay.setLayout(new FlowLayout());
-        jpDisplayPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        jpDisplayControls.setBorder(BorderFactory.createEmptyBorder(0,50,0,50));
+        jpDisplayControls.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
 
         //init Content right panel
         jbOpt = new JButton("Optimaliseer");
 
-        //Voeg alle content toe
+        //Add all content
         jpDisplay.add(jpDisplayControls);
         jpDisplayControls.add(jbOpt);
         jpDisplayControls.add(jpDisplayPanel);
@@ -187,4 +186,7 @@ public class DesignPanel extends JPanel {
         return tableModel;
     }
 
+    public JPanel getJpDisplayPanel() {
+        return jpDisplayPanel;
+    }
 }

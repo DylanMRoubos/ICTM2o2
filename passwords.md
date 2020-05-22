@@ -5,6 +5,7 @@
  -	password: pr7cmHKNX6VhPaHc<br/>
  
  - internal ip: 72.16.0.1
+ - Port TCP: 8443
  - external ip: 145.44.234.79
 
 **OpenVPN:**<br/>

@@ -5,6 +5,7 @@ import site.nerdygadgets.functions.Serialization;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 /**
  * DesignModel class
  * Get model for creating designs
@@ -16,11 +17,12 @@ import java.util.ArrayList;
 public class DesignModel {
     private ArrayList<ComponentModel> list;
 
-    public DesignModel(){
+    public DesignModel() {
         reloadList();
     }
-// Updates list with file
-    public void reloadList(){
+
+    // Updates list with file
+    public void reloadList() {
         try {
             list = Serialization.deserializeComponents();
         } catch (IOException e) {
@@ -28,39 +30,43 @@ public class DesignModel {
         }
     }
 
-    public ArrayList<ComponentModel> getDatabaseModels(){
+    public ArrayList<ComponentModel> getDatabaseModels() {
         if (list == null)
             reloadList();
         ArrayList<ComponentModel> database = new ArrayList<ComponentModel>();
-        for(ComponentModel l : list){
-            if(l.getType() == ComponentType.Database){
+        for (ComponentModel l : list) {
+            if (l.getType() == ComponentType.Database) {
                 database.add(l);
             }
         }
         return database;
     }
 
-    public ArrayList<ComponentModel> getWebModels(){
+    public ArrayList<ComponentModel> getWebModels() {
         if (list == null)
             reloadList();
         ArrayList<ComponentModel> web = new ArrayList<ComponentModel>();
-        for(ComponentModel l : list){
-            if(l.getType() == ComponentType.Webserver){
+        for (ComponentModel l : list) {
+            if (l.getType() == ComponentType.Webserver) {
                 web.add(l);
             }
         }
         return web;
     }
 
-    public ArrayList<ComponentModel> getFirewallModels(){
+    public ArrayList<ComponentModel> getFirewallModels() {
         if (list == null)
             reloadList();
         ArrayList<ComponentModel> firewall = new ArrayList<ComponentModel>();
-        for(ComponentModel l : list){
-            if(l.getType() == ComponentType.Firewall){
+        for (ComponentModel l : list) {
+            if (l.getType() == ComponentType.Firewall) {
                 firewall.add(l);
             }
         }
         return firewall;
+    }
+
+    public ArrayList<ComponentModel> getList() {
+        return list;
     }
 }

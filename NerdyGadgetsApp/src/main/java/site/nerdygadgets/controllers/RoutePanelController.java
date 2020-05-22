@@ -1,16 +1,20 @@
 package site.nerdygadgets.controllers;
 
-import site.nerdygadgets.views.DesignPanel;
 import site.nerdygadgets.views.MainFrameView;
 import site.nerdygadgets.views.Views;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 
+/**
+ * RouteplanelController class
+ * Adds functionality to switch between panels in the mainfram
+ *
+ * @author Mike thomas
+ * @version 1.0
+ * @since 21-05-2020
+ */
 public class RoutePanelController {
     private MainFrameView mainFrameView;
 
@@ -30,7 +34,7 @@ public class RoutePanelController {
         });
 
         // home panel buttons
-        // huidige infrastructuur panel
+        // current infrastructure panel
         mainFrameView.getHomePanel().getJpCurrentInfra().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -46,7 +50,7 @@ public class RoutePanelController {
                 switchPanel(Views.DESIGN);
             }
         });
-        // nieuw ontwerp panel (gelijk naar design panel)
+        // new design panel
         mainFrameView.getHomePanel().getJpCreate().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -54,7 +58,7 @@ public class RoutePanelController {
                 switchPanel(Views.DESIGN);
             }
         });
-        // componenten beheer panel
+        // componenten management panel
         mainFrameView.getHomePanel().getJpComponent().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -64,6 +68,7 @@ public class RoutePanelController {
         });
     }
 
+    //Switch between the panels
     private void switchPanel(Views views) {
         CardLayout cl = (CardLayout) mainFrameView.getContent().getLayout();
         cl.show(mainFrameView.getContent(), views.name());
