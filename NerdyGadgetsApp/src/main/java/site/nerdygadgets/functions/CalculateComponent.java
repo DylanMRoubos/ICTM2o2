@@ -5,6 +5,7 @@ import site.nerdygadgets.models.InfrastructureComponentModel;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
+
 /**
  * CalculateComponent class
  * Calulates the total price and total availability of a Design
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * @since 14-05-2020
  */
 public class CalculateComponent {
-// Calculates total price design
+    // Calculates total price design
     public static double calculatePrice(ArrayList<InfrastructureComponentModel> components) {
         double totalPrice = 0;
         for (InfrastructureComponentModel model : components) {
@@ -23,27 +24,27 @@ public class CalculateComponent {
         }
         return totalPrice;
     }
-// Calculates total availability design
+
+    // Calculates total availability design
     public static double calculateAvailability(ArrayList<InfrastructureComponentModel> components) {
-        //Availability van alle 3 begint op 0.00 (zodat als niks van dit aanwezig is de eindberekening de availability van het component 100% is en het geen invloed heeft)
-        double firewall   = 0.00;
+        //Availability for all start with 0.00 (so nothing that is available will be used in the calculation);
+        double firewall = 0.00;
         double webservers = 0.00;
-        double databases   = 0.00;
+        double databases = 0.00;
 
         for (InfrastructureComponentModel model : components) {
             for (int i = 0; i < model.getAmount(); i++) {
-//                System.out.println(model.getAvailability()/100);
                 switch (model.getType()) {
                     case Firewall:
-                        //Als het nog niet gezet is, dan is dit de eerste dus die hoef je niet te vermedigvuldigen met de oude waarde (ander krijg je 0xiets = 0)
-                        //Als dit niet de eerste is, dan vermedigvuldig de oude availability met de die van dit component
-                        firewall = (firewall == 0.00) ? calculateAvailability(model.getAvailability()/100) : precisionFixedMultiply(firewall, calculateAvailability(model.getAvailability()/100));
+                        // If it's not set yet, this is the first one so you don't have to multiply it by the old value (otherwise you get 0xiets = 0)
+                        // If this is not the first, multiply the old availability by the one of this component
+                        firewall = (firewall == 0.00) ? calculateAvailability(model.getAvailability() / 100) : precisionFixedMultiply(firewall, calculateAvailability(model.getAvailability() / 100));
                         break;
                     case Webserver:
-                        webservers = (webservers == 0.00) ? calculateAvailability(model.getAvailability()/100) : precisionFixedMultiply(webservers, calculateAvailability(model.getAvailability()/100));
+                        webservers = (webservers == 0.00) ? calculateAvailability(model.getAvailability() / 100) : precisionFixedMultiply(webservers, calculateAvailability(model.getAvailability() / 100));
                         break;
                     case Database:
-                        databases = (databases == 0.00) ? calculateAvailability(model.getAvailability()/100) : precisionFixedMultiply(databases, calculateAvailability(model.getAvailability()/100));
+                        databases = (databases == 0.00) ? calculateAvailability(model.getAvailability() / 100) : precisionFixedMultiply(databases, calculateAvailability(model.getAvailability() / 100));
                         break;
                     default:
                         System.out.println("[ERROR] Modeltype does not exist");
@@ -51,26 +52,28 @@ public class CalculateComponent {
             }
         }
 
-//De normale berekening, eerst 1-availability zodat je 0.90x0.95x0.97 krijgt ipv 0.10x0.05x0.03 (de uitkomst van bovenstaande for loopjes)
-        double finalCalculation = (1-firewall) * (1-webservers) * (1-databases);
-        //Om er weer een normal percentage van te maken, het weer keer 100 doen.
+
+        // The normal calculation, first 1-availability so that you get 0.90x0.95x0.97 instead of 0.10x0.05x0.03 (the result of the above for loops)
+        double finalCalculation = (1 - firewall) * (1 - webservers) * (1 - databases);
+        // To make it a normal percentage again, do it again 100 times.
         double systemAvailabilityPercentage = finalCalculation * 100;
 
-//        System.out.println("Final percentage: " + systemAvailabilityPercentage + "%");
-        if(components.size() == 0){
+        if (components.size() == 0) {
             return 0.0;
-        }else{
+        } else {
             return systemAvailabilityPercentage;
         }
     }
-    //Gebruik hier bigdecimal, je precision hangt af van wat je wilt qua input, 99.85% = 0.9985 = 4 precisie. Als je 99.99999 wilt moet je dus 0.9999999 = 7 precisie
-    private static double calculateAvailability(double availability){
+
+    // Use bigdecimal here, your precision depends on what you want in terms of input, 99.85% = 0.9985 = 4 precision. So if you want 99.99999 you need 0.9999999 = 7 precision
+    private static double calculateAvailability(double availability) {
         return new BigDecimal("1.0000").subtract(new BigDecimal(availability), new MathContext(4)).doubleValue();
     }
 
-    //Ook voor vermedigvuldigen van je availibility zou ik afkappen, 10 lijkt me wel genoeg, soms is alleen bovenstaande functie anders niet genoeg.
-    //10 is 99.99999999%
-    private static double precisionFixedMultiply(double currentAvailability, double componentAvailability){
+
+    // I would also truncate for increasing your availibility, 10 seems enough, sometimes just the above function is not enough otherwise.
+    // 10 is 99.99999999%
+    private static double precisionFixedMultiply(double currentAvailability, double componentAvailability) {
         return new BigDecimal(currentAvailability).multiply(new BigDecimal(componentAvailability), new MathContext(10)).doubleValue();
     }
 }

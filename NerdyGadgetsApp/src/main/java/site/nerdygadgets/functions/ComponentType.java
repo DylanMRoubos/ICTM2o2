@@ -1,4 +1,5 @@
 package site.nerdygadgets.functions;
+
 /**
  * ComponentType class
  * Type of component

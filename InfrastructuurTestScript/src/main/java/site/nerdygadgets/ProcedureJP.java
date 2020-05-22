@@ -43,8 +43,8 @@ public class ProcedureJP extends JPanel {
         north.setPreferredSize(new Dimension(0, 40));
 
         south = new JPanel();
-        south.setLayout(new GridLayout(0, 1,0,10));
-        south.setBorder(BorderFactory.createEmptyBorder(0,20,550,20));
+        south.setLayout(new GridLayout(0, 1, 0, 10));
+        south.setBorder(BorderFactory.createEmptyBorder(0, 20, 550, 20));
 
         p1 = new JButton("Test Site load balancing");
         p2 = new JButton("Test SQL synchroon op webservers");
@@ -69,8 +69,8 @@ public class ProcedureJP extends JPanel {
         w2 = new SSHManager("student", "KHxd4gu7", "172.16.0.191");
         db1 = new SSHManager("student", "wd9AdEuN", "172.16.0.158");
         db2 = new SSHManager("student", "wd9AdEuN", "172.16.0.159");
-        sql1 = new DbConnection(1,"172.16.0.190", "root", "ArshhU8K", "wideworldimporters");
-        sql2 = new DbConnection(2,"172.16.0.191", "root", "ArshhU8K", "wideworldimporters");
+        sql1 = new DbConnection(1, "172.16.0.190", "root", "ArshhU8K", "wideworldimporters");
+        sql2 = new DbConnection(2, "172.16.0.191", "root", "ArshhU8K", "wideworldimporters");
 
         w1.startSession();
         w2.startSession();
@@ -81,8 +81,7 @@ public class ProcedureJP extends JPanel {
     }
 
     public void testLoadBalancing() {
-        //TODO: implement: webserver1 uit -> wachten (15 sec) -> verbinden met site -> webserver 1 aan -> wachten (10 sec) -> webserver 2 uit -> wachten (15 sec) -> verbinden met site (als dit succesvol is klaar). -> alles aan.
-        if(!App.scriptRunning) {
+        if (!App.scriptRunning) {
             new Thread(() -> {
                 App.scriptRunning = true;
                 // clear gui console
@@ -90,16 +89,17 @@ public class ProcedureJP extends JPanel {
                 frame.getConsoleJP().appendConsoleText("Start test: Load balancing\n");
 
 
-                // webserver 1 uitzetten (alleen apache)
+                // webserver 1 shutdown (only apache)
                 frame.getConsoleJP().appendConsoleText("Stopping web1\n");
                 serviceApache("stop", w1);
                 frame.getConsoleJP().appendConsoleText("Stopped web1\n");
 
-                // wacht 20s
+                // wait 20s
                 frame.getConsoleJP().appendConsoleText("Waiting for load balancer to catch up\n");
                 wait(20);
 
-                // verbind met site (status.php) > result wordt "webserver 2"
+
+                // connect to site (status.php)> result becomes "webserver 2"
                 frame.getConsoleJP().appendConsoleText("Connect to site...\n");
                 String result1 = connectToSite();
                 if (result1.equals("")) {
@@ -108,7 +108,7 @@ public class ProcedureJP extends JPanel {
                     frame.getConsoleJP().appendConsoleText("Connected to: " + result1 + "\n");
                 }
 
-                // web server 1 aanzetten
+                // web server 1 start
                 frame.getConsoleJP().appendConsoleText("Starting web1\n");
                 serviceApache("start", w1);
                 frame.getConsoleJP().appendConsoleText("Started web1\n");
@@ -116,16 +116,16 @@ public class ProcedureJP extends JPanel {
                 // wait 5s
                 wait(5);
 
-                // web server 2 uitzetten
+                // web server 2 shutdown
                 frame.getConsoleJP().appendConsoleText("Stopping web2\n");
                 serviceApache("stop", w2);
                 frame.getConsoleJP().appendConsoleText("Stopped web2\n");
 
-                // wacht 20s
+                // wait 20s
                 frame.getConsoleJP().appendConsoleText("Waiting for load balancer to catch up\n");
                 wait(20);
 
-                // verbind met site (status.php) > result wordt "webserver 1"
+                // connect to site (status.php)> result becomes "webserver 1"
                 frame.getConsoleJP().appendConsoleText("Connect to site...\n");
                 String result2 = connectToSite();
                 if (result2.equals("")) {
@@ -140,7 +140,7 @@ public class ProcedureJP extends JPanel {
                 frame.getConsoleJP().appendConsoleText("Started web2\n");
 
                 // done
-                if(!result1.equals("") && !result2.equals("")) {
+                if (!result1.equals("") && !result2.equals("")) {
                     frame.getConsoleJP().appendConsoleText("Test Finished Successfully");
                 } else {
                     frame.getConsoleJP().appendConsoleText("Test Failed");
@@ -152,7 +152,7 @@ public class ProcedureJP extends JPanel {
     }
 
     public void testReplicatieAndFailoverDb2toDb1() {
-        if(!App.scriptRunning) {
+        if (!App.scriptRunning) {
             new Thread(() -> {
                 App.scriptRunning = true;
                 // clear gui console
@@ -211,7 +211,7 @@ public class ProcedureJP extends JPanel {
     }
 
     public void testReplicatieAndFailoverDb1toDb2() {
-        if(!App.scriptRunning) {
+        if (!App.scriptRunning) {
             new Thread(() -> {
                 App.scriptRunning = true;
                 // clear gui console
@@ -358,7 +358,7 @@ public class ProcedureJP extends JPanel {
 
     private void wait(int s) {
         try {
-            Thread.sleep(s*1000);
+            Thread.sleep(s * 1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

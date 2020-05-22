@@ -1,8 +1,16 @@
 package site.nerdygadgets.views;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.awt.*;
+
+/**
+ * MainFrameView class
+ * Displays the main frame
+ *
+ * @author Mike Thomas & Dylan Roubos & Ruben Oosting
+ * @version 1.0
+ * @since 01-05-2020
+ */
 
 public class MainFrameView extends JFrame {
     private final HeaderPanel headerPanel;
@@ -13,7 +21,7 @@ public class MainFrameView extends JFrame {
     private JPanel content;
 
     public MainFrameView() throws HeadlessException {
-        setSize(1200,800);
+        setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setTitle("NerdyGadgets Infrastructuur");

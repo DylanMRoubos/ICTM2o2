@@ -59,9 +59,10 @@ public class CurrentInfrastructureController extends TimerTask {
 
         // instantiate timer and add self to timer.
         Timer timer = new Timer();
-        timer.schedule(this, 0,5000); // run on start and then every 30 seconds.
+        timer.schedule(this, 0, 5000); // run on start and then every 30 seconds.
 
     }
+
     //Update the data from the model
     public void update() {
         model.getData();
