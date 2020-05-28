@@ -36,4 +36,4 @@
  
   **Win10 client:**<br/>
  - username: student
- - password: 2kppFJ`-"LWQhWt{
+ - password: KshbZLvpBx52TjBm
